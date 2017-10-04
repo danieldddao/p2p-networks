@@ -1,7 +1,35 @@
 <title>Home</title>
-<div style="text-align: center;">
+
+<div class="center">
   <%= form_tag('/books/search') do -%>
       <%= text_field_tag :search_terms, nil, size: 50, placeholder: "Search for a book", id: 'search_box' %>
       <%= submit_tag "Search", class: "btn btn-primary", id: "search_button" %>
   <% end -%>
+</div>
+
+</br></br>
+<div class="center">
+  <%= link_to "Share new book", nil, class: "btn btn-success" %>
+  <br><br>
+  <table class = "table table-bordered table-striped homepage">
+    <thead> List of all shared books:
+    <tr>
+      <th>Name</th>
+      <th>Location</th>
+      <th> </th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% if false %>
+    <% @sharedBooks.each do |book| %>
+        <tr>
+          <td><%= book.name %></td>
+          <td>book.location</td>
+          <td><%= button_to "Delete",  book, method: :delete, class: "btn btn-danger", confirm: "Are you sure that you wish to delete #{book.name}?" %></td>
+        </tr>
+    <% end %>
+    <% end %>
+    </tbody>
+  </table>
 </div>
