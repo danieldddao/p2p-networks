@@ -1,0 +1,7 @@
+<title>Home</title>
+<div style="text-align: center;">
+  <%= form_tag('/books/search') do -%>
+      <%= text_field_tag :search_terms, nil, size: 50, placeholder: "Search for a book", id: 'search_box' %>
+      <%= submit_tag "Search", class: "btn btn-primary", id: "search_button" %>
+  <% end -%>
+</div>

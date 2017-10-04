@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/P2P-V1-Napster.iml" filepath="$PROJECT_DIR$/P2P-V1-Napster.iml" />
+      <module fileurl="file://$PROJECT_DIR$/p2p-v1-napster.iml" filepath="$PROJECT_DIR$/p2p-v1-napster.iml" />
     </modules>
   </component>
 </project>

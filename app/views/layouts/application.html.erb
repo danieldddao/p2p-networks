@@ -1,14 +1,33 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>P2PV1Napster</title>
     <%= csrf_meta_tags %>
-
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
+    <table style="width: 100%; background: #FFD301; border-bottom: 3px solid black;">
+      <colgroup>
+        <col span="1" style="width: 10%;">
+        <col span="1" style="width: 90%;">
+      </colgroup>
+      <tbody>
+      <tr>
+        <td>
+          <div>
+            <%= image_tag("uiowa_logo.png", alt: "", size: 100) %>
+          </div>
+          </br>
+          <div style="font-size: 11px"> CS4980 - P2P - Napster </div>
+        </td>
+        <td>
+          <h1> Free Book Sharing </h1>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    </br>
     <%= yield %>
   </body>
 </html>
