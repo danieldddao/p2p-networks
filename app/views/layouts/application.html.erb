@@ -22,12 +22,28 @@
           <div style="font-size: 8px"> CS4980 - P2P - Napster </div>
         </td>
         <td>
-          <h1> Free Book Sharing </h1>
+          <!--<h1> Free Book Sharing </h1>-->
         </td>
       </tr>
       </tbody>
     </table>
     </br>
+    <div class="center">
+      <% if flash[:notice] %>
+          <div class = "alert alert-success">
+            <ul>
+              <%= flash[:notice] %>
+            </ul>
+          </div>
+      <% elsif flash[:warning]%>
+          <div class = "alert alert-danger">
+            <ul>
+              <%= flash[:warning] %>
+            </ul>
+          </div>
+      <% end %>
+    </div>
+
     <%= yield %>
   </body>
 </html>
