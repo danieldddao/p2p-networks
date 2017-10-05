@@ -6,11 +6,11 @@ class BooksController < ApplicationController
   end
 
   def index
-    puts "index page:"
-    public_id = request.remote_ip
+    public_ip = request.remote_ip
     local_ip = Socket.ip_address_list.detect{|intf| intf.ipv4_private?}
-    puts public_id
-    puts local_ip.ip_address
+    user_ip = "#{public_ip}-#{local_ip.ip_address}"
+    @sharedBooks = Book.where(:user_ip => user_ip)
+    puts "sharedbooks: #{@sharedBooks}"
   end
 
   def new
@@ -19,17 +19,22 @@ class BooksController < ApplicationController
   end
 
   def create
+    public_ip = request.remote_ip
+    local_ip = Socket.ip_address_list.detect{|intf| intf.ipv4_private?}
+    user_ip = "#{public_ip}-#{local_ip.ip_address}"
     @book = Book.new(book_params)
-    puts @book.title
-    puts @book.isbn
-    puts @book.author
-    puts @book.location
-      # if @book.save
-    #   flash[:notice] = "#{@book.title} was successfully added."
-    #   redirect_to root_path
-    # else
-    #   render 'new'
-    # end
+    @book.user_ip = user_ip
+    if @book.save
+      flash[:notice] = "#{@book.title} was successfully added."
+      puts "#{@book.title} at #{@book.location} was successfully added to #{@book.user_ip}"
+      redirect_to root_path
+    else
+      render 'new'
+    end
+  end
+
+  def destroy
+    redirect_to root_path
   end
 
   def search
