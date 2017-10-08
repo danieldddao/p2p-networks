@@ -11,25 +11,30 @@
 <div class="center">
   <%= link_to "Share new book", books_new_path, class: "btn btn-success" %>
   <br><br>
-  <table class = "table table-bordered table-striped homepage">
-    <thead> My shared books:
-    <tr>
-      <th>Name</th>
-      <th>Location</th>
-      <th> </th>
-    </tr>
-    </thead>
 
-    <tbody>
-    <% if @sharedBooks != nil %>
-    <% @sharedBooks.each do |book| %>
-        <tr>
-          <td><%= book.title %></td>
-          <td><%= book.location %></td>
-          <td><%= button_to "Delete", book, method: :delete, class: "btn btn-danger", confirm: "Are you sure that you wish to delete #{book.title}?" %></td>
-        </tr>
-    <% end %>
-    <% end %>
-    </tbody>
-  </table>
 </div>
+
+<h1>Realtime communication with WebRTC</h1>
+<section>
+  <form id="fileInfo">
+    <input type="file" id="fileInput" name="files"/>
+  </form>
+
+  <div class="progress">
+    <div class="label">Send progress: </div>
+    <progress id="sendProgress" max="0" value="0"></progress>
+  </div>
+
+  <div class="progress">
+    <div class="label">Receive progress: </div>
+    <progress id="receiveProgress" max="0" value="0"></progress>
+  </div>
+
+  <div id="bitrate"></div>
+  <a id="download"></a>
+  <span id="status"></span>
+
+</section>
+
+<script src="/assets/webrtc/main.js" data-turbolinks-track="reload"></script>
+<script src="/assets/webrtc/adapter.js"></script>
