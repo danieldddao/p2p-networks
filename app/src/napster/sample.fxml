@@ -42,6 +42,12 @@
                         <Button layoutX="444.0" layoutY="46.0" mnemonicParsing="false" onAction="#searchBook" prefHeight="27.0" prefWidth="78.0" text="Search" />
                         <TextField fx:id="searchTextField" layoutX="154.0" layoutY="46.0" prefHeight="27.0" prefWidth="277.0" />
                         <Text layoutX="166.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search a book by title, isbn, or author" />
+                        <Text fx:id="searchAlertText" fill="#f80000" layoutX="154.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="367.21875">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Text>
+                        <ListView fx:id="bookListView" layoutX="51.0" layoutY="119.0" prefHeight="308.0" prefWidth="591.0" />
                      </children>
                   </AnchorPane>
               </content>

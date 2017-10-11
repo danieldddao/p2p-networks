@@ -1,15 +1,23 @@
 package napster;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.stage.FileChooser;
 import javafx.scene.text.Text;
 
+import napster.Book;
 import java.io.*;
 import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import org.json.*;
 
 public class Controller {
 
@@ -20,9 +28,72 @@ public class Controller {
     @FXML
     private TextField searchTextField;
 
+    @FXML
+    private Text searchAlertText;
+
+    @FXML
+    private ListView<Book> bookListView;
+
+    static class BookCell extends ListCell<Book> {
+        HBox hbox = new HBox();
+        Label label = new Label("(empty)");
+        Pane pane = new Pane();
+        Button button = new Button("Download");
+        Book currentBook;
+
+        public BookCell() {
+            super();
+            hbox.getChildren().addAll(label, pane, button);
+            HBox.setHgrow(pane, Priority.ALWAYS);
+            button.setOnAction(e -> {
+                System.out.println("Downloading " + currentBook.getTitle() + " from loc: " + currentBook.getLocation());
+            });
+        }
+
+        @Override
+        protected void updateItem(Book newBook, boolean empty) {
+            super.updateItem(newBook, empty);
+            setText(null);  // No text in label of super class
+            if (empty) {
+                currentBook = null;
+                setGraphic(null);
+            } else {
+                currentBook = newBook;
+                if (currentBook.getIsbn().isEmpty()) {
+                    label.setText(currentBook.getTitle() + " by " + currentBook.getAuthor());
+                } else {
+                    label.setText(currentBook.getTitle() + " by " + currentBook.getAuthor() + " (isbn:" + currentBook.getIsbn() + ")");
+                }
+                setGraphic(hbox);
+            }
+        }
+    }
+
     public void searchBook(ActionEvent event) {
         try {
-            WebServer.searchBook(searchTextField.getText());
+            searchAlertText.setText("");
+//            String searchBookResult = WebServer.searchBook(searchTextField.getText());
+            String searchBookResult = "[{\"id\":1,\"user_ip\":\"0.0.0.0/0.0.0.0\",\"port_number\":\"1111\",\"title\":\"EV\",\"isbn\":\"\",\"author\":\"dd\",\"location\":\"/Users/danieldao/Downloads/Evaluation form-3.docx\"},{\"id\":2,\"user_ip\":\"0.0.0.0/0.0.0.0\",\"port_number\":\"1112\",\"title\":\"jb\",\"isbn\":\"\",\"author\":\"dd\",\"location\":\"/Users/danieldao/Downloads/jb.ttc\"}]\n";
+            if (searchBookResult.isEmpty()) {
+                searchAlertText.setText("No Book found!");
+            } else {
+                ObservableList<Book> list = FXCollections.observableArrayList();
+                JSONArray jsonarray = new JSONArray(searchBookResult);
+                for (int i = 0; i < jsonarray.length(); i++) {
+                    JSONObject jsonobject = jsonarray.getJSONObject(i);
+                    int id = jsonobject.getInt("id");
+                    String user_ip = jsonobject.getString("user_ip");
+                    String port = jsonobject.getString("port_number");
+                    String title = jsonobject.getString("title");
+                    String isbn = jsonobject.getString("isbn");
+                    String author = jsonobject.getString("author");
+                    String location = jsonobject.getString("location");
+                    Book newBook = new Book(id, user_ip, port, title, author, isbn, location);
+                    list.add(newBook);
+                }
+                bookListView.setItems(list);
+                bookListView.setCellFactory(param -> new BookCell());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

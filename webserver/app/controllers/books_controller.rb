@@ -30,17 +30,21 @@ class BooksController < ApplicationController
   end
 
   def search
-    books = Book.where(:title => params[:search_term])
-    if !(books.blank?)
-      puts "found books by title"
-      puts books
+    if params[:search_term] == ""
+      books = Book.all
       render json: books, status: 200
     else
-        books = Book.where(:author => params[:search_term])
-        if !(books.blank?)
-        puts "found books by author"
+      books = Book.where(:title => params[:search_term])
+      if !(books.blank?)
+        puts "found books by title"
         puts books
         render json: books, status: 200
+      else
+        books = Book.where(:author => params[:search_term])
+        if !(books.blank?)
+          puts "found books by author"
+          puts books
+          render json: books, status: 200
         else
           books = Book.where(:isbn => params[:search_term])
           if !(books.blank?)
@@ -52,6 +56,8 @@ class BooksController < ApplicationController
           end
         end
       end
+    end
+
   end
 
 end

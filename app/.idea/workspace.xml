@@ -18,15 +18,20 @@
             <state relative-caret-position="270">
               <caret line="18" column="26" lean-forward="false" selection-start-line="18" selection-start-column="26" selection-end-line="18" selection-end-column="26" />
               <folding>
-                <marker date="1507679256812" expanded="true" signature="3290:3376" ph="..." />
-                <marker date="1507679256812" expanded="true" signature="3806:3958" ph="..." />
-                <marker date="1507679256812" expanded="true" signature="3840:3926" ph="..." />
-                <marker date="1507679256812" expanded="true" signature="4140:4292" ph="..." />
-                <marker date="1507679256812" expanded="true" signature="4174:4260" ph="..." />
-                <marker date="1507679256812" expanded="true" signature="4436:4793" ph="..." />
-                <marker date="1507679256812" expanded="true" signature="4458:4776" ph="..." />
-                <marker date="1507679256812" expanded="true" signature="4553:4753" ph="..." />
-                <marker date="1507679256812" expanded="true" signature="4585:4721" ph="..." />
+                <marker date="1507692721236" expanded="true" signature="2615:4841" ph="..." />
+                <marker date="1507692721236" expanded="true" signature="2637:4824" ph="..." />
+                <marker date="1507692721236" expanded="true" signature="2732:4801" ph="..." />
+                <marker date="1507692721236" expanded="true" signature="2764:4769" ph="..." />
+                <marker date="1507692721236" expanded="true" signature="3700:3854" ph="..." />
+                <marker date="1507692721236" expanded="true" signature="3734:3820" ph="..." />
+                <marker date="1507692721236" expanded="true" signature="4250:4402" ph="..." />
+                <marker date="1507692721236" expanded="true" signature="4284:4370" ph="..." />
+                <marker date="1507692721236" expanded="true" signature="4584:4736" ph="..." />
+                <marker date="1507692721236" expanded="true" signature="4618:4704" ph="..." />
+                <marker date="1507692721236" expanded="true" signature="4880:5237" ph="..." />
+                <marker date="1507692721236" expanded="true" signature="4902:5220" ph="..." />
+                <marker date="1507692721236" expanded="true" signature="4997:5197" ph="..." />
+                <marker date="1507692721236" expanded="true" signature="5029:5165" ph="..." />
               </folding>
             </state>
           </provider>
@@ -45,21 +50,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Controller.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Controller.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/napster/Controller.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="23" column="13" lean-forward="false" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
-              <folding />
+            <state relative-caret-position="835">
+              <caret line="92" column="17" lean-forward="true" selection-start-line="92" selection-start-column="17" selection-end-line="92" selection-end-column="17" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="WebServer.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="WebServer.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/napster/WebServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="319">
-              <caret line="117" column="49" lean-forward="false" selection-start-line="117" selection-start-column="49" selection-end-line="117" selection-end-column="49" />
+            <state relative-caret-position="309">
+              <caret line="114" column="0" lean-forward="false" selection-start-line="114" selection-start-column="0" selection-end-line="114" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -86,6 +93,11 @@
       </list>
     </option>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>updateitem</find>
+    </findStrings>
+  </component>
   <component name="GradleLocalSettings">
     <option name="externalProjectsViewState">
       <projects_view />
@@ -98,8 +110,9 @@
         <option value="$PROJECT_DIR$/src/napster/ServerRunnable.java" />
         <option value="$PROJECT_DIR$/src/napster/SocketRunnable.java" />
         <option value="$PROJECT_DIR$/src/napster/Main.java" />
-        <option value="$PROJECT_DIR$/src/napster/Controller.java" />
         <option value="$PROJECT_DIR$/src/napster/WebServer.java" />
+        <option value="$PROJECT_DIR$/src/napster/Book.java" />
+        <option value="$PROJECT_DIR$/src/napster/Controller.java" />
       </list>
     </option>
   </component>
@@ -157,7 +170,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="project.structure.last.edited" value="Libraries" />
-    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
   <component name="RunDashboard">
@@ -294,12 +307,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1507651631455</updated>
-      <workItem from="1507651632706" duration="9812000" />
+      <workItem from="1507651632706" duration="21479000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9812000" />
+    <option name="totallyTimeSpent" value="21479000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1280" height="778" extended-state="0" />
@@ -311,7 +324,7 @@
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20937042" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2737921" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -337,7 +350,9 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="1" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
@@ -370,15 +385,20 @@
         <state relative-caret-position="270">
           <caret line="18" column="26" lean-forward="false" selection-start-line="18" selection-start-column="26" selection-end-line="18" selection-end-column="26" />
           <folding>
-            <marker date="1507679256812" expanded="true" signature="3290:3376" ph="..." />
-            <marker date="1507679256812" expanded="true" signature="3806:3958" ph="..." />
-            <marker date="1507679256812" expanded="true" signature="3840:3926" ph="..." />
-            <marker date="1507679256812" expanded="true" signature="4140:4292" ph="..." />
-            <marker date="1507679256812" expanded="true" signature="4174:4260" ph="..." />
-            <marker date="1507679256812" expanded="true" signature="4436:4793" ph="..." />
-            <marker date="1507679256812" expanded="true" signature="4458:4776" ph="..." />
-            <marker date="1507679256812" expanded="true" signature="4553:4753" ph="..." />
-            <marker date="1507679256812" expanded="true" signature="4585:4721" ph="..." />
+            <marker date="1507692721236" expanded="true" signature="2615:4841" ph="..." />
+            <marker date="1507692721236" expanded="true" signature="2637:4824" ph="..." />
+            <marker date="1507692721236" expanded="true" signature="2732:4801" ph="..." />
+            <marker date="1507692721236" expanded="true" signature="2764:4769" ph="..." />
+            <marker date="1507692721236" expanded="true" signature="3700:3854" ph="..." />
+            <marker date="1507692721236" expanded="true" signature="3734:3820" ph="..." />
+            <marker date="1507692721236" expanded="true" signature="4250:4402" ph="..." />
+            <marker date="1507692721236" expanded="true" signature="4284:4370" ph="..." />
+            <marker date="1507692721236" expanded="true" signature="4584:4736" ph="..." />
+            <marker date="1507692721236" expanded="true" signature="4618:4704" ph="..." />
+            <marker date="1507692721236" expanded="true" signature="4880:5237" ph="..." />
+            <marker date="1507692721236" expanded="true" signature="4902:5220" ph="..." />
+            <marker date="1507692721236" expanded="true" signature="4997:5197" ph="..." />
+            <marker date="1507692721236" expanded="true" signature="5029:5165" ph="..." />
           </folding>
         </state>
       </provider>
@@ -396,10 +416,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/napster/Controller.java">
+    <entry file="file://$PROJECT_DIR$/src/napster/WebServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="23" column="13" lean-forward="false" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
+        <state relative-caret-position="309">
+          <caret line="114" column="0" lean-forward="false" selection-start-line="114" selection-start-column="0" selection-end-line="114" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -412,11 +432,77 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/napster/WebServer.java">
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk-9.jdk/Contents/Home/lib/src.zip!/javafx.controls/javafx/scene/control/ListCell.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="319">
-          <caret line="117" column="49" lean-forward="false" selection-start-line="117" selection-start-column="49" selection-end-line="117" selection-end-column="49" />
+        <state relative-caret-position="-3703">
+          <caret line="336" column="22" lean-forward="false" selection-start-line="336" selection-start-column="12" selection-end-line="336" selection-end-column="22" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk-9.jdk/Contents/Home/lib/src.zip!/javafx.controls/javafx/scene/control/ListView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="586" column="22" lean-forward="false" selection-start-line="586" selection-start-column="22" selection-end-line="586" selection-end-column="22" />
+          <folding>
+            <element signature="e#24455#24456#0" expanded="false" />
+            <element signature="e#24503#24504#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/napster/Book.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="19" lean-forward="false" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
+          <folding>
+            <element signature="e#561#562#0" expanded="true" />
+            <element signature="e#586#587#0" expanded="true" />
+            <element signature="e#619#620#0" expanded="true" />
+            <element signature="e#647#648#0" expanded="true" />
+            <element signature="e#681#682#0" expanded="true" />
+            <element signature="e#711#712#0" expanded="true" />
+            <element signature="e#757#758#0" expanded="true" />
+            <element signature="e#795#796#0" expanded="true" />
+            <element signature="e#826#827#0" expanded="true" />
+            <element signature="e#853#854#0" expanded="true" />
+            <element signature="e#893#894#0" expanded="true" />
+            <element signature="e#925#926#0" expanded="true" />
+            <element signature="e#957#958#0" expanded="true" />
+            <element signature="e#985#986#0" expanded="true" />
+            <element signature="e#1027#1028#0" expanded="true" />
+            <element signature="e#1061#1062#0" expanded="true" />
+            <element signature="e#1094#1095#0" expanded="true" />
+            <element signature="e#1123#1124#0" expanded="true" />
+            <element signature="e#1167#1168#0" expanded="true" />
+            <element signature="e#1203#1204#0" expanded="true" />
+            <element signature="e#1234#1235#0" expanded="true" />
+            <element signature="e#1261#1262#0" expanded="true" />
+            <element signature="e#1301#1302#0" expanded="true" />
+            <element signature="e#1333#1334#0" expanded="true" />
+            <element signature="e#1368#1369#0" expanded="true" />
+            <element signature="e#1399#1400#0" expanded="true" />
+            <element signature="e#1447#1448#0" expanded="true" />
+            <element signature="e#1487#1488#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk-9.jdk/Contents/Home/lib/src.zip!/java.desktop/java/awt/print/Book.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="157">
+          <caret line="38" column="13" lean-forward="false" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/napster/Controller.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="835">
+          <caret line="92" column="17" lean-forward="true" selection-start-line="92" selection-start-column="17" selection-end-line="92" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
