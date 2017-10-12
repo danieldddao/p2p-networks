@@ -25,6 +25,11 @@ class BooksController < ApplicationController
     end
   end
 
+  def clear
+    puts "delete book: " + params[:user_ip] + ": " + params[:port_number]
+    Book.where(user_ip: params[:user_ip], port_number: params[:port_number]).delete_all
+  end
+
   def destroy
 
   end

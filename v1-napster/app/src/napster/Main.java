@@ -17,10 +17,10 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-
     @Override
     public void stop(){
         System.out.println("App is closing");
+        WebServer.clearBooksFromServerWhenExiting();
         // Save file
     }
 
