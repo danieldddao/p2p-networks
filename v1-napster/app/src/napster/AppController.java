@@ -4,11 +4,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
-import javafx.stage.FileChooser;
+import javafx.stage.*;
 import javafx.scene.text.Text;
 
 import napster.Book;
@@ -19,7 +23,7 @@ import java.net.Socket;
 
 import org.json.*;
 
-public class Controller {
+public class AppController {
 
     /*
      * Search a book tab
@@ -34,18 +38,87 @@ public class Controller {
     @FXML
     private ListView<Book> bookListView;
 
-    static class BookCell extends ListCell<Book> {
+    class BookCell extends ListCell<Book> {
         HBox hbox = new HBox();
         Label label = new Label("(empty)");
         Pane pane = new Pane();
-        Button button = new Button("Download");
+        Button downloadButton = new Button("Download");
+        BorderPane borderPane = new BorderPane();
+        ProgressBar progressBar = new ProgressBar(0);
+        ProgressIndicator progressIndicator = new ProgressIndicator(0);
         Book currentBook;
 
         public BookCell() {
             super();
-            hbox.getChildren().addAll(label, pane, button);
+            borderPane.setLeft(downloadButton);
+            borderPane.setBottom(progressBar);
+            borderPane.setCenter(progressIndicator);
+            hbox.getChildren().addAll(label, pane, borderPane);
             HBox.setHgrow(pane, Priority.ALWAYS);
-            button.setOnAction(e -> {
+
+            // Download Button is pressed
+            downloadButton.setOnAction(e -> {
+                // Choose directory
+                DirectoryChooser dc = new DirectoryChooser();
+                File dir = dc.showDialog(null);
+                if (dir != null) {
+                    try {
+                        System.out.println("directory selected: " + dir);
+
+                        //creating connection to socket
+                        Socket socket = new Socket(currentBook.getUser_ip().substring(0, currentBook.getUser_ip().indexOf("/")), Integer.parseInt(currentBook.getPort()));
+                        System.out.println("Socket connected to " + currentBook.getUser_ip() + " port: " + currentBook.getPort());
+
+                        // Setup file path
+                        String filePath = "";
+                        if (dir.toString().lastIndexOf("/") > 0) {
+                            filePath = dir + "/";
+                        } else {
+                            filePath = dir + "\\";
+                        }
+                        filePath += currentBook.getTitle() + currentBook.getLocation().substring(currentBook.getLocation().lastIndexOf("."));
+                        System.out.println("Save downloading file to " + filePath);
+
+                        // receive file size
+                        ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+                        String fileSizeMsg = (String) in.readObject();
+                        int fileSize = Integer.parseInt(fileSizeMsg);
+                        System.out.println("file size " + fileSize);
+                        byte [] byteArray  = new byte [ fileSize + 1];
+                        System.out.println("Downloading file");
+
+                        //reading file from socket
+                        InputStream inputStream = socket.getInputStream();
+                        FileOutputStream fileOutputStream = new FileOutputStream(filePath);
+                        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
+
+                        int bytesRead = 0;
+                        int current = 0;
+                        bytesRead = inputStream.read(byteArray,0,byteArray.length);					//copying file from socket to byteArray
+                        current = bytesRead;
+                        do {
+                            bytesRead =inputStream.read(byteArray, current, (byteArray.length-current));
+                            if(bytesRead >= 0) current += bytesRead;
+                            progressBar.setProgress((current/ (float)fileSize));
+                            progressIndicator.setProgress((current/ (float)fileSize));
+                        } while(bytesRead > -1);
+                        bufferedOutputStream.write(byteArray, 0 , current);							//writing byteArray to file
+                        bufferedOutputStream.flush();												//flushing buffers
+
+                        System.out.println("File " + filePath + " downloaded ( size: " + current + " bytes read)");
+                        in.close();
+                        fileOutputStream.close();
+                        bufferedOutputStream.close();
+                        socket.close();
+
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+
+                } else {
+                    searchAlertText.setText("Please choose a directory to download");
+                }
+
                 System.out.println("Downloading " + currentBook.getTitle() + " from loc: " + currentBook.getLocation());
             });
         }
@@ -69,12 +142,34 @@ public class Controller {
         }
     }
 
+    private void downloadBook() {
+//        try {
+//            File myFile = new File("/Users/danieldao/Downloads/jb1.ipa");
+//            byte[] mybytearray = new byte[(int) myFile.length()];
+//
+//            FileInputStream fis = new FileInputStream(myFile);
+//            BufferedInputStream bis = new BufferedInputStream(fis);
+//            bis.read(mybytearray, 0, mybytearray.length);
+//
+//            OutputStream os = sock.getOutputStream();
+//
+//            os.write(mybytearray, 0, mybytearray.length);
+//
+//            os.flush();
+//
+//            sock.close();
+//            System.out.println("Received file!");
+//        } catch (Exception e) {
+//
+//        }
+    }
+
     public void searchBook(ActionEvent event) {
         try {
             searchAlertText.setText("");
-//            String searchBookResult = WebServer.searchBook(searchTextField.getText());
-            String searchBookResult = "[{\"id\":1,\"user_ip\":\"0.0.0.0/0.0.0.0\",\"port_number\":\"1111\",\"title\":\"EV\",\"isbn\":\"\",\"author\":\"dd\",\"location\":\"/Users/danieldao/Downloads/Evaluation form-3.docx\"},{\"id\":2,\"user_ip\":\"0.0.0.0/0.0.0.0\",\"port_number\":\"1112\",\"title\":\"jb\",\"isbn\":\"\",\"author\":\"dd\",\"location\":\"/Users/danieldao/Downloads/jb.ttc\"}]\n";
-            if (searchBookResult.isEmpty()) {
+            String searchBookResult = WebServer.searchBook(searchTextField.getText());
+//            String searchBookResult = "[{\"id\":1,\"user_ip\":\"0.0.0.0/0.0.0.0\",\"port_number\":\"1111\",\"title\":\"EV\",\"isbn\":\"\",\"author\":\"dd\",\"location\":\"/Users/danieldao/Downloads/Evaluation form-3.docx\"},{\"id\":2,\"user_ip\":\"0.0.0.0/0.0.0.0\",\"port_number\":\"1112\",\"title\":\"jb\",\"isbn\":\"\",\"author\":\"dd\",\"location\":\"/Users/danieldao/Downloads/jb.ttc\"}]\n";
+            if (searchBookResult.equals("[]") || searchBookResult.isEmpty()) {
                 searchAlertText.setText("No Book found!");
             } else {
                 ObservableList<Book> list = FXCollections.observableArrayList();
@@ -98,78 +193,6 @@ public class Controller {
             e.printStackTrace();
         }
     }
-
-    public void downloadBook(ActionEvent event) {
-//        try {
-//            File myFile = new File("/Users/danieldao/Downloads/jb1.ipa");
-//            byte[] mybytearray = new byte[(int) myFile.length()];
-//
-//            FileInputStream fis = new FileInputStream(myFile);
-//            BufferedInputStream bis = new BufferedInputStream(fis);
-//            bis.read(mybytearray, 0, mybytearray.length);
-//
-//            OutputStream os = sock.getOutputStream();
-//
-//            os.write(mybytearray, 0, mybytearray.length);
-//
-//            os.flush();
-//
-//            sock.close();
-//            System.out.println("Received file!");
-//        } catch (Exception e) {
-//
-//        }
-
-        try {
-            System.out.println("download button pressed");
-            int bytesRead=0;
-            int current = 0;
-//            FileOutputStream fileOutputStream = null;
-//            BufferedOutputStream bufferedOutputStream = null;
-//            Socket socket = null;
-            try {
-                //creating connection.
-                Socket socket = new Socket("0.0.0.0", 1111);
-                System.out.println("connected.");
-
-                // receive file size
-                ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-                String fileSizeMsg = (String) in.readObject();
-                int fileSize = Integer.parseInt(fileSizeMsg);
-                System.out.println("file size " + fileSize);
-                byte [] byteArray  = new byte [ fileSize + 1];					//I have hard coded size of byteArray, you can send file size from socket before creating this.
-                System.out.println("Downloading file");
-
-                //reading file from socket
-                InputStream inputStream = socket.getInputStream();
-                FileOutputStream fileOutputStream = new FileOutputStream("/Users/danieldao/Downloads/jb1.ttc");
-                BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
-                bytesRead = inputStream.read(byteArray,0,byteArray.length);					//copying file from socket to byteArray
-
-                current = bytesRead;
-                do {
-                    bytesRead =inputStream.read(byteArray, current, (byteArray.length-current));
-                    if(bytesRead >= 0) current += bytesRead;
-                    System.out.println((current/ (float)fileSize) * 100);
-                } while(bytesRead > -1);
-                bufferedOutputStream.write(byteArray, 0 , current);							//writing byteArray to file
-                bufferedOutputStream.flush();												//flushing buffers
-
-                System.out.println("File " + "/Users/danieldao/Downloads/road1.png"  + " downloaded ( size: " + current + " bytes read)");
-                in.close();
-                fileOutputStream.close();
-                bufferedOutputStream.close();
-                socket.close();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 
 
     /*

@@ -9886,3 +9886,220 @@ Processing by BooksController#search as HTML
 Completed 200 OK in 13ms (Views: 10.5ms | ActiveRecord: 1.4ms)
 
 
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.8ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "environment"]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "environment"]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "environment"]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (2.9ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (1.6ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateBooks (20171004144640)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.6ms)[0m  [1m[35mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "user_ip" varchar, "port_number" varchar, "title" varchar, "isbn" varchar, "author" varchar, "location" varchar)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE UNIQUE INDEX "user_ip_and_title_and_isbn_and_author" ON "books" ("user_ip", "title", "isbn", "author")[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='user_ip_and_title_and_isbn_and_author' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='user_ip_and_title_and_isbn_and_author' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "user_ip_and_title_and_author_and_location" ON "books" ("user_ip", "title", "author", "location")[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20171004144640"]]
+  [1m[35m (1.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.9ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "development"], ["created_at", "2017-10-12 02:34:40.729565"], ["updated_at", "2017-10-12 02:34:40.729565"]]
+  [1m[35m (1.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.2ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='user_ip_and_title_and_author_and_location' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='user_ip_and_title_and_author_and_location' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='user_ip_and_title_and_isbn_and_author' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='user_ip_and_title_and_isbn_and_author' AND type='index'
+[0m
+Started POST "/books/search" for 10.0.1.161 at 2017-10-11 21:36:28 -0500
+Cannot render console from 10.0.1.161! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books"[0m
+Completed 200 OK in 34ms (Views: 1.7ms | ActiveRecord: 0.6ms)
+
+
+Started POST "/books/search" for 10.0.1.161 at 2017-10-11 21:37:18 -0500
+Cannot render console from 10.0.1.161! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.2ms)[0m  [1m[34mSELECT "books".* FROM "books"[0m
+Completed 200 OK in 3ms (Views: 1.8ms | ActiveRecord: 0.6ms)
+
+
+Started POST "/books/search" for 10.0.1.161 at 2017-10-11 21:41:01 -0500
+Cannot render console from 10.0.1.161! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.2ms)[0m  [1m[34mSELECT "books".* FROM "books"[0m
+Completed 200 OK in 1ms (Views: 0.8ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/books/search" for 10.0.1.161 at 2017-10-11 21:41:26 -0500
+Cannot render console from 10.0.1.161! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.2ms)[0m  [1m[34mSELECT "books".* FROM "books"[0m
+Completed 200 OK in 1ms (Views: 0.7ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/books/search" for 10.0.1.161 at 2017-10-11 21:42:12 -0500
+Cannot render console from 10.0.1.161! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.2ms)[0m  [1m[34mSELECT "books".* FROM "books"[0m
+Completed 200 OK in 1ms (Views: 0.6ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/books/search" for 10.0.1.161 at 2017-10-11 21:42:45 -0500
+Cannot render console from 10.0.1.161! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books"[0m
+Completed 200 OK in 2ms (Views: 0.8ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/search" for 10.0.1.161 at 2017-10-11 21:43:38 -0500
+Cannot render console from 10.0.1.161! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.2ms)[0m  [1m[34mSELECT "books".* FROM "books"[0m
+Completed 200 OK in 1ms (Views: 0.5ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/books/search" for 10.0.1.161 at 2017-10-11 21:43:40 -0500
+Cannot render console from 10.0.1.161! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books"[0m
+Completed 200 OK in 1ms (Views: 0.6ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/new" for 10.0.1.161 at 2017-10-11 21:43:58 -0500
+Cannot render console from 10.0.1.161! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#create as HTML
+  Parameters: {"user_ip"=>"0.0.0.0/0.0.0.0", "port_number"=>"1111", "title"=>"EF", "isbn"=>"", "author"=>"dd", "location"=>"/Users/danieldao/Downloads/Evaluation form-3.docx"}
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[32mINSERT INTO "books" ("user_ip", "port_number", "title", "isbn", "author", "location") VALUES (?, ?, ?, ?, ?, ?)[0m  [["user_ip", "0.0.0.0/0.0.0.0"], ["port_number", "1111"], ["title", "EF"], ["isbn", ""], ["author", "dd"], ["location", "/Users/danieldao/Downloads/Evaluation form-3.docx"]]
+  [1m[35m (2.5ms)[0m  [1m[36mcommit transaction[0m
+Completed 201 Created in 14ms (Views: 0.2ms | ActiveRecord: 3.8ms)
+
+
+Started POST "/books/search" for 10.0.1.161 at 2017-10-11 21:44:03 -0500
+Cannot render console from 10.0.1.161! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>"EF"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."title" = ?[0m  [["title", "EF"]]
+Completed 200 OK in 5ms (Views: 0.5ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/search" for 10.0.1.161 at 2017-10-11 21:44:28 -0500
+Cannot render console from 10.0.1.161! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>"EV"}
+  [1m[36mBook Load (0.2ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."title" = ?[0m  [["title", "EV"]]
+  [1m[36mBook Load (0.1ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."author" = ?[0m  [["author", "EV"]]
+  [1m[36mBook Load (0.1ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isbn" = ?[0m  [["isbn", "EV"]]
+Completed 204 No Content in 3ms (Views: 0.1ms | ActiveRecord: 0.5ms)
+
+
+Started POST "/books/search" for 10.0.1.161 at 2017-10-11 21:44:31 -0500
+Cannot render console from 10.0.1.161! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>"EF"}
+  [1m[36mBook Load (0.2ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."title" = ?[0m  [["title", "EF"]]
+Completed 200 OK in 2ms (Views: 0.4ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/books/search" for 10.0.1.161 at 2017-10-11 21:46:49 -0500
+Cannot render console from 10.0.1.161! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>"EF"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."title" = ?[0m  [["title", "EF"]]
+Completed 200 OK in 2ms (Views: 0.4ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/new" for 10.0.1.161 at 2017-10-11 21:47:30 -0500
+Cannot render console from 10.0.1.161! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#create as HTML
+  Parameters: {"user_ip"=>"0.0.0.0/0.0.0.0", "port_number"=>"1112", "title"=>"jb", "isbn"=>"", "author"=>"dd", "location"=>"/Users/danieldao/Downloads/jb.ttc"}
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "books" ("user_ip", "port_number", "title", "isbn", "author", "location") VALUES (?, ?, ?, ?, ?, ?)[0m  [["user_ip", "0.0.0.0/0.0.0.0"], ["port_number", "1112"], ["title", "jb"], ["isbn", ""], ["author", "dd"], ["location", "/Users/danieldao/Downloads/jb.ttc"]]
+  [1m[35m (1.0ms)[0m  [1m[36mcommit transaction[0m
+Completed 201 Created in 4ms (Views: 0.1ms | ActiveRecord: 1.7ms)
+
+
+Started POST "/books/search" for 10.0.1.161 at 2017-10-11 21:47:39 -0500
+Cannot render console from 10.0.1.161! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>"jb"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."title" = ?[0m  [["title", "jb"]]
+Completed 200 OK in 2ms (Views: 0.3ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/new" for 10.0.1.161 at 2017-10-11 21:48:35 -0500
+Cannot render console from 10.0.1.161! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#create as HTML
+  Parameters: {"user_ip"=>"0.0.0.0/0.0.0.0", "port_number"=>"1113", "title"=>"excel", "isbn"=>"", "author"=>"mcsf", "location"=>"/Applications/Microsoft Excel.app"}
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "books" ("user_ip", "port_number", "title", "isbn", "author", "location") VALUES (?, ?, ?, ?, ?, ?)[0m  [["user_ip", "0.0.0.0/0.0.0.0"], ["port_number", "1113"], ["title", "excel"], ["isbn", ""], ["author", "mcsf"], ["location", "/Applications/Microsoft Excel.app"]]
+  [1m[35m (0.9ms)[0m  [1m[36mcommit transaction[0m
+Completed 201 Created in 3ms (Views: 0.2ms | ActiveRecord: 1.5ms)
+
+
+Started POST "/books/search" for 10.0.1.161 at 2017-10-11 21:48:39 -0500
+Cannot render console from 10.0.1.161! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>"excel"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."title" = ?[0m  [["title", "excel"]]
+Completed 200 OK in 2ms (Views: 0.4ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/search" for 10.0.1.161 at 2017-10-11 21:55:36 -0500
+Cannot render console from 10.0.1.161! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>"excel"}
+  [1m[36mBook Load (0.2ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."title" = ?[0m  [["title", "excel"]]
+Completed 200 OK in 2ms (Views: 0.3ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/books/new" for 10.0.1.161 at 2017-10-11 21:56:33 -0500
+Cannot render console from 10.0.1.161! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#create as HTML
+  Parameters: {"user_ip"=>"0.0.0.0/0.0.0.0", "port_number"=>"1114", "title"=>"fm", "isbn"=>"", "author"=>"dd", "location"=>"/Users/danieldao/Dropbox/Pic/Vietnam 2016/Long Khanh/2016-05-29 12.37.32.mov"}
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[32mINSERT INTO "books" ("user_ip", "port_number", "title", "isbn", "author", "location") VALUES (?, ?, ?, ?, ?, ?)[0m  [["user_ip", "0.0.0.0/0.0.0.0"], ["port_number", "1114"], ["title", "fm"], ["isbn", ""], ["author", "dd"], ["location", "/Users/danieldao/Dropbox/Pic/Vietnam 2016/Long Khanh/2016-05-29 12.37.32.mov"]]
+  [1m[35m (1.0ms)[0m  [1m[36mcommit transaction[0m
+Completed 201 Created in 4ms (Views: 0.1ms | ActiveRecord: 1.7ms)
+
+
+Started POST "/books/search" for 10.0.1.161 at 2017-10-11 21:56:46 -0500
+Cannot render console from 10.0.1.161! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>"fm"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."title" = ?[0m  [["title", "fm"]]
+Completed 200 OK in 2ms (Views: 0.5ms | ActiveRecord: 0.4ms)
+
+
