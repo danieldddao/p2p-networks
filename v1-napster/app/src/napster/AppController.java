@@ -66,7 +66,7 @@ public class AppController {
                         System.out.println("directory selected: " + dir);
 
                         //creating connection to socket
-                        Socket socket = new Socket(currentBook.getUser_ip().substring(0, currentBook.getUser_ip().indexOf("/")), Integer.parseInt(currentBook.getPort()));
+                        Socket socket = new Socket(currentBook.getUser_ip().substring(0, currentBook.getUser_ip().indexOf("/")), currentBook.getPort());
                         System.out.println("Socket connected to " + currentBook.getUser_ip() + " port: " + currentBook.getPort());
 
                         // Setup file path
@@ -178,7 +178,7 @@ public class AppController {
                     JSONObject jsonobject = jsonarray.getJSONObject(i);
                     int id = jsonobject.getInt("id");
                     String user_ip = jsonobject.getString("user_ip");
-                    String port = jsonobject.getString("port_number");
+                    int port = Integer.parseInt(jsonobject.getString("port_number"));
                     String title = jsonobject.getString("title");
                     String isbn = jsonobject.getString("isbn");
                     String author = jsonobject.getString("author");
@@ -188,6 +188,8 @@ public class AppController {
                 }
                 bookListView.setItems(list);
                 bookListView.setCellFactory(param -> new BookCell());
+                mySharedBooksListView.setItems(list);
+                mySharedBooksListView.setCellFactory(param -> new SharedBookCell());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -245,13 +247,16 @@ public class AppController {
                 System.out.println("Creating ServerSocket");
                 // Create a socket
                 ServerSocket serverSocket = new ServerSocket(initialPort);
+                Book newBook = new Book(0, serverSocket.getInetAddress().toString(), serverSocket.getLocalPort(), titleTextField.getText(), authorTextField.getText(), isbnTextField.getText(), selectedFile.toString());
 
                 // Add book information to server
-                int status = WebServer.addNewBook(serverSocket.getInetAddress().toString(), "" + serverSocket.getLocalPort(),
-                                    titleTextField.getText(), isbnTextField.getText(), authorTextField.getText(), selectedFile.toString());
+                int status = WebServer.addNewBook(newBook.getUser_ip(), newBook.getPort(),
+                        newBook.getTitle(), newBook.getIsbn(), newBook.getAuthor(), newBook.getLocation());
                 if (status == 201) {
                     System.out.println("New book successfully added to server");
                     alertText.setText("New Book '" + titleTextField.getText() + "' successfully shared");
+                    SQLiteDB.addNewBook(newBook); // add new book to the local database
+
                     initialPort ++;
                     System.out.println("ServerSocket created: " + serverSocket.getLocalSocketAddress());
                     Thread t = new Thread(new SocketRunnable(serverSocket, selectedFile.toString()));
@@ -316,4 +321,83 @@ public class AppController {
 //        ServerSocket serverSocket = null;
 //        Socket socket = null;
 
+
+    /*
+     * My shared books tab
+     */
+    @FXML
+    public static TabPane tabPane;
+
+    @FXML
+    private ListView<Book> mySharedBooksListView;
+
+    class SharedBookCell extends ListCell<Book> {
+        HBox hbox = new HBox();
+        Label titleLabel = new Label("");
+        Label authorLabel = new Label("");
+        Label isbnLabel = new Label("");
+        Label locationLabel = new Label("");
+        Label portLabel = new Label("");
+        Pane pane = new Pane();
+        BorderPane titleAuthorBorderPane = new BorderPane();
+        BorderPane borderPane = new BorderPane();
+        Book currentBook;
+
+        public SharedBookCell() {
+            super();
+            titleAuthorBorderPane.setTop(titleLabel);
+            titleAuthorBorderPane.setLeft(authorLabel);
+            titleAuthorBorderPane.setBottom(isbnLabel);
+
+            borderPane.setTop(portLabel);
+            borderPane.setCenter(locationLabel);
+            hbox.getChildren().addAll(titleAuthorBorderPane, pane, borderPane);
+            HBox.setHgrow(pane, Priority.ALWAYS);
+
+            // Download Button is pressed
+//            downloadButton.setOnAction(e -> {
+//
+//            });
+        }
+
+        @Override
+        protected void updateItem(Book newBook, boolean empty) {
+            super.updateItem(newBook, empty);
+            setText(null);  // No text in label of super class
+            if (empty) {
+                currentBook = null;
+                setGraphic(null);
+            } else {
+                currentBook = newBook;
+                titleLabel.setText("Book title: " + currentBook.getTitle());
+                authorLabel.setText("Author: " + currentBook.getAuthor());
+                isbnLabel.setText("ISBN: " + currentBook.getIsbn());
+                locationLabel.setText("Location : " + currentBook.getLocation());
+                portLabel.setText("Port No. : " + currentBook.getPort());
+                setGraphic(hbox);
+            }
+        }
+    }
+
+    public void loadMySharedBooks() {
+
+        tabPane.getSelectionModel().selectedItemProperty().addListener((ov, oldTab, newTab) -> {
+            System.out.println("changed");
+        });
+
+        // load books from the database
+
+        // add book to app
+        // check if file exists
+//        File file = new File(location);
+//        if (file.exists()) {
+//
+//        } else {
+//
+//        }
+
+        // create socketserver
+
+        // add book to web server
+    }
 } // end class

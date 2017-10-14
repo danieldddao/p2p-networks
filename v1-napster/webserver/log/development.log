@@ -10208,3 +10208,71 @@ Completed 204 No Content in 194ms (ActiveRecord: 2.8ms)
 
 
   [1m[36mBook Load (2.2ms)[0m  [1m[34mSELECT  "books".* FROM "books" LIMIT ?[0m  [["LIMIT", 11]]
+Started POST "/books/new" for 10.0.1.161 at 2017-10-13 11:02:18 -0500
+Cannot render console from 10.0.1.161! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by BooksController#create as HTML
+  Parameters: {"user_ip"=>"0.0.0.0/0.0.0.0", "port_number"=>"1111", "title"=>"jb", "isbn"=>"", "author"=>"jb", "location"=>"/Users/danieldao/Downloads/jb.ttc"}
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (3.1ms)[0m  [1m[32mINSERT INTO "books" ("user_ip", "port_number", "title", "isbn", "author", "location") VALUES (?, ?, ?, ?, ?, ?)[0m  [["user_ip", "0.0.0.0/0.0.0.0"], ["port_number", "1111"], ["title", "jb"], ["isbn", ""], ["author", "jb"], ["location", "/Users/danieldao/Downloads/jb.ttc"]]
+  [1m[35m (1.0ms)[0m  [1m[36mcommit transaction[0m
+Completed 201 Created in 46ms (Views: 0.3ms | ActiveRecord: 5.1ms)
+
+
+Started POST "/books/new" for 10.0.1.161 at 2017-10-13 11:04:41 -0500
+Cannot render console from 10.0.1.161! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#create as HTML
+  Parameters: {"user_ip"=>"0.0.0.0/0.0.0.0", "port_number"=>"1111", "title"=>"jb", "isbn"=>"", "author"=>"aa", "location"=>"/Users/danieldao/Downloads/jb.ttc"}
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "books" ("user_ip", "port_number", "title", "isbn", "author", "location") VALUES (?, ?, ?, ?, ?, ?)[0m  [["user_ip", "0.0.0.0/0.0.0.0"], ["port_number", "1111"], ["title", "jb"], ["isbn", ""], ["author", "aa"], ["location", "/Users/danieldao/Downloads/jb.ttc"]]
+  [1m[35m (0.9ms)[0m  [1m[36mcommit transaction[0m
+Completed 201 Created in 4ms (Views: 0.1ms | ActiveRecord: 1.8ms)
+
+
+Started POST "/books/new" for 10.0.1.161 at 2017-10-13 11:08:41 -0500
+Cannot render console from 10.0.1.161! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#create as HTML
+  Parameters: {"user_ip"=>"0.0.0.0/0.0.0.0", "port_number"=>"1111", "title"=>"jb", "isbn"=>"", "author"=>"aa", "location"=>"/Users/danieldao/Downloads/jb.ttc"}
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "books" ("user_ip", "port_number", "title", "isbn", "author", "location") VALUES (?, ?, ?, ?, ?, ?)[0m  [["user_ip", "0.0.0.0/0.0.0.0"], ["port_number", "1111"], ["title", "jb"], ["isbn", ""], ["author", "aa"], ["location", "/Users/danieldao/Downloads/jb.ttc"]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+Completed 500 Internal Server Error in 3ms (ActiveRecord: 0.7ms)
+
+
+  
+ActiveRecord::RecordNotUnique (SQLite3::ConstraintException: UNIQUE constraint failed: books.user_ip, books.title, books.author, books.location: INSERT INTO "books" ("user_ip", "port_number", "title", "isbn", "author", "location") VALUES (?, ?, ?, ?, ?, ?)):
+  
+app/controllers/books_controller.rb:18:in `create'
+Started POST "/books/search" for 10.0.1.161 at 2017-10-13 22:24:30 -0500
+Cannot render console from 10.0.1.161! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.6ms)[0m  [1m[34mSELECT "books".* FROM "books"[0m
+Completed 200 OK in 43ms (Views: 12.2ms | ActiveRecord: 1.2ms)
+
+
+Started POST "/books/search" for 10.0.1.161 at 2017-10-13 22:25:03 -0500
+Cannot render console from 10.0.1.161! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.5ms)[0m  [1m[34mSELECT "books".* FROM "books"[0m
+Completed 200 OK in 3ms (Views: 1.6ms | ActiveRecord: 0.8ms)
+
+
+Started POST "/books/search" for 10.0.1.161 at 2017-10-13 22:28:30 -0500
+Cannot render console from 10.0.1.161! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.2ms)[0m  [1m[34mSELECT "books".* FROM "books"[0m
+Completed 200 OK in 2ms (Views: 1.0ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/books/search" for 10.0.1.161 at 2017-10-13 22:29:29 -0500
+Cannot render console from 10.0.1.161! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books"[0m
+Completed 200 OK in 2ms (Views: 1.2ms | ActiveRecord: 0.3ms)
+
+

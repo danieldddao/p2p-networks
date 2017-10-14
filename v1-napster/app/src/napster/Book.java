@@ -1,16 +1,16 @@
 package napster;
 
 public class Book {
-    private int ip;
+    private int id;
     private String user_ip;
-    private String port;
+    private int port;
     private String title;
     private String author;
     private String isbn;
     private String location;
 
-    public Book(int ip, String user_ip, String port, String title, String author, String isbn, String location) {
-        this.ip = ip;
+    public Book(int id, String user_ip, int port, String title, String author, String isbn, String location) {
+        this.id = id;
         this.user_ip = user_ip;
         this.port = port;
         this.title = title;
@@ -19,12 +19,12 @@ public class Book {
         this.location = location;
     }
 
-    public int getIp() {
-        return ip;
+    public int getId() {
+        return id;
     }
 
-    public void setIp(int ip) {
-        this.ip = ip;
+    public void setId(int ip) {
+        this.id = id;
     }
 
     public String getUser_ip() {
@@ -35,11 +35,11 @@ public class Book {
         this.user_ip = user_ip;
     }
 
-    public String getPort() {
+    public int getPort() {
         return port;
     }
 
-    public void setPort(String port) {
+    public void setPort(int port) {
         this.port = port;
     }
 
