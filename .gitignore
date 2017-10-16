@@ -48,3 +48,4 @@ bower.json
 *.DS_Store
 /.DS_Store
 /v1-napster/app/out
+/v2-chord/out
