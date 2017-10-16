@@ -338,7 +338,7 @@ public class AppController {
         BorderPane titleAuthorBorderPane = new BorderPane();
         BorderPane borderPane = new BorderPane();
         BorderPane statusBorderPane = new BorderPane();
-        Button updateLocButton = new Button("Update Location");
+        Button updateLocButton = new Button("Update File's Location");
         CheckBox shareStatus = new CheckBox();
 
         Book currentBook;
@@ -403,10 +403,12 @@ public class AppController {
                 File file = new File(currentBook.getLocation());
                 if (!file.exists()) { // if file doesn't exist, show option to update location
                     updateLocButton.setVisible(true);
-                    shareStatus.setText("Please Update file's location!");
+                    shareStatus.setSelected(false);
+                    shareStatus.setText("File doesn't exist! Please Update file!");
                     shareStatus.setTextFill(Color.web("red"));
                 } else {
                     updateLocButton.setVisible(false);
+                    shareStatus.setSelected(true);
                     shareStatus.setText("Successfully shared!");
                     shareStatus.setTextFill(Color.web("blue"));
                 }

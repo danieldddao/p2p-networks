@@ -118,6 +118,7 @@ public class Book {
         try {
             List<Book> bookList = Book.jsonToBookList(WebServer.findAllMySharedBooks());
             for (Book book: bookList) {
+                System.out.println("Loading book " + book.getTitle() + " by " + book.getAuthor());
                 File location = new File(book.getLocation());
                 if (location.exists()) {
                     ServerSocket serverSocket = new ServerSocket(book.getPort());

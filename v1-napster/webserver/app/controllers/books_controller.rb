@@ -43,22 +43,26 @@ class BooksController < ApplicationController
 
   def unshareBook
     user_client_ip = request.remote_ip
-    puts "delete book: " + user_client_ip + ", " + params[:user_ip] + ": " + params[:port_number]
-    book = Book.where(:user_client_ip => user_client_ip, user_ip: params[:user_ip], port_number: params[:port_number])
-    book.isShared = false
-    book.save
+    puts "unshare books from user ip: " + user_client_ip
+    books = Book.where(:user_client_ip => user_client_ip)
+    for book in books
+      puts "unsharing book: " + book.title
+      book.isShared = false
+      book.save
+    end
   end
 
 
   def updateLocation
     user_client_ip = request.remote_ip
-    book = Book.where(:user_client_ip => user_client_ip, :user_ip => params[:user_ip], :port_number => params[:port_number], :title => params[:title], :author => params[:author])
+    books = Book.where(:user_client_ip => user_client_ip, :user_ip => params[:user_ip], :port_number => params[:port_number], :title => params[:title], :author => params[:author])
 
-    if book.blank?
-      render json: book, status: 204
+    if books.blank?
+      render json: books, status: 204
     else
+      book = books[0]
       book.location = params[:location]
-      book.isShare = true
+      book.isShared = true
       if book.save
         render json: book, status: 200
       else
@@ -70,15 +74,16 @@ class BooksController < ApplicationController
 
   def updateSharingStatus
     user_client_ip = request.remote_ip
-    book = Book.where(:user_client_ip => user_client_ip, :user_ip => params[:user_ip], :port_number => params[:port_number], :title => params[:title], :author => params[:author])
+    books = Book.where(:user_client_ip => user_client_ip, :user_ip => params[:user_ip], :port_number => params[:port_number], :title => params[:title], :author => params[:author])
 
-    if book.blank?
-      render json: book, status: 204
+    if books.blank?
+      render json: books, status: 204
     else
+      book = books[0]
       if params[:sharing_status] == "true"
-        book.isShare = true
+        book.isShared = true
       else
-        book.isShare = false
+        book.isShared = false
       end
       if book.save
         render json: book, status: 200
@@ -91,22 +96,22 @@ class BooksController < ApplicationController
 
   def search
     if params[:search_term] == ""
-      books = Book.all
+      books = Book.where(:isShared => true)
       render json: books, status: 200
     else
-      books = Book.where(:title => params[:search_term])
+      books = Book.where(:title => params[:search_term], :isShared => true)
       if !(books.blank?)
         puts "found books by title"
         puts books
         render json: books, status: 200
       else
-        books = Book.where(:author => params[:search_term])
+        books = Book.where(:author => params[:search_term], :isShared => true)
         if !(books.blank?)
           puts "found books by author"
           puts books
           render json: books, status: 200
         else
-          books = Book.where(:isbn => params[:search_term])
+          books = Book.where(:isbn => params[:search_term], :isShared => true)
           if !(books.blank?)
             puts "found books by isbn"
             puts books
