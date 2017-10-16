@@ -18,31 +18,10 @@
 <?import javafx.scene.text.Text?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="napster.AppController">
-   <top>
-      <MenuBar BorderPane.alignment="CENTER">
-        <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-   </top>
    <center>
       <TabPane prefHeight="399.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
-            <Tab closable="false" text="Download a book">
+            <Tab closable="false" onSelectionChanged="#searchABookTabSelected" text="Download a book">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -54,12 +33,12 @@
                               <Font size="15.0" />
                            </font>
                         </Text>
-                        <ListView fx:id="bookListView" layoutX="51.0" layoutY="119.0" prefHeight="308.0" prefWidth="591.0" />
+                        <ListView fx:id="bookListView" layoutX="13.0" layoutY="119.0" prefHeight="339.0" prefWidth="669.0" />
                      </children>
                   </AnchorPane>
               </content>
             </Tab>
-          <Tab closable="false" text="Share a new book">
+          <Tab closable="false" onSelectionChanged="#shareABookTabSelected" text="Share a new book">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>

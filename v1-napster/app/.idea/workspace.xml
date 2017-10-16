@@ -23,21 +23,15 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="app.fxml" pinned="false" current-in-tab="false">
+      <file leaf-file-name="app.fxml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/napster/app.fxml">
           <provider editor-type-id="JavaFX-Scene-Builder">
             <state />
           </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="42" column="24" lean-forward="true" selection-start-line="42" selection-start-column="24" selection-end-line="42" selection-end-column="24" />
-              <folding>
-                <marker date="1508012942958" expanded="true" signature="5223:5756" ph="..." />
-                <marker date="1508012942958" expanded="true" signature="5249:5740" ph="..." />
-                <marker date="1508012942958" expanded="true" signature="5271:5723" ph="..." />
-                <marker date="1508012942958" expanded="true" signature="5366:5700" ph="..." />
-                <marker date="1508012942958" expanded="true" signature="5398:5668" ph="..." />
-              </folding>
+            <state relative-caret-position="180">
+              <caret line="12" column="18" lean-forward="false" selection-start-line="12" selection-start-column="18" selection-end-line="12" selection-end-column="18" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -45,8 +39,8 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/napster/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+            <state relative-caret-position="420">
+              <caret line="38" column="1" lean-forward="true" selection-start-line="38" selection-start-column="1" selection-end-line="38" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -55,8 +49,8 @@
       <file leaf-file-name="Book.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/napster/Book.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="163">
-              <caret line="120" column="96" lean-forward="false" selection-start-line="120" selection-start-column="96" selection-end-line="120" selection-end-column="96" />
+            <state relative-caret-position="239">
+              <caret line="132" column="59" lean-forward="false" selection-start-line="132" selection-start-column="59" selection-end-line="132" selection-end-column="59" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -64,14 +58,16 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AppController.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AppController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/napster/AppController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="371">
-              <caret line="442" column="0" lean-forward="true" selection-start-line="442" selection-start-column="0" selection-end-line="442" selection-end-column="0" />
+            <state relative-caret-position="360">
+              <caret line="49" column="0" lean-forward="true" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
               <folding>
-                <element signature="e#17362#17363#0" expanded="true" />
-                <element signature="e#17403#17404#0" expanded="true" />
+                <element signature="e#8501#8502#0" expanded="true" />
+                <element signature="e#8538#8539#0" expanded="true" />
+                <element signature="e#17661#17662#0" expanded="true" />
+                <element signature="e#17702#17703#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -80,8 +76,8 @@
       <file leaf-file-name="WebServer.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/napster/WebServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="187" column="16" lean-forward="true" selection-start-line="187" selection-start-column="16" selection-end-line="187" selection-end-column="16" />
+            <state relative-caret-position="-304">
+              <caret line="143" column="0" lean-forward="true" selection-start-line="143" selection-start-column="0" selection-end-line="143" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -99,6 +95,7 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>Filec</find>
+      <find>getting</find>
     </findStrings>
   </component>
   <component name="GradleLocalSettings">
@@ -114,12 +111,12 @@
         <option value="$PROJECT_DIR$/src/napster/popupWindows.fxml" />
         <option value="$PROJECT_DIR$/src/napster/popupWindow.fxml" />
         <option value="$PROJECT_DIR$/src/napster/PopupWindowController.java" />
-        <option value="$PROJECT_DIR$/src/napster/app.fxml" />
         <option value="$PROJECT_DIR$/src/napster/SQLiteDB.java" />
-        <option value="$PROJECT_DIR$/src/napster/Main.java" />
         <option value="$PROJECT_DIR$/src/napster/Book.java" />
         <option value="$PROJECT_DIR$/src/napster/WebServer.java" />
+        <option value="$PROJECT_DIR$/src/napster/Main.java" />
         <option value="$PROJECT_DIR$/src/napster/AppController.java" />
+        <option value="$PROJECT_DIR$/src/napster/app.fxml" />
       </list>
     </option>
   </component>
@@ -328,16 +325,15 @@
       <option name="presentableId" value="Default" />
       <updated>1507752743390</updated>
       <workItem from="1507752744991" duration="17626000" />
-      <workItem from="1507906937604" duration="38587000" />
+      <workItem from="1507906937604" duration="41434000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="56213000" />
+    <option name="totallyTimeSpent" value="59060000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1280" height="778" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -347,7 +343,7 @@
       <window_info id="DB Execution Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21229868" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21229868" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -384,13 +380,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="15" lean-forward="false" selection-start-line="0" selection-start-column="15" selection-end-line="0" selection-end-column="15" />
-          <folding>
-            <marker date="1508012942958" expanded="true" signature="5223:5756" ph="..." />
-            <marker date="1508012942958" expanded="true" signature="5249:5740" ph="..." />
-            <marker date="1508012942958" expanded="true" signature="5271:5723" ph="..." />
-            <marker date="1508012942958" expanded="true" signature="5366:5700" ph="..." />
-            <marker date="1508012942958" expanded="true" signature="5398:5668" ph="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -399,8 +389,10 @@
         <state relative-caret-position="945">
           <caret line="63" column="34" lean-forward="false" selection-start-line="63" selection-start-column="34" selection-end-line="63" selection-end-column="34" />
           <folding>
-            <element signature="e#17362#17363#0" expanded="true" />
-            <element signature="e#17403#17404#0" expanded="true" />
+            <element signature="e#8501#8502#0" expanded="true" />
+            <element signature="e#8538#8539#0" expanded="true" />
+            <element signature="e#17661#17662#0" expanded="true" />
+            <element signature="e#17702#17703#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -491,35 +483,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/napster/app.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="42" column="24" lean-forward="true" selection-start-line="42" selection-start-column="24" selection-end-line="42" selection-end-column="24" />
-          <folding>
-            <marker date="1508012942958" expanded="true" signature="5223:5756" ph="..." />
-            <marker date="1508012942958" expanded="true" signature="5249:5740" ph="..." />
-            <marker date="1508012942958" expanded="true" signature="5271:5723" ph="..." />
-            <marker date="1508012942958" expanded="true" signature="5366:5700" ph="..." />
-            <marker date="1508012942958" expanded="true" signature="5398:5668" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk-9.jdk/Contents/Home/lib/src.zip!/java.base/java/lang/Exception.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-679">
           <caret line="44" column="13" lean-forward="false" selection-start-line="44" selection-start-column="13" selection-end-line="44" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk-9.jdk/Contents/Home/lib/src.zip!/javafx.graphics/javafx/application/Application.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2175">
-          <caret line="171" column="22" lean-forward="false" selection-start-line="171" selection-start-column="22" selection-end-line="171" selection-end-column="22" />
           <folding />
         </state>
       </provider>
@@ -566,40 +533,61 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/napster/Main.java">
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk-9.jdk/Contents/Home/lib/src.zip!/javafx.graphics/javafx/application/Application.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+        <state relative-caret-position="-550">
+          <caret line="171" column="22" lean-forward="false" selection-start-line="171" selection-start-column="22" selection-end-line="171" selection-end-column="22" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/napster/Book.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="163">
-          <caret line="120" column="96" lean-forward="false" selection-start-line="120" selection-start-column="96" selection-end-line="120" selection-end-column="96" />
+        <state relative-caret-position="239">
+          <caret line="132" column="59" lean-forward="false" selection-start-line="132" selection-start-column="59" selection-end-line="132" selection-end-column="59" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/napster/AppController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="49" column="0" lean-forward="true" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
+          <folding>
+            <element signature="e#8501#8502#0" expanded="true" />
+            <element signature="e#8538#8539#0" expanded="true" />
+            <element signature="e#17661#17662#0" expanded="true" />
+            <element signature="e#17702#17703#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/napster/WebServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="187" column="16" lean-forward="true" selection-start-line="187" selection-start-column="16" selection-end-line="187" selection-end-column="16" />
+        <state relative-caret-position="-304">
+          <caret line="143" column="0" lean-forward="true" selection-start-line="143" selection-start-column="0" selection-end-line="143" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/napster/AppController.java">
+    <entry file="file://$PROJECT_DIR$/src/napster/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="371">
-          <caret line="442" column="0" lean-forward="true" selection-start-line="442" selection-start-column="0" selection-end-line="442" selection-end-column="0" />
-          <folding>
-            <element signature="e#17362#17363#0" expanded="true" />
-            <element signature="e#17403#17404#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="420">
+          <caret line="38" column="1" lean-forward="true" selection-start-line="38" selection-start-column="1" selection-end-line="38" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/napster/app.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="18" lean-forward="false" selection-start-line="12" selection-start-column="18" selection-end-line="12" selection-end-column="18" />
+          <folding />
         </state>
       </provider>
     </entry>

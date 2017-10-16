@@ -29,6 +29,7 @@ public class Main extends Application {
         System.out.println("App is closing");
         // Clear registered books from the server
         WebServer.unshareBooksFromServerWhenExiting();
+        System.exit(0);
     }
 
     public static void main(String[] args) {

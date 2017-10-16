@@ -42,6 +42,12 @@ public class AppController {
     @FXML
     private ListView<Book> bookListView;
 
+    public void searchABookTabSelected(Event event) {
+        searchAlertText.setText("");
+        ObservableList<Book> list = FXCollections.observableArrayList();
+        bookListView.setItems(list);
+    }
+
     class BookCell extends ListCell<Book> {
         HBox hbox = new HBox();
         Label label = new Label("(empty)");
@@ -212,6 +218,10 @@ public class AppController {
     private File selectedFile;
 
     private int initialPort = 1111;
+
+    public void shareABookTabSelected(Event event) {
+        alertText.setText("");
+    }
 
     public void chooseFileButtonSelected(ActionEvent event) {
         FileChooser fc = new FileChooser();
