@@ -14,7 +14,9 @@ class BooksController < ApplicationController
   end
 
   def create
-    @book = Book.new(:user_ip => params[:user_ip], :port_number => params[:port_number], :title => params[:title], :isbn => params[:isbn], :author => params[:author], :location => params[:location])
+    user_client_ip = request.remote_ip
+    puts "client user ip: " + user_client_ip
+    @book = Book.new(:user_client_ip => user_client_ip, :user_ip => params[:user_ip], :port_number => params[:port_number], :title => params[:title], :isbn => params[:isbn], :author => params[:author], :location => params[:location])
     if @book.save
       puts "#{@book.title} at #{@book.location} was successfully added to #{@book.user_ip}"
       render json: @resource, status: 201
@@ -25,14 +27,67 @@ class BooksController < ApplicationController
     end
   end
 
-  def clear
-    puts "delete book: " + params[:user_ip] + ": " + params[:port_number]
-    Book.where(user_ip: params[:user_ip], port_number: params[:port_number]).delete_all
+
+  def getAllMyBooks
+    user_client_ip = request.remote_ip
+    books = Book.where(:user_client_ip => user_client_ip)
+    if !(books.blank?)
+      puts "All my books:"
+      puts books
+      render json: books, status: 200
+    else
+      render json: "no book found", status: 204
+    end
   end
 
-  def destroy
 
+  def unshareBook
+    user_client_ip = request.remote_ip
+    puts "delete book: " + user_client_ip + ", " + params[:user_ip] + ": " + params[:port_number]
+    book = Book.where(:user_client_ip => user_client_ip, user_ip: params[:user_ip], port_number: params[:port_number])
+    book.isShared = false
+    book.save
   end
+
+
+  def updateLocation
+    user_client_ip = request.remote_ip
+    book = Book.where(:user_client_ip => user_client_ip, :user_ip => params[:user_ip], :port_number => params[:port_number], :title => params[:title], :author => params[:author])
+
+    if book.blank?
+      render json: book, status: 204
+    else
+      book.location = params[:location]
+      book.isShare = true
+      if book.save
+        render json: book, status: 200
+      else
+        render json: book, status: 204
+      end
+    end
+  end
+
+
+  def updateSharingStatus
+    user_client_ip = request.remote_ip
+    book = Book.where(:user_client_ip => user_client_ip, :user_ip => params[:user_ip], :port_number => params[:port_number], :title => params[:title], :author => params[:author])
+
+    if book.blank?
+      render json: book, status: 204
+    else
+      if params[:sharing_status] == "true"
+        book.isShare = true
+      else
+        book.isShare = false
+      end
+      if book.save
+        render json: book, status: 200
+      else
+        render json: book, status: 204
+      end
+    end
+  end
+
 
   def search
     if params[:search_term] == ""

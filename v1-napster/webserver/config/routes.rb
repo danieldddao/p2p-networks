@@ -4,7 +4,9 @@ Rails.application.routes.draw do
 
   post 'books/new', to: 'books#create'
   post 'books/search', to: 'books#search'
+  post 'books/allmybooks', to: 'books#getAllMyBooks'
+  post 'books/updatelocation', to: 'books#updateLocation'
+  post 'books/updatesharingstatus', to: 'books#updateSharingStatus'
 
-  post 'books/clear', to: 'books#clear'
-  post 'books/delete', to: 'books#destroy'
+  post 'books/unsharebook', to: 'books#unshareBook'
 end

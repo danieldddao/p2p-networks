@@ -2,8 +2,10 @@ package napster;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.ServerSocket;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +70,7 @@ public class WebServer {
             // add header
             post.setHeader("User-Agent", USER_AGENT);
 
-            List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
+            List<NameValuePair> urlParameters = new ArrayList();
 //        urlParameters.add(new BasicNameValuePair("authenticity_token", token));
             urlParameters.add(new BasicNameValuePair("user_ip", user_ip));
             urlParameters.add(new BasicNameValuePair("port_number", "" + port));
@@ -102,7 +104,7 @@ public class WebServer {
             HttpPost post = new HttpPost(url + "/books/search");
             post.setHeader("User-Agent", USER_AGENT);
 
-            List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
+            List<NameValuePair> urlParameters = new ArrayList();
 //        urlParameters.add(new BasicNameValuePair("authenticity_token", token));
             urlParameters.add(new BasicNameValuePair("search_term", searchTerm));
 
@@ -128,20 +130,57 @@ public class WebServer {
         } catch(Exception e)
         {
             e.printStackTrace();
-            return "";
+            return "[]";
         }
     }
 
 
-    public static void clearBooksFromServerWhenExiting() {
+    public static String findAllMySharedBooks() {
         try {
-            System.out.println("Clearing books from user ip: " + userIp);
+            System.out.println("Getting all books that I've shared ");
             HttpClient client = HttpClientBuilder.create().build();
-            HttpPost post = new HttpPost(url + "/books/clear");
+            HttpPost post = new HttpPost(url + "/books/allmybooks");
+            post.setHeader("User-Agent", USER_AGENT);
+
+            List<NameValuePair> urlParameters = new ArrayList();
+//        urlParameters.add(new BasicNameValuePair("authenticity_token", token));
+
+            post.setEntity(new UrlEncodedFormEntity(urlParameters));
+            HttpResponse response = client.execute(post);
+            System.out.println("Sending 'POST' request to URL : " + url);
+            System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+
+            StringBuffer result = new StringBuffer();
+            if (response.getStatusLine().getStatusCode() == 200) {
+                BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                String line = "";
+                while ((line = rd.readLine()) != null) {
+                    result.append(line);
+                }
+                rd.close();
+            } else if (response.getStatusLine().getStatusCode() == 204) {
+                System.out.println("No Book Found");
+                result.append("[]");
+            }
+            System.out.println(result);
+            return result.toString();
+
+        } catch(Exception e) {
+            e.printStackTrace();
+            return "[]";
+        }
+    }
+
+
+    public static void unshareBooksFromServerWhenExiting() {
+        try {
+            System.out.println("Unsharing books from user ip: " + userIp);
+            HttpClient client = HttpClientBuilder.create().build();
+            HttpPost post = new HttpPost(url + "/books/unsharebook");
             post.setHeader("User-Agent", USER_AGENT);
             for (int port:portList) {
-                System.out.println("clearing port number: " + port);
-                List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
+                System.out.println("unshare port number: " + port);
+                List<NameValuePair> urlParameters = new ArrayList();
 //        urlParameters.add(new BasicNameValuePair("authenticity_token", token));
                 urlParameters.add(new BasicNameValuePair("user_ip", userIp));
                 urlParameters.add(new BasicNameValuePair("port_number", "" + port));
@@ -156,4 +195,65 @@ public class WebServer {
         }
     }
 
+
+    public static boolean updateBookLocation(Book book) {
+        try {
+            HttpClient client = HttpClientBuilder.create().build();
+            HttpPost post = new HttpPost(url + "/books/updatelocation");
+            post.setHeader("User-Agent", USER_AGENT);
+
+            List<NameValuePair> urlParameters = new ArrayList();
+//        urlParameters.add(new BasicNameValuePair("authenticity_token", token));
+            urlParameters.add(new BasicNameValuePair("user_ip", book.getUser_ip()));
+            urlParameters.add(new BasicNameValuePair("port_number", "" + book.getPort()));
+            urlParameters.add(new BasicNameValuePair("title", book.getTitle()));
+            urlParameters.add(new BasicNameValuePair("author", book.getAuthor()));
+            urlParameters.add(new BasicNameValuePair("location", book.getLocation()));
+
+            post.setEntity(new UrlEncodedFormEntity(urlParameters));
+            HttpResponse response = client.execute(post);
+            System.out.println("Sending 'POST' request to URL : " + url);
+            System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+
+            if (response.getStatusLine().getStatusCode() == 200) {
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean updateBookSharingStatus(Book book, boolean status) {
+        try {
+            HttpClient client = HttpClientBuilder.create().build();
+            HttpPost post = new HttpPost(url + "/books/updatesharingstatus");
+            post.setHeader("User-Agent", USER_AGENT);
+
+            List<NameValuePair> urlParameters = new ArrayList();
+//        urlParameters.add(new BasicNameValuePair("authenticity_token", token));
+            urlParameters.add(new BasicNameValuePair("user_ip", book.getUser_ip()));
+            urlParameters.add(new BasicNameValuePair("port_number", "" + book.getPort()));
+            urlParameters.add(new BasicNameValuePair("title", book.getTitle()));
+            urlParameters.add(new BasicNameValuePair("author", book.getAuthor()));
+
+            String statusString = "false";
+            if (status == true) { statusString = "true"; }
+            urlParameters.add(new BasicNameValuePair("sharing_status", statusString));
+
+            post.setEntity(new UrlEncodedFormEntity(urlParameters));
+            HttpResponse response = client.execute(post);
+            System.out.println("Sending 'POST' request to URL : " + url);
+            System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+
+            if (response.getStatusLine().getStatusCode() == 200) {
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

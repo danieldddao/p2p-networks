@@ -3,6 +3,8 @@ package napster;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,6 +14,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
+import javafx.scene.paint.Color;
 import javafx.stage.*;
 import javafx.scene.text.Text;
 
@@ -20,14 +23,15 @@ import java.io.*;
 import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.List;
 
 import org.json.*;
 
 public class AppController {
 
-    /*
+    /**
      * Search a book tab
-     */
+     **/
 
     @FXML
     private TextField searchTextField;
@@ -173,23 +177,11 @@ public class AppController {
                 searchAlertText.setText("No Book found!");
             } else {
                 ObservableList<Book> list = FXCollections.observableArrayList();
-                JSONArray jsonarray = new JSONArray(searchBookResult);
-                for (int i = 0; i < jsonarray.length(); i++) {
-                    JSONObject jsonobject = jsonarray.getJSONObject(i);
-                    int id = jsonobject.getInt("id");
-                    String user_ip = jsonobject.getString("user_ip");
-                    int port = Integer.parseInt(jsonobject.getString("port_number"));
-                    String title = jsonobject.getString("title");
-                    String isbn = jsonobject.getString("isbn");
-                    String author = jsonobject.getString("author");
-                    String location = jsonobject.getString("location");
-                    Book newBook = new Book(id, user_ip, port, title, author, isbn, location);
-                    list.add(newBook);
+                for (Book book: Book.jsonToBookList(searchBookResult)) {
+                    list.add(book);
                 }
                 bookListView.setItems(list);
                 bookListView.setCellFactory(param -> new BookCell());
-                mySharedBooksListView.setItems(list);
-                mySharedBooksListView.setCellFactory(param -> new SharedBookCell());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -197,9 +189,11 @@ public class AppController {
     }
 
 
-    /*
+
+    /**
      * Share a book tab
-     */
+     **/
+
     @FXML
     private Text chooseFileText;
 
@@ -247,26 +241,29 @@ public class AppController {
                 System.out.println("Creating ServerSocket");
                 // Create a socket
                 ServerSocket serverSocket = new ServerSocket(initialPort);
-                Book newBook = new Book(0, serverSocket.getInetAddress().toString(), serverSocket.getLocalPort(), titleTextField.getText(), authorTextField.getText(), isbnTextField.getText(), selectedFile.toString());
+                Book newBook = new Book(0, serverSocket.getInetAddress().toString(), serverSocket.getLocalPort(), titleTextField.getText(), authorTextField.getText(), isbnTextField.getText(), selectedFile.toString(), true);
 
-                // Add book information to server
+                // Add new book information to the server
                 int status = WebServer.addNewBook(newBook.getUser_ip(), newBook.getPort(),
                         newBook.getTitle(), newBook.getIsbn(), newBook.getAuthor(), newBook.getLocation());
                 if (status == 201) {
                     System.out.println("New book successfully added to server");
                     alertText.setText("New Book '" + titleTextField.getText() + "' successfully shared");
-                    SQLiteDB.addNewBook(newBook); // add new book to the local database
 
-                    initialPort ++;
+                    initialPort++;
                     System.out.println("ServerSocket created: " + serverSocket.getLocalSocketAddress());
                     Thread t = new Thread(new SocketRunnable(serverSocket, selectedFile.toString()));
                     t.start();
                 } else if (status == 500) {
                     System.out.println("Book already added");
                     alertText.setText("Book already shared");
+                    serverSocket.close();
+                    System.out.println("Closed socket");
                 } else {
                     System.out.println("Can't share book!");
                     alertText.setText("Can't share book! Please try again!");
+                    serverSocket.close();
+                    System.out.println("Closed socket");
                 }
 
                 // reset textfields
@@ -322,11 +319,10 @@ public class AppController {
 //        Socket socket = null;
 
 
-    /*
+
+    /**
      * My shared books tab
-     */
-    @FXML
-    public static TabPane tabPane;
+     **/
 
     @FXML
     private ListView<Book> mySharedBooksListView;
@@ -341,6 +337,10 @@ public class AppController {
         Pane pane = new Pane();
         BorderPane titleAuthorBorderPane = new BorderPane();
         BorderPane borderPane = new BorderPane();
+        BorderPane statusBorderPane = new BorderPane();
+        Button updateLocButton = new Button("Update Location");
+        CheckBox shareStatus = new CheckBox();
+
         Book currentBook;
 
         public SharedBookCell() {
@@ -350,14 +350,37 @@ public class AppController {
             titleAuthorBorderPane.setBottom(isbnLabel);
 
             borderPane.setTop(portLabel);
-            borderPane.setCenter(locationLabel);
+            borderPane.setLeft(locationLabel);
+            borderPane.setBottom(statusBorderPane);
+
+            statusBorderPane.setTop(shareStatus);
+            statusBorderPane.setLeft(updateLocButton);
+
             hbox.getChildren().addAll(titleAuthorBorderPane, pane, borderPane);
             HBox.setHgrow(pane, Priority.ALWAYS);
 
-            // Download Button is pressed
-//            downloadButton.setOnAction(e -> {
-//
-//            });
+            // Update Location Button is pressed
+            updateLocButton.setOnAction(e -> {
+                FileChooser fc = new FileChooser();
+                selectedFile = fc.showOpenDialog(null);
+
+                if (selectedFile != null) {
+                    currentBook.setLocation(selectedFile.toString());
+
+                    //update new location with the server
+                    boolean status = WebServer.updateBookLocation(currentBook);
+                    if (status == true) {
+                        try {
+                            ServerSocket serverSocket = new ServerSocket(currentBook.getPort());
+                            Thread t = new Thread(new SocketRunnable(serverSocket, selectedFile.toString()));
+                            t.start();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                        refreshMySharedBooksTab();
+                    }
+                }
+            });
         }
 
         @Override
@@ -372,32 +395,48 @@ public class AppController {
                 titleLabel.setText("Book title: " + currentBook.getTitle());
                 authorLabel.setText("Author: " + currentBook.getAuthor());
                 isbnLabel.setText("ISBN: " + currentBook.getIsbn());
-                locationLabel.setText("Location : " + currentBook.getLocation());
+                locationLabel.setText("Location:" + currentBook.getLocation());
                 portLabel.setText("Port No. : " + currentBook.getPort());
                 setGraphic(hbox);
+
+                // check if file exists
+                File file = new File(currentBook.getLocation());
+                if (!file.exists()) { // if file doesn't exist, show option to update location
+                    updateLocButton.setVisible(true);
+                    shareStatus.setText("Please Update file's location!");
+                    shareStatus.setTextFill(Color.web("red"));
+                } else {
+                    updateLocButton.setVisible(false);
+                    shareStatus.setText("Successfully shared!");
+                    shareStatus.setTextFill(Color.web("blue"));
+                }
             }
         }
     }
 
-    public void loadMySharedBooks() {
+    private void refreshMySharedBooksTab() {
+        try {
+            System.out.println("Refreshing My Shared Books tab");
+            ObservableList<Book> list = FXCollections.observableArrayList();
 
-        tabPane.getSelectionModel().selectedItemProperty().addListener((ov, oldTab, newTab) -> {
-            System.out.println("changed");
-        });
+            // load books from the server
+            List<Book> bookList = Book.jsonToBookList(WebServer.findAllMySharedBooks());
+            System.out.println(bookList);
 
-        // load books from the database
+            // Add books to my shared books tab
+            for (Book book: bookList) {
+                list.add(book);
+            }
+            mySharedBooksListView.setItems(list);
+            mySharedBooksListView.setCellFactory(param -> new SharedBookCell());
 
-        // add book to app
-        // check if file exists
-//        File file = new File(location);
-//        if (file.exists()) {
-//
-//        } else {
-//
-//        }
-
-        // create socketserver
-
-        // add book to web server
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
+    public void mySharedBooksTabSelected(Event event) {
+        refreshMySharedBooksTab();
+    }
+
 } // end class

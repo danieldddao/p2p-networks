@@ -1,5 +1,13 @@
 package napster;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.net.ServerSocket;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Book {
     private int id;
     private String user_ip;
@@ -8,8 +16,9 @@ public class Book {
     private String author;
     private String isbn;
     private String location;
+    private Boolean isShared;
 
-    public Book(int id, String user_ip, int port, String title, String author, String isbn, String location) {
+    public Book(int id, String user_ip, int port, String title, String author, String isbn, String location, Boolean isShared) {
         this.id = id;
         this.user_ip = user_ip;
         this.port = port;
@@ -17,6 +26,7 @@ public class Book {
         this.author = author;
         this.isbn = isbn;
         this.location = location;
+        this.isShared = isShared;
     }
 
     public int getId() {
@@ -74,4 +84,58 @@ public class Book {
     public void setLocation(String location) {
         this.location = location;
     }
+
+    public Boolean getIsShared() { return isShared; }
+
+    public void setIsShared(Boolean shared) { isShared = shared; }
+
+    public static List<Book> jsonToBookList(String jsonString) {
+        List<Book> returnList = new ArrayList();
+        try {
+            JSONArray jsonarray = new JSONArray(jsonString);
+            for (int i = 0; i < jsonarray.length(); i++) {
+                JSONObject jsonobject = jsonarray.getJSONObject(i);
+                int id = jsonobject.getInt("id");
+                String user_ip = jsonobject.getString("user_ip");
+                int port = Integer.parseInt(jsonobject.getString("port_number"));
+                String title = jsonobject.getString("title");
+                String isbn = jsonobject.getString("isbn");
+                String author = jsonobject.getString("author");
+                String location = jsonobject.getString("location");
+                Boolean isShared = jsonobject.getBoolean("isShared");
+
+                Book newBook = new Book(id, user_ip, port, title, author, isbn, location, isShared);
+                returnList.add(newBook);
+            }
+            return returnList;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return returnList;
+        }
+    }
+
+    public static void loadSharedBookWhenAppStarts() {
+        try {
+            List<Book> bookList = Book.jsonToBookList(WebServer.findAllMySharedBooks());
+            for (Book book: bookList) {
+                File location = new File(book.getLocation());
+                if (location.exists()) {
+                    ServerSocket serverSocket = new ServerSocket(book.getPort());
+                    System.out.println("ServerSocket created: " + serverSocket.getLocalSocketAddress() + " for port # " + book.getPort());
+
+                    // update sharing status in the server
+                    WebServer.updateBookSharingStatus(book, true);
+
+                    Thread t = new Thread(new SocketRunnable(serverSocket, book.getLocation()));
+                    t.start();
+                } else {
+                    System.out.println("Book " + book.getTitle() + " by " + book.getAuthor() + " doesn't exist in the given location: " + book.getLocation());
+                    WebServer.updateBookSharingStatus(book, false);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
