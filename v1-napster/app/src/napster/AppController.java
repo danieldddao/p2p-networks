@@ -4,11 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -18,16 +14,63 @@ import javafx.scene.paint.Color;
 import javafx.stage.*;
 import javafx.scene.text.Text;
 
-import napster.Book;
 import java.io.*;
-import java.net.BindException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.*;
 import java.util.List;
 
-import org.json.*;
+import napster.Runnable.ClientRunnable;
+import napster.Runnable.ServerSocketRunnable;
 
 public class AppController {
+
+    private static int initialPort = 1111;
+
+    private static boolean available(int port) {
+        try (Socket ignored = new Socket(InetAddress.getByName("localhost"), port)) {
+            System.out.println(port + " not available");
+            // Send message to check port availability
+            ObjectOutputStream out = new ObjectOutputStream(ignored.getOutputStream());
+            out.writeObject("checking if port available");
+            out.flush();
+            out.close();
+            ignored.close();
+            return false;
+        } catch (ConnectException ignored) {
+            System.out.println(port + " available");
+            return true;
+        }
+        catch ( Exception e) {
+            return false;
+        }
+    }
+
+    public static void loadSharedBookWhenAppStarts() {
+        try {
+            System.out.println("loading shared books");
+            while (!available(initialPort)) {
+                initialPort += 1;
+            }
+            ServerSocket serverSocket = new ServerSocket(initialPort, 0, InetAddress.getByName("localhost"));
+            Thread t = new Thread(new ServerSocketRunnable(serverSocket));
+            t.start();
+            System.out.println("Socket created on port # " + serverSocket.getLocalSocketAddress());
+            List<Book> bookList = Book.jsonToBookList(WebServer.findAllMySharedBooks(InetAddress.getByName("localhost").toString(), initialPort));
+            for (Book book: bookList) {
+                System.out.println("Loading book " + book.getTitle() + " by " + book.getAuthor());
+                File location = new File(book.getLocation());
+                if (location.exists()) {
+                    // update sharing status in the server
+                    WebServer.updateBookSharingStatus(book, true);
+                } else {
+                    System.out.println("Book " + book.getTitle() + " by " + book.getAuthor() + " doesn't exist in the given location: " + book.getLocation());
+                    WebServer.updateBookSharingStatus(book, false);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * Search a book tab
@@ -54,15 +97,20 @@ public class AppController {
         Pane pane = new Pane();
         Button downloadButton = new Button("Download");
         BorderPane borderPane = new BorderPane();
+        CheckBox checkBox = new CheckBox();
+        BorderPane progressBorderPane = new BorderPane();
         ProgressBar progressBar = new ProgressBar(0);
-        ProgressIndicator progressIndicator = new ProgressIndicator(0);
         Book currentBook;
 
         public BookCell() {
             super();
-            borderPane.setLeft(downloadButton);
-            borderPane.setBottom(progressBar);
-            borderPane.setCenter(progressIndicator);
+            borderPane.setTop(downloadButton);
+            borderPane.setCenter(new Label(""));
+            borderPane.setBottom(progressBorderPane);
+
+            progressBorderPane.setTop(progressBar);
+            progressBorderPane.setCenter(checkBox);
+
             hbox.getChildren().addAll(label, pane, borderPane);
             HBox.setHgrow(pane, Priority.ALWAYS);
 
@@ -74,52 +122,17 @@ public class AppController {
                 if (dir != null) {
                     try {
                         System.out.println("directory selected: " + dir);
+                        progressBar.setProgress(0);
+                        checkBox.setSelected(false);
+                        checkBox.setText("");
 
-                        //creating connection to socket
-                        Socket socket = new Socket(currentBook.getUser_ip().substring(0, currentBook.getUser_ip().indexOf("/")), currentBook.getPort());
+                        //creating connection to owner's socket
+                        System.out.println("Connecting to port " + currentBook.getPort());
+                        Socket socket = new Socket(InetAddress.getByName(currentBook.getUser_ip().substring(0, currentBook.getUser_ip().indexOf("/"))), currentBook.getPort());
                         System.out.println("Socket connected to " + currentBook.getUser_ip() + " port: " + currentBook.getPort());
 
-                        // Setup file path
-                        String filePath = "";
-                        if (dir.toString().lastIndexOf("/") > 0) {
-                            filePath = dir + "/";
-                        } else {
-                            filePath = dir + "\\";
-                        }
-                        filePath += currentBook.getTitle() + currentBook.getLocation().substring(currentBook.getLocation().lastIndexOf("."));
-                        System.out.println("Save downloading file to " + filePath);
-
-                        // receive file size
-                        ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-                        String fileSizeMsg = (String) in.readObject();
-                        int fileSize = Integer.parseInt(fileSizeMsg);
-                        System.out.println("file size " + fileSize);
-                        byte [] byteArray  = new byte [ fileSize + 1];
-                        System.out.println("Downloading file");
-
-                        //reading file from socket
-                        InputStream inputStream = socket.getInputStream();
-                        FileOutputStream fileOutputStream = new FileOutputStream(filePath);
-                        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
-
-                        int bytesRead = 0;
-                        int current = 0;
-                        bytesRead = inputStream.read(byteArray,0,byteArray.length);					//copying file from socket to byteArray
-                        current = bytesRead;
-                        do {
-                            bytesRead =inputStream.read(byteArray, current, (byteArray.length-current));
-                            if(bytesRead >= 0) current += bytesRead;
-                            progressBar.setProgress((current/ (float)fileSize));
-                            progressIndicator.setProgress((current/ (float)fileSize));
-                        } while(bytesRead > -1);
-                        bufferedOutputStream.write(byteArray, 0 , current);							//writing byteArray to file
-                        bufferedOutputStream.flush();												//flushing buffers
-
-                        System.out.println("File " + filePath + " downloaded ( size: " + current + " bytes read)");
-                        in.close();
-                        fileOutputStream.close();
-                        bufferedOutputStream.close();
-                        socket.close();
+                        Thread t = new Thread(new ClientRunnable(socket, currentBook, dir, progressBar, checkBox));
+                        t.start();
 
                     } catch (Exception ex) {
                         ex.printStackTrace();
@@ -217,8 +230,6 @@ public class AppController {
 
     private File selectedFile;
 
-    private int initialPort = 1111;
-
     public void shareABookTabSelected(Event event) {
         alertText.setText("");
     }
@@ -248,10 +259,10 @@ public class AppController {
             } else if (!selectedFile.exists()) {
                 alertText.setText("Selected file doesn't exist");
             } else {
-                System.out.println("Creating ServerSocket");
+//                System.out.println("Creating ServerSocket");
                 // Create a socket
-                ServerSocket serverSocket = new ServerSocket(initialPort);
-                Book newBook = new Book(0, serverSocket.getInetAddress().toString(), serverSocket.getLocalPort(), titleTextField.getText(), authorTextField.getText(), isbnTextField.getText(), selectedFile.toString(), true);
+//                ServerSocket serverSocket = new ServerSocket(initialPort);
+                Book newBook = new Book(0, InetAddress.getByName("localhost").toString(), initialPort, titleTextField.getText(), authorTextField.getText(), isbnTextField.getText(), selectedFile.toString(), true);
 
                 // Add new book information to the server
                 int status = WebServer.addNewBook(newBook.getUser_ip(), newBook.getPort(),
@@ -260,20 +271,16 @@ public class AppController {
                     System.out.println("New book successfully added to server");
                     alertText.setText("New Book '" + titleTextField.getText() + "' successfully shared");
 
-                    initialPort++;
-                    System.out.println("ServerSocket created: " + serverSocket.getLocalSocketAddress());
-                    Thread t = new Thread(new SocketRunnable(serverSocket, selectedFile.toString()));
-                    t.start();
+//                    initialPort++;
+//                    System.out.println("ServerSocket created: " + serverSocket.getLocalSocketAddress());
+//                    Thread t = new Thread(new ServerRunnable(serverSocket, selectedFile.toString()));
+//                    t.start();
                 } else if (status == 500) {
                     System.out.println("Book already added");
                     alertText.setText("Book already shared");
-                    serverSocket.close();
-                    System.out.println("Closed socket");
                 } else {
                     System.out.println("Can't share book!");
                     alertText.setText("Can't share book! Please try again!");
-                    serverSocket.close();
-                    System.out.println("Closed socket");
                 }
 
                 // reset textfields
@@ -282,9 +289,6 @@ public class AppController {
                 isbnTextField.clear();
                 chooseFileText.setText("");
             }
-        } catch (BindException be) {
-            alertText.setText("Something is wrong! Please try again!");
-            initialPort++;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -380,13 +384,13 @@ public class AppController {
                     //update new location with the server
                     boolean status = WebServer.updateBookLocation(currentBook);
                     if (status == true) {
-                        try {
-                            ServerSocket serverSocket = new ServerSocket(currentBook.getPort());
-                            Thread t = new Thread(new SocketRunnable(serverSocket, selectedFile.toString()));
-                            t.start();
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                        }
+//                        try {
+//                            ServerSocket serverSocket = new ServerSocket(currentBook.getPort());
+//                            Thread t = new Thread(new ServerRunnable(serverSocket, selectedFile.toString()));
+//                            t.start();
+//                        } catch (Exception ex) {
+//                            ex.printStackTrace();
+//                        }
                         refreshMySharedBooksTab();
                     }
                 }
@@ -432,7 +436,7 @@ public class AppController {
             ObservableList<Book> list = FXCollections.observableArrayList();
 
             // load books from the server
-            List<Book> bookList = Book.jsonToBookList(WebServer.findAllMySharedBooks());
+            List<Book> bookList = Book.jsonToBookList(WebServer.findAllMySharedBooks(InetAddress.getByName("localhost").toString(), initialPort));
             System.out.println(bookList);
 
             // Add books to my shared books tab

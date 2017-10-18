@@ -12,11 +12,10 @@ import java.util.List;
 
 public class Main extends Application {
 
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Load shared books and create server sockets
-        Book.loadSharedBookWhenAppStarts();
+        AppController.loadSharedBookWhenAppStarts();
 
         Parent root = FXMLLoader.load(getClass().getResource("app.fxml"));
         primaryStage.setTitle("Free Book Sharing");

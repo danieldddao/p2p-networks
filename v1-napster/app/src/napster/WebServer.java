@@ -135,7 +135,7 @@ public class WebServer {
     }
 
 
-    public static String findAllMySharedBooks() {
+    public static String findAllMySharedBooks(String user_ip, int port) {
         try {
             System.out.println("Getting all books that I've shared ");
             HttpClient client = HttpClientBuilder.create().build();
@@ -144,6 +144,8 @@ public class WebServer {
 
             List<NameValuePair> urlParameters = new ArrayList();
 //        urlParameters.add(new BasicNameValuePair("authenticity_token", token));
+            urlParameters.add(new BasicNameValuePair("user_ip", user_ip));
+            urlParameters.add(new BasicNameValuePair("port_number", port + ""));
 
             post.setEntity(new UrlEncodedFormEntity(urlParameters));
             HttpResponse response = client.execute(post);
@@ -235,8 +237,7 @@ public class WebServer {
 //        urlParameters.add(new BasicNameValuePair("authenticity_token", token));
             urlParameters.add(new BasicNameValuePair("user_ip", book.getUser_ip()));
             urlParameters.add(new BasicNameValuePair("port_number", "" + book.getPort()));
-            urlParameters.add(new BasicNameValuePair("title", book.getTitle()));
-            urlParameters.add(new BasicNameValuePair("author", book.getAuthor()));
+            urlParameters.add(new BasicNameValuePair("location", book.getLocation()));
 
             String statusString = "false";
             if (status == true) { statusString = "true"; }

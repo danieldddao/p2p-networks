@@ -30,7 +30,7 @@ class BooksController < ApplicationController
 
   def getAllMyBooks
     user_client_ip = request.remote_ip
-    books = Book.where(:user_client_ip => user_client_ip)
+    books = Book.where(:user_client_ip => user_client_ip, :user_ip => params[:user_ip], :port_number => params[:port_number])
     if !(books.blank?)
       puts "All my books:"
       puts books
@@ -74,7 +74,7 @@ class BooksController < ApplicationController
 
   def updateSharingStatus
     user_client_ip = request.remote_ip
-    books = Book.where(:user_client_ip => user_client_ip, :user_ip => params[:user_ip], :port_number => params[:port_number], :title => params[:title], :author => params[:author])
+    books = Book.where(:user_client_ip => user_client_ip, :user_ip => params[:user_ip], :port_number => params[:port_number], :location => params[:location])
 
     if books.blank?
       render json: books, status: 204

@@ -11415,3 +11415,1057 @@ No template found for BooksController#unshareBook, rendering head :no_content
 Completed 204 No Content in 196ms (ActiveRecord: 3.8ms)
 
 
+  [1m[36mBook Load (2.0ms)[0m  [1m[34mSELECT  "books".* FROM "books" LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mBook Load (1.9ms)[0m  [1m[34mSELECT  "books".* FROM "books" LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[35m (1.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "environment"]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "environment"]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "environment"]]
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (2.8ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (1.6ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateBooks (20171004144640)
+  [1m[35m (0.4ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "user_client_ip" varchar, "user_ip" varchar, "port_number" varchar, "title" varchar, "author" varchar, "isbn" varchar, "location" varchar, "isShared" boolean DEFAULT 't')[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE UNIQUE INDEX "user_client_ip_and_user_ip_and_port_and_location" ON "books" ("user_client_ip", "user_ip", "port_number", "location")[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20171004144640"]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "development"], ["created_at", "2017-10-18 03:37:26.922657"], ["updated_at", "2017-10-18 03:37:26.922657"]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.2ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='user_client_ip_and_user_ip_and_port_and_location' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='user_client_ip_and_user_ip_and_port_and_location' AND type='index'
+[0m
+Started POST "/books/search" for 10.0.1.6 at 2017-10-17 22:38:22 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 30ms (Views: 0.8ms | ActiveRecord: 0.8ms)
+
+
+Started POST "/books/unsharebook" for 10.0.1.6 at 2017-10-17 22:38:45 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#unshareBook as HTML
+  [1m[36mBook Load (1.7ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ?[0m  [["user_client_ip", "10.0.1.6"]]
+No template found for BooksController#unshareBook, rendering head :no_content
+Completed 204 No Content in 138ms (ActiveRecord: 1.9ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-17 22:38:51 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"]]
+Completed 204 No Content in 3ms (Views: 0.4ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-17 22:39:01 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.9ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 5ms (Views: 2.0ms | ActiveRecord: 0.9ms)
+
+
+Started POST "/books/new" for 10.0.1.6 at 2017-10-17 22:39:10 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#create as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111", "title"=>"jb", "isbn"=>"", "author"=>"dd", "location"=>"/Users/danieldao/Downloads/jb.ttc"}
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (2.4ms)[0m  [1m[32mINSERT INTO "books" ("user_client_ip", "user_ip", "port_number", "title", "author", "isbn", "location") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"], ["title", "jb"], ["author", "dd"], ["isbn", ""], ["location", "/Users/danieldao/Downloads/jb.ttc"]]
+  [1m[35m (0.9ms)[0m  [1m[36mcommit transaction[0m
+Completed 201 Created in 19ms (Views: 0.2ms | ActiveRecord: 3.9ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-17 22:39:13 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.5ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 5ms (Views: 3.9ms | ActiveRecord: 0.5ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-17 22:40:50 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"]]
+Completed 200 OK in 3ms (Views: 0.4ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/updatesharingstatus" for 10.0.1.6 at 2017-10-17 22:40:51 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#updateSharingStatus as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111", "location"=>"/Users/danieldao/Downloads/jb.ttc", "sharing_status"=>"true"}
+  [1m[36mBook Load (1.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ? AND "books"."location" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"], ["location", "/Users/danieldao/Downloads/jb.ttc"]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mcommit transaction[0m
+Completed 200 OK in 6ms (Views: 0.4ms | ActiveRecord: 1.7ms)
+
+
+Started POST "/books/unsharebook" for 10.0.1.6 at 2017-10-17 22:41:10 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#unshareBook as HTML
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ?[0m  [["user_client_ip", "10.0.1.6"]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[33mUPDATE "books" SET "isShared" = ? WHERE "books"."id" = ?[0m  [["isShared", "f"], ["id", 1]]
+  [1m[35m (2.3ms)[0m  [1m[36mcommit transaction[0m
+No template found for BooksController#unshareBook, rendering head :no_content
+Completed 204 No Content in 190ms (ActiveRecord: 3.0ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-17 22:41:35 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111"}
+  [1m[36mBook Load (0.5ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"]]
+Completed 200 OK in 3ms (Views: 0.6ms | ActiveRecord: 0.5ms)
+
+
+Started POST "/books/updatesharingstatus" for 10.0.1.6 at 2017-10-17 22:41:35 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#updateSharingStatus as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111", "location"=>"/Users/danieldao/Downloads/jb.ttc", "sharing_status"=>"true"}
+  [1m[36mBook Load (0.5ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ? AND "books"."location" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"], ["location", "/Users/danieldao/Downloads/jb.ttc"]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[33mUPDATE "books" SET "isShared" = ? WHERE "books"."id" = ?[0m  [["isShared", "t"], ["id", 1]]
+  [1m[35m (2.4ms)[0m  [1m[36mcommit transaction[0m
+Completed 200 OK in 13ms (Views: 1.3ms | ActiveRecord: 3.7ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-17 22:43:23 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111"}
+  [1m[36mBook Load (0.5ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"]]
+Completed 200 OK in 3ms (Views: 0.7ms | ActiveRecord: 0.5ms)
+
+
+Started POST "/books/updatesharingstatus" for 10.0.1.6 at 2017-10-17 22:43:23 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#updateSharingStatus as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111", "location"=>"/Users/danieldao/Downloads/jb.ttc", "sharing_status"=>"true"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ? AND "books"."location" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"], ["location", "/Users/danieldao/Downloads/jb.ttc"]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[36mcommit transaction[0m
+Completed 200 OK in 4ms (Views: 0.5ms | ActiveRecord: 0.7ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-17 22:44:18 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"]]
+Completed 200 OK in 3ms (Views: 0.7ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/books/updatesharingstatus" for 10.0.1.6 at 2017-10-17 22:44:18 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#updateSharingStatus as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111", "location"=>"/Users/danieldao/Downloads/jb.ttc", "sharing_status"=>"true"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ? AND "books"."location" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"], ["location", "/Users/danieldao/Downloads/jb.ttc"]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mcommit transaction[0m
+Completed 200 OK in 5ms (Views: 0.6ms | ActiveRecord: 0.6ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-17 22:48:11 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111"}
+  [1m[36mBook Load (1.5ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"]]
+Completed 200 OK in 8ms (Views: 0.7ms | ActiveRecord: 1.5ms)
+
+
+Started POST "/books/updatesharingstatus" for 10.0.1.6 at 2017-10-17 22:48:11 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#updateSharingStatus as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111", "location"=>"/Users/danieldao/Downloads/jb.ttc", "sharing_status"=>"true"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ? AND "books"."location" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"], ["location", "/Users/danieldao/Downloads/jb.ttc"]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mcommit transaction[0m
+Completed 200 OK in 4ms (Views: 0.6ms | ActiveRecord: 0.5ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-17 22:48:17 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 2ms (Views: 1.0ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-17 22:54:46 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"]]
+Completed 200 OK in 3ms (Views: 0.6ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/books/updatesharingstatus" for 10.0.1.6 at 2017-10-17 22:54:46 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#updateSharingStatus as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111", "location"=>"/Users/danieldao/Downloads/jb.ttc", "sharing_status"=>"true"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ? AND "books"."location" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"], ["location", "/Users/danieldao/Downloads/jb.ttc"]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mcommit transaction[0m
+Completed 200 OK in 4ms (Views: 0.5ms | ActiveRecord: 0.6ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-17 22:55:11 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1112"}
+  [1m[36mBook Load (0.9ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1112"]]
+Completed 204 No Content in 6ms (Views: 0.5ms | ActiveRecord: 0.9ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-17 22:55:16 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (1.6ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 5ms (Views: 2.9ms | ActiveRecord: 1.6ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-17 22:58:35 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"]]
+Completed 200 OK in 3ms (Views: 0.6ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/books/updatesharingstatus" for 10.0.1.6 at 2017-10-17 22:58:35 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#updateSharingStatus as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111", "location"=>"/Users/danieldao/Downloads/jb.ttc", "sharing_status"=>"true"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ? AND "books"."location" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"], ["location", "/Users/danieldao/Downloads/jb.ttc"]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mcommit transaction[0m
+Completed 200 OK in 4ms (Views: 0.6ms | ActiveRecord: 0.5ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-17 22:58:45 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1112"}
+  [1m[36mBook Load (1.0ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1112"]]
+Completed 204 No Content in 7ms (Views: 0.5ms | ActiveRecord: 1.0ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-17 22:58:51 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 2ms (Views: 1.4ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-17 23:11:48 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"]]
+Completed 200 OK in 3ms (Views: 0.6ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/books/updatesharingstatus" for 10.0.1.6 at 2017-10-17 23:11:48 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#updateSharingStatus as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111", "location"=>"/Users/danieldao/Downloads/jb.ttc", "sharing_status"=>"true"}
+  [1m[36mBook Load (0.5ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ? AND "books"."location" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"], ["location", "/Users/danieldao/Downloads/jb.ttc"]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mcommit transaction[0m
+Completed 200 OK in 5ms (Views: 0.6ms | ActiveRecord: 0.7ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-17 23:12:00 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1112"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1112"]]
+Completed 204 No Content in 2ms (Views: 0.2ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-17 23:12:39 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 2ms (Views: 1.0ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-17 23:12:51 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 2ms (Views: 1.3ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-17 23:15:08 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111"}
+  [1m[36mBook Load (0.5ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"]]
+Completed 200 OK in 3ms (Views: 0.7ms | ActiveRecord: 0.5ms)
+
+
+Started POST "/books/updatesharingstatus" for 10.0.1.6 at 2017-10-17 23:15:08 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#updateSharingStatus as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111", "location"=>"/Users/danieldao/Downloads/jb.ttc", "sharing_status"=>"true"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ? AND "books"."location" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"], ["location", "/Users/danieldao/Downloads/jb.ttc"]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mcommit transaction[0m
+Completed 200 OK in 4ms (Views: 0.6ms | ActiveRecord: 0.5ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-17 23:15:36 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1112"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1112"]]
+Completed 204 No Content in 2ms (Views: 0.2ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-17 23:15:51 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 2ms (Views: 1.4ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-17 23:16:01 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.8ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 5ms (Views: 2.7ms | ActiveRecord: 0.8ms)
+
+
+Started POST "/books/allmybooks" for 127.0.0.1 at 2017-10-17 23:16:56 -0500
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "127.0.0.1"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"]]
+Completed 204 No Content in 3ms (Views: 0.2ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/books/search" for 127.0.0.1 at 2017-10-17 23:17:11 -0500
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 2ms (Views: 1.4ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/allmybooks" for 127.0.0.1 at 2017-10-17 23:18:12 -0500
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "127.0.0.1"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"]]
+Completed 204 No Content in 3ms (Views: 0.3ms | ActiveRecord: 0.4ms)
+
+
+  [1m[36mBook Load (2.0ms)[0m  [1m[34mSELECT  "books".* FROM "books" LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "environment"]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "environment"]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "environment"]]
+  [1m[35m (1.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (2.7ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (3.8ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateBooks (20171004144640)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "user_client_ip" varchar, "user_ip" varchar, "port_number" varchar, "title" varchar, "author" varchar, "isbn" varchar, "location" varchar, "isShared" boolean DEFAULT 't')[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "user_client_ip_and_user_ip_and_port_and_location" ON "books" ("user_client_ip", "user_ip", "port_number", "location")[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20171004144640"]]
+  [1m[35m (12.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.8ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "development"], ["created_at", "2017-10-18 04:19:40.771875"], ["updated_at", "2017-10-18 04:19:40.771875"]]
+  [1m[35m (4.4ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.4ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='user_client_ip_and_user_ip_and_port_and_location' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='user_client_ip_and_user_ip_and_port_and_location' AND type='index'
+[0m
+Started POST "/books/allmybooks" for 127.0.0.1 at 2017-10-17 23:19:42 -0500
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "127.0.0.1"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"]]
+Completed 204 No Content in 11ms (Views: 0.5ms | ActiveRecord: 1.3ms)
+
+
+Started POST "/books/new" for 127.0.0.1 at 2017-10-17 23:19:54 -0500
+Processing by BooksController#create as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111", "title"=>"jb", "isbn"=>"", "author"=>"dd", "location"=>"/Users/danieldao/Downloads/jb.ttc"}
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "books" ("user_client_ip", "user_ip", "port_number", "title", "author", "isbn", "location") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["user_client_ip", "127.0.0.1"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"], ["title", "jb"], ["author", "dd"], ["isbn", ""], ["location", "/Users/danieldao/Downloads/jb.ttc"]]
+  [1m[35m (1.0ms)[0m  [1m[36mcommit transaction[0m
+Completed 201 Created in 20ms (Views: 0.2ms | ActiveRecord: 2.3ms)
+
+
+Started POST "/books/search" for 127.0.0.1 at 2017-10-17 23:20:13 -0500
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 2ms (Views: 1.3ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/allmybooks" for 127.0.0.1 at 2017-10-17 23:20:56 -0500
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "127.0.0.1"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"]]
+Completed 200 OK in 3ms (Views: 0.7ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/books/updatesharingstatus" for 127.0.0.1 at 2017-10-17 23:20:56 -0500
+Processing by BooksController#updateSharingStatus as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111", "location"=>"/Users/danieldao/Downloads/jb.ttc", "sharing_status"=>"true"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ? AND "books"."location" = ?[0m  [["user_client_ip", "127.0.0.1"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"], ["location", "/Users/danieldao/Downloads/jb.ttc"]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mcommit transaction[0m
+Completed 200 OK in 5ms (Views: 0.7ms | ActiveRecord: 0.5ms)
+
+
+Started POST "/books/search" for 127.0.0.1 at 2017-10-17 23:21:13 -0500
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.2ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 2ms (Views: 0.9ms | ActiveRecord: 0.2ms)
+
+
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "environment"]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "environment"]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "environment"]]
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (7.1ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateBooks (20171004144640)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "user_client_ip" varchar, "user_ip" varchar, "port_number" varchar, "title" varchar, "author" varchar, "isbn" varchar, "location" varchar, "isShared" boolean DEFAULT 't')[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE UNIQUE INDEX "user_client_ip_and_user_ip_and_port_and_location" ON "books" ("user_client_ip", "user_ip", "port_number", "location")[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20171004144640"]]
+  [1m[35m (1.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.6ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "development"], ["created_at", "2017-10-18 12:32:07.502140"], ["updated_at", "2017-10-18 12:32:07.502140"]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (1.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.8ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='user_client_ip_and_user_ip_and_port_and_location' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='user_client_ip_and_user_ip_and_port_and_location' AND type='index'
+[0m
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 07:32:29 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111"}
+  [1m[36mBook Load (0.5ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"]]
+Completed 204 No Content in 16ms (Views: 0.4ms | ActiveRecord: 1.8ms)
+
+
+Started POST "/books/new" for 10.0.1.6 at 2017-10-18 07:32:46 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#create as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111", "title"=>"jj", "isbn"=>"", "author"=>"dd", "location"=>"/Users/danieldao/Downloads/jb.ttc"}
+  [1m[35m (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (1.1ms)[0m  [1m[32mINSERT INTO "books" ("user_client_ip", "user_ip", "port_number", "title", "author", "isbn", "location") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"], ["title", "jj"], ["author", "dd"], ["isbn", ""], ["location", "/Users/danieldao/Downloads/jb.ttc"]]
+  [1m[35m (0.9ms)[0m  [1m[36mcommit transaction[0m
+Completed 201 Created in 22ms (Views: 0.3ms | ActiveRecord: 3.0ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-18 07:33:04 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 2ms (Views: 1.4ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 07:34:59 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111"}
+  [1m[36mBook Load (0.5ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"]]
+Completed 200 OK in 12ms (Views: 0.8ms | ActiveRecord: 0.5ms)
+
+
+Started POST "/books/updatesharingstatus" for 10.0.1.6 at 2017-10-18 07:34:59 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#updateSharingStatus as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111", "location"=>"/Users/danieldao/Downloads/jb.ttc", "sharing_status"=>"true"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ? AND "books"."location" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"], ["location", "/Users/danieldao/Downloads/jb.ttc"]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mcommit transaction[0m
+Completed 200 OK in 4ms (Views: 0.4ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 07:35:20 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1112"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1112"]]
+Completed 204 No Content in 3ms (Views: 0.2ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-18 07:35:58 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.2ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 2ms (Views: 1.2ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 07:36:33 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"]]
+Completed 200 OK in 3ms (Views: 0.7ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/books/updatesharingstatus" for 10.0.1.6 at 2017-10-18 07:36:33 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#updateSharingStatus as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111", "location"=>"/Users/danieldao/Downloads/jb.ttc", "sharing_status"=>"true"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ? AND "books"."location" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"], ["location", "/Users/danieldao/Downloads/jb.ttc"]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mcommit transaction[0m
+Completed 200 OK in 4ms (Views: 0.4ms | ActiveRecord: 0.5ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-18 07:36:49 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 3ms (Views: 2.0ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 07:39:05 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"]]
+Completed 200 OK in 3ms (Views: 0.4ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/books/updatesharingstatus" for 10.0.1.6 at 2017-10-18 07:39:05 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#updateSharingStatus as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111", "location"=>"/Users/danieldao/Downloads/jb.ttc", "sharing_status"=>"true"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ? AND "books"."location" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"], ["location", "/Users/danieldao/Downloads/jb.ttc"]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mcommit transaction[0m
+Completed 200 OK in 5ms (Views: 0.7ms | ActiveRecord: 0.6ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-18 07:39:17 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 2ms (Views: 1.4ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-18 07:39:49 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 2ms (Views: 1.0ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 09:28:48 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111"}
+  [1m[36mBook Load (2.1ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"]]
+Completed 200 OK in 24ms (Views: 3.2ms | ActiveRecord: 2.1ms)
+
+
+Started POST "/books/updatesharingstatus" for 10.0.1.6 at 2017-10-18 09:28:48 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#updateSharingStatus as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111", "location"=>"/Users/danieldao/Downloads/jb.ttc", "sharing_status"=>"true"}
+  [1m[36mBook Load (0.6ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ? AND "books"."location" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"], ["location", "/Users/danieldao/Downloads/jb.ttc"]]
+  [1m[35m (0.4ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[36mcommit transaction[0m
+Completed 200 OK in 43ms (Views: 33.8ms | ActiveRecord: 1.2ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 09:29:25 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1112"}
+  [1m[36mBook Load (0.5ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1112"]]
+Completed 204 No Content in 3ms (Views: 0.2ms | ActiveRecord: 0.5ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-18 09:29:39 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 3ms (Views: 1.5ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-18 09:29:47 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.8ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 3ms (Views: 1.5ms | ActiveRecord: 0.8ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 09:46:12 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111"}
+  [1m[36mBook Load (0.5ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"]]
+Completed 200 OK in 3ms (Views: 0.7ms | ActiveRecord: 0.5ms)
+
+
+Started POST "/books/updatesharingstatus" for 10.0.1.6 at 2017-10-18 09:46:12 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#updateSharingStatus as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111", "location"=>"/Users/danieldao/Downloads/jb.ttc", "sharing_status"=>"true"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ? AND "books"."location" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"], ["location", "/Users/danieldao/Downloads/jb.ttc"]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mcommit transaction[0m
+Completed 200 OK in 5ms (Views: 0.8ms | ActiveRecord: 0.5ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 09:46:18 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1112"}
+  [1m[36mBook Load (0.9ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1112"]]
+Completed 204 No Content in 7ms (Views: 0.7ms | ActiveRecord: 0.9ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-18 09:46:31 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.2ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 2ms (Views: 1.0ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 09:49:33 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111"}
+  [1m[36mBook Load (0.5ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"]]
+Completed 200 OK in 6ms (Views: 1.6ms | ActiveRecord: 0.5ms)
+
+
+Started POST "/books/updatesharingstatus" for 10.0.1.6 at 2017-10-18 09:49:33 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#updateSharingStatus as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111", "location"=>"/Users/danieldao/Downloads/jb.ttc", "sharing_status"=>"true"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ? AND "books"."location" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"], ["location", "/Users/danieldao/Downloads/jb.ttc"]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mcommit transaction[0m
+Completed 200 OK in 4ms (Views: 0.4ms | ActiveRecord: 0.5ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 09:49:41 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1112"}
+  [1m[36mBook Load (0.9ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1112"]]
+Completed 204 No Content in 6ms (Views: 0.4ms | ActiveRecord: 0.9ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-18 09:49:45 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 2ms (Views: 1.3ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 09:51:18 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111"}
+  [1m[36mBook Load (0.9ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"]]
+Completed 200 OK in 11ms (Views: 3.0ms | ActiveRecord: 0.9ms)
+
+
+Started POST "/books/updatesharingstatus" for 10.0.1.6 at 2017-10-18 09:51:18 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#updateSharingStatus as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111", "location"=>"/Users/danieldao/Downloads/jb.ttc", "sharing_status"=>"true"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ? AND "books"."location" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"], ["location", "/Users/danieldao/Downloads/jb.ttc"]]
+  [1m[35m (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mcommit transaction[0m
+Completed 200 OK in 6ms (Views: 0.7ms | ActiveRecord: 0.6ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 09:51:25 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1112"}
+  [1m[36mBook Load (1.0ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1112"]]
+Completed 204 No Content in 6ms (Views: 0.8ms | ActiveRecord: 1.0ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-18 09:51:29 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 3ms (Views: 1.8ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 09:53:05 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1112"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1112"]]
+Completed 204 No Content in 3ms (Views: 0.2ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-18 09:53:09 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 2ms (Views: 1.4ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 10:01:49 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111"}
+  [1m[36mBook Load (1.1ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"]]
+Completed 200 OK in 7ms (Views: 1.0ms | ActiveRecord: 1.1ms)
+
+
+Started POST "/books/updatesharingstatus" for 10.0.1.6 at 2017-10-18 10:01:49 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#updateSharingStatus as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111", "location"=>"/Users/danieldao/Downloads/jb.ttc", "sharing_status"=>"true"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ? AND "books"."location" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"], ["location", "/Users/danieldao/Downloads/jb.ttc"]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mcommit transaction[0m
+Completed 200 OK in 3ms (Views: 0.5ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 10:01:57 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1112"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1112"]]
+Completed 204 No Content in 4ms (Views: 0.2ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-18 10:02:00 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.2ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 2ms (Views: 1.2ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 10:02:40 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1112"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1112"]]
+Completed 204 No Content in 3ms (Views: 0.2ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-18 10:02:43 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 3ms (Views: 1.7ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 10:03:18 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1112"}
+  [1m[36mBook Load (1.9ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1112"]]
+Completed 204 No Content in 19ms (Views: 0.9ms | ActiveRecord: 1.9ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-18 10:03:22 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 5ms (Views: 4.3ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 10:04:01 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1112"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1112"]]
+Completed 204 No Content in 4ms (Views: 0.3ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-18 10:04:05 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 3ms (Views: 1.8ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 10:05:01 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1112"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1112"]]
+Completed 204 No Content in 3ms (Views: 0.2ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-18 10:05:05 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 3ms (Views: 1.7ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 10:05:56 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1112"}
+  [1m[36mBook Load (2.1ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1112"]]
+Completed 204 No Content in 12ms (Views: 0.4ms | ActiveRecord: 2.1ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-18 10:06:00 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 3ms (Views: 2.4ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 10:13:05 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1112"}
+  [1m[36mBook Load (5.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1112"]]
+Completed 204 No Content in 26ms (Views: 0.9ms | ActiveRecord: 5.4ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-18 10:14:20 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (1.9ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 8ms (Views: 5.3ms | ActiveRecord: 1.9ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 10:19:19 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1112"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1112"]]
+Completed 204 No Content in 3ms (Views: 0.2ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-18 10:19:30 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.5ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 2ms (Views: 0.9ms | ActiveRecord: 0.5ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 10:20:11 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1112"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1112"]]
+Completed 204 No Content in 2ms (Views: 0.2ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-18 10:20:15 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 4ms (Views: 2.4ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 10:20:47 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1112"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1112"]]
+Completed 204 No Content in 3ms (Views: 0.2ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-18 10:20:50 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.5ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 3ms (Views: 1.8ms | ActiveRecord: 0.5ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-18 10:34:01 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 2ms (Views: 1.2ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/unsharebook" for 10.0.1.6 at 2017-10-18 10:37:46 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#unshareBook as HTML
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ?[0m  [["user_client_ip", "10.0.1.6"]]
+  [1m[35m (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (1.9ms)[0m  [1m[33mUPDATE "books" SET "isShared" = ? WHERE "books"."id" = ?[0m  [["isShared", "f"], ["id", 1]]
+  [1m[35m (1.0ms)[0m  [1m[36mcommit transaction[0m
+No template found for BooksController#unshareBook, rendering head :no_content
+Completed 204 No Content in 200ms (ActiveRecord: 3.3ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 10:41:13 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1112"}
+  [1m[36mBook Load (1.2ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1112"]]
+Completed 204 No Content in 13ms (Views: 1.4ms | ActiveRecord: 1.2ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-18 10:41:33 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 2ms (Views: 1.0ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-18 10:41:39 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.2ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 3ms (Views: 2.3ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 10:41:48 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1112"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1112"]]
+Completed 204 No Content in 3ms (Views: 0.2ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-18 10:41:53 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 2ms (Views: 1.0ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 10:42:08 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"]]
+Completed 200 OK in 6ms (Views: 1.7ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/books/updatesharingstatus" for 10.0.1.6 at 2017-10-18 10:42:09 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#updateSharingStatus as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1111", "location"=>"/Users/danieldao/Downloads/jb.ttc", "sharing_status"=>"true"}
+  [1m[36mBook Load (0.5ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ? AND "books"."location" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1111"], ["location", "/Users/danieldao/Downloads/jb.ttc"]]
+  [1m[35m (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[33mUPDATE "books" SET "isShared" = ? WHERE "books"."id" = ?[0m  [["isShared", "t"], ["id", 1]]
+  [1m[35m (4.4ms)[0m  [1m[36mcommit transaction[0m
+Completed 200 OK in 12ms (Views: 0.8ms | ActiveRecord: 5.7ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 10:42:20 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1112"}
+  [1m[36mBook Load (1.0ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1112"]]
+Completed 204 No Content in 4ms (Views: 0.3ms | ActiveRecord: 1.0ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-18 10:42:47 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 3ms (Views: 1.6ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 10:45:54 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1112"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1112"]]
+Completed 204 No Content in 3ms (Views: 0.2ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-18 10:45:58 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 2ms (Views: 1.4ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.6 at 2017-10-18 10:47:27 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"localhost/127.0.0.1", "port_number"=>"1112"}
+  [1m[36mBook Load (1.8ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_client_ip" = ? AND "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_client_ip", "10.0.1.6"], ["user_ip", "localhost/127.0.0.1"], ["port_number", "1112"]]
+Completed 204 No Content in 11ms (Views: 0.5ms | ActiveRecord: 1.8ms)
+
+
+Started POST "/books/search" for 10.0.1.6 at 2017-10-18 10:47:31 -0500
+Cannot render console from 10.0.1.6! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.2ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 2ms (Views: 1.1ms | ActiveRecord: 0.2ms)
+
+

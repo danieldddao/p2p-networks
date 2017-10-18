@@ -3,8 +3,6 @@ package napster;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -111,31 +109,6 @@ public class Book {
         } catch (Exception e) {
             e.printStackTrace();
             return returnList;
-        }
-    }
-
-    public static void loadSharedBookWhenAppStarts() {
-        try {
-            List<Book> bookList = Book.jsonToBookList(WebServer.findAllMySharedBooks());
-            for (Book book: bookList) {
-                System.out.println("Loading book " + book.getTitle() + " by " + book.getAuthor());
-                File location = new File(book.getLocation());
-                if (location.exists()) {
-                    ServerSocket serverSocket = new ServerSocket(book.getPort());
-                    System.out.println("ServerSocket created: " + serverSocket.getLocalSocketAddress() + " for port # " + book.getPort());
-
-                    // update sharing status in the server
-                    WebServer.updateBookSharingStatus(book, true);
-
-                    Thread t = new Thread(new SocketRunnable(serverSocket, book.getLocation()));
-                    t.start();
-                } else {
-                    System.out.println("Book " + book.getTitle() + " by " + book.getAuthor() + " doesn't exist in the given location: " + book.getLocation());
-                    WebServer.updateBookSharingStatus(book, false);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
