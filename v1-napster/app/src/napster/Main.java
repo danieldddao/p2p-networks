@@ -5,8 +5,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import napster.Runnable.ServerSocketRunnable;
 
 import java.io.File;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.util.List;
 
@@ -25,10 +27,18 @@ public class Main extends Application {
 
     @Override
     public void stop() {
-        System.out.println("App is closing");
-        // Clear registered books from the server
-        WebServer.unshareBooksFromServerWhenExiting();
-        System.exit(0);
+        try {
+            System.out.println("App is closing");
+            // Clear registered books from the server
+            WebServer.unshareBooksFromServerWhenExiting(InetAddress.getLocalHost().getHostAddress());
+
+            ServerSocketRunnable.closeServerSocket();
+            System.exit(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+
     }
 
     public static void main(String[] args) {

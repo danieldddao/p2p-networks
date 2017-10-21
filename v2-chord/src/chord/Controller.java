@@ -1,5 +1,7 @@
 package chord;
 
+import chord.Runnable.ServerSocketRunnable;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,8 +12,52 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
 import java.io.File;
+import java.io.ObjectOutputStream;
+import java.net.ConnectException;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.List;
 
 public class Controller {
+
+    private static int initialPort = 1111;
+
+    private static boolean available(int port) {
+        try (Socket ignored = new Socket(InetAddress.getLocalHost().getHostAddress(), port)) {
+            System.out.println(port + " not available");
+            // Send message to check port availability
+            ObjectOutputStream out = new ObjectOutputStream(ignored.getOutputStream());
+            out.writeObject("checking if port available");
+            out.flush();
+            out.close();
+            ignored.close();
+            return false;
+        } catch (ConnectException ignored) {
+            System.out.println(port + " available");
+            return true;
+        }
+        catch ( Exception e) {
+            return false;
+        }
+    }
+
+    public static void createSocketWhenAppStarts() {
+        try {
+            System.out.println("loading shared books");
+            while (!available(initialPort)) {
+                initialPort += 1;
+            }
+
+            ServerSocket serverSocket = new ServerSocket(initialPort, 0, InetAddress.getLocalHost());
+            Thread t = new Thread(new ServerSocketRunnable(serverSocket));
+            t.start();
+            System.out.println("Socket created on port # " + serverSocket.getLocalSocketAddress());
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Search a book tab
@@ -58,8 +104,6 @@ public class Controller {
     private TextField isbnTextField;
 
     private File selectedFile;
-
-    private int initialPort = 1111;
 
     public void shareABookTabSelected(Event event) {
         alertText.setText("");

@@ -13,7 +13,6 @@
 ActiveRecord::Schema.define(version: 20171004144640) do
 
   create_table "books", force: :cascade do |t|
-    t.string "user_client_ip"
     t.string "user_ip"
     t.string "port_number"
     t.string "title"
@@ -21,7 +20,7 @@ ActiveRecord::Schema.define(version: 20171004144640) do
     t.string "isbn"
     t.string "location"
     t.boolean "isShared", default: true
-    t.index ["user_client_ip", "user_ip", "port_number", "location"], name: "user_client_ip_and_user_ip_and_port_and_location", unique: true
+    t.index ["user_ip", "port_number", "location"], name: "user_ip_and_port_and_location", unique: true
   end
 
 end

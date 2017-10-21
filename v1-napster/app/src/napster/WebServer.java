@@ -174,7 +174,7 @@ public class WebServer {
     }
 
 
-    public static void unshareBooksFromServerWhenExiting() {
+    public static void unshareBooksFromServerWhenExiting(String userIp) {
         try {
             System.out.println("Unsharing books");
             HttpClient client = HttpClientBuilder.create().build();
@@ -184,7 +184,7 @@ public class WebServer {
 //                System.out.println("unshare port number: " + port);
             List<NameValuePair> urlParameters = new ArrayList();
 //        urlParameters.add(new BasicNameValuePair("authenticity_token", token));
-//                urlParameters.add(new BasicNameValuePair("user_ip", userIp));
+                urlParameters.add(new BasicNameValuePair("user_ip", userIp));
 //                urlParameters.add(new BasicNameValuePair("port_number", "" + port));
 
             post.setEntity(new UrlEncodedFormEntity(urlParameters));
