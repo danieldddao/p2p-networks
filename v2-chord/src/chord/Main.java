@@ -1,6 +1,8 @@
 package chord;
 
+import chord.Components.Node;
 import chord.Runnable.ServerSocketRunnable;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -15,8 +17,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.net.InetAddress;
-import java.security.MessageDigest;
+import java.net.InetSocketAddress;
 
 public class Main extends Application {
 
@@ -28,16 +29,32 @@ public class Main extends Application {
 
     private void createNetworkButtonClicked(ActionEvent event, Stage primaryStage, Label alertLabel) {
         try {
+
+            // Create new Chord network
+
             showMainScene(primaryStage);
-            alertLabel.setText("label");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void joinNetworkButtonClicked(ActionEvent event, Stage primaryStage, Label alertLabel) {
+    private void joinNetworkButtonClicked(ActionEvent event, Stage primaryStage, TextField ipTextField, Label alertLabel) {
         try {
-            showMainScene(primaryStage);
+            // Check if given host address exists
+            InetSocketAddress address = Node.getSocketAddressFrom(ipTextField.getText());
+
+            if (address == null) {
+                alertLabel.setText("Cannot find the host address you are trying to join! Please try again!");
+            } else {
+                // Contact the given host address to join the network
+                boolean status = Controller.getMyNode().joinRingNetwork(address);
+                if (status) {
+                    // Show the main window scene
+                    showMainScene(primaryStage);
+                } else {
+                    alertLabel.setText("Unable to contact the host address you are trying to join! Please try again!");
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -57,16 +74,16 @@ public class Main extends Application {
         BorderPane createNetworkPane = new BorderPane();
         Button createNetworkBtn = new Button("Create new network");
         createNetworkBtn.setOnAction(e-> createNetworkButtonClicked(e, primaryStage, alertLabel));
-        createNetworkPane.setTop(new Label("    Create new Chord network\n "));
+        createNetworkPane.setTop(new Label("    Create new Chord network:\n "));
         createNetworkPane.setLeft(new Label(""));
         createNetworkPane.setRight(createNetworkBtn);
 
         // Pane to join an existing network
         BorderPane joinNetworkPane = new BorderPane();
-        Label joinNetworkLabel = new Label("Enter host address to join existing network     \n(e.g. 127.0.0.1:8080)");
+        Label joinNetworkLabel = new Label("Enter host address to join existing network:     \n(e.g. 127.0.0.1:8080)");
         TextField joinNetworkField = new TextField();
         Button joinNetworkBtn = new Button("Join");
-        joinNetworkBtn.setOnAction(e -> joinNetworkButtonClicked(e, primaryStage, alertLabel));
+        joinNetworkBtn.setOnAction(e -> joinNetworkButtonClicked(e, primaryStage, joinNetworkField, alertLabel));
         HBox joinNetworkHBox = new HBox(joinNetworkField, new Label(" "), joinNetworkBtn);
         joinNetworkPane.setTop(joinNetworkLabel);
         joinNetworkPane.setCenter(joinNetworkHBox);
@@ -93,13 +110,6 @@ public class Main extends Application {
         primaryStage.setTitle("Create or Join a Chord network");
         primaryStage.setScene(menuScene);
         primaryStage.show();
-
-//        MessageDigest msdDigest = MessageDigest.getInstance("SHA-1");
-//        String input = "test";
-//        msdDigest.update(input.getBytes("UTF-8"), 0, input.length());
-//        String hash = msdDigest.digest();
-//
-//        System.out.println(sha1);
     }
 
     @Override
