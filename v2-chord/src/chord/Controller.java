@@ -1,7 +1,6 @@
 package chord;
 
 import chord.Components.Node;
-import chord.Runnable.ServerSocketRunnable;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,8 +12,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
-import java.io.File;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.*;
 
 public class Controller {
@@ -24,6 +22,10 @@ public class Controller {
         return myNode;
     }
 
+    public static void stopListenerThread() {
+        myNode.getListenerRunnable().closeListener();
+    }
+
     /**
      * Check if given address is available
      * @param address
@@ -31,12 +33,16 @@ public class Controller {
      */
     public static boolean available(InetSocketAddress address) {
         try (Socket ignored = new Socket(address.getAddress(), address.getPort())) {
-            System.out.println("port #" + address.getPort() + " not available");
             // Send message to check port availability
-            ObjectOutputStream out = new ObjectOutputStream(ignored.getOutputStream());
-            out.writeObject("checking if port available");
-            out.flush();
-            out.close();
+            // Send message to the server
+            OutputStream outputStream = ignored.getOutputStream();
+            PrintStream printStream = new PrintStream(outputStream);
+            printStream.println("checking if port available");
+
+            System.out.println("port #" + address.getPort() + " not available");
+
+            printStream.close();
+            outputStream.close();
             ignored.close();
             return false;
         } catch (ConnectException ignored) {
@@ -59,10 +65,6 @@ public class Controller {
                 initialPort += 1;
                 myAddress = new InetSocketAddress(InetAddress.getLocalHost(), initialPort);
             }
-
-            ServerSocket serverSocket = new ServerSocket(myAddress.getPort(), 0,myAddress.getAddress());
-            Thread t = new Thread(new ServerSocketRunnable(serverSocket));
-            t.start();
             Controller.myNode = new Node(myAddress);
             System.out.println("Socket created on " + myAddress.getAddress().getHostAddress() + ":" + myAddress.getPort());
         } catch (Exception e) {

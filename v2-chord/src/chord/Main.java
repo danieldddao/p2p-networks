@@ -1,7 +1,7 @@
 package chord;
 
 import chord.Components.Node;
-import chord.Runnable.ServerSocketRunnable;
+import chord.Runnable.ListenerRunnable;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -27,12 +28,36 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 700, 500));
     }
 
+    private void showLoadingScene(Stage primaryStage, String loadingText) throws Exception {
+        System.out.println("Loading scene");
+        BorderPane mainBorderPane = new BorderPane();
+
+        Label label = new Label(loadingText);
+        Pane pane = new Pane(label);
+        label.layoutXProperty().bind(pane.widthProperty().subtract(label.widthProperty()).divide(2));
+        ProgressIndicator progressIndicator = new ProgressIndicator();
+        progressIndicator.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+
+        mainBorderPane.setTop(pane);
+        mainBorderPane.setCenter(progressIndicator);
+
+        Scene scene = new Scene(mainBorderPane, 300, 100);
+        primaryStage.setScene(scene);
+    }
+
     private void createNetworkButtonClicked(ActionEvent event, Stage primaryStage, Label alertLabel) {
         try {
 
             // Create new Chord network
+            showLoadingScene(primaryStage, "Creating Network...");
 
-            showMainScene(primaryStage);
+            boolean status = Controller.getMyNode().createNewNetwork();
+            if (status) {
+                // Show the main window scene
+                showMainScene(primaryStage);
+            } else {
+                alertLabel.setText("Unable to create new network! Please try again!");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -46,8 +71,10 @@ public class Main extends Application {
             if (address == null) {
                 alertLabel.setText("Cannot find the host address you are trying to join! Please try again!");
             } else {
+                showLoadingScene(primaryStage, "Joining Network...");
+
                 // Contact the given host address to join the network
-                boolean status = Controller.getMyNode().joinRingNetwork(address);
+                boolean status = Controller.getMyNode().joinNetwork(address);
                 if (status) {
                     // Show the main window scene
                     showMainScene(primaryStage);
@@ -117,8 +144,8 @@ public class Main extends Application {
         try {
             System.out.println("App is closing");
 
-            // Stop ServerSocket Thread
-            ServerSocketRunnable.closeServerSocket();
+            // Stop ListenerSocket Thread
+            Controller.stopListenerThread();
 
             // Clear registered books
 
