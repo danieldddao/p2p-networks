@@ -1,8 +1,11 @@
 package chord.Runnable;
 
+import chord.Components.FingerTable;
 import chord.Components.Node;
+import javafx.util.Pair;
 
 import java.io.*;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
 /**
@@ -86,6 +89,33 @@ public class ServerRunnable implements Runnable{
             String responseMessage = null;
 
             switch (splitted[0]) {
+                case "DOES.ID.EXIST":
+                    responseMessage = "NOT.EXIST";
+                    long id = Long.parseLong(splitted[1]);
+                    System.out.println("Checking if ID exists: " + id);
+
+                    FingerTable fingerTable = myNode.getFingerTable();
+                    for (int i = 1; i <= Node.getM(); i++) {
+                        Pair<Long, Long> range = fingerTable.getRange(i);
+                        if ((id >= range.getKey() && id <= range.getValue()) || (id >= range.getValue() && id <= range.getKey())) { // Found node ID in the ith finger
+                            System.out.println("Found ID in the " + i + "ith finger");
+                            fingerTable.printFingerTable();
+
+                            Pair<InetSocketAddress, Long> entry = fingerTable.getEntry(i);
+                            if (entry.getKey() != null && entry.getValue() != null) {
+
+                            }
+                            // If ID already exists in the network
+                            break;
+                        }
+                    }
+
+
+//                    if () {
+//                        responseMessage = "ALREADY.EXIST";
+//                    } else {
+//                    }
+                    break;
                 case "FINDSUCCESSOR":
                     System.out.println("socket wants to find successor of " + socket.getLocalAddress().getHostAddress() + ":" + socket.getLocalPort());
                     break;

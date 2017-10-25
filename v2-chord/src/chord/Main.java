@@ -29,7 +29,6 @@ public class Main extends Application {
     }
 
     private void showLoadingScene(Stage primaryStage, String loadingText) throws Exception {
-        System.out.println("Loading scene");
         BorderPane mainBorderPane = new BorderPane();
 
         Label label = new Label(loadingText);
@@ -71,8 +70,10 @@ public class Main extends Application {
             if (address == null) {
                 alertLabel.setText("Cannot find the host address you are trying to join! Please try again!");
             } else {
+                System.out.println("Joining network...");
                 showLoadingScene(primaryStage, "Joining Network...");
 
+                // In a Thread:
                 // Contact the given host address to join the network
                 boolean status = Controller.getMyNode().joinNetwork(address);
                 if (status) {
@@ -145,7 +146,7 @@ public class Main extends Application {
             System.out.println("App is closing");
 
             // Stop ListenerSocket Thread
-            Controller.stopListenerThread();
+            Controller.stopLoopThreads();
 
             // Clear registered books
 

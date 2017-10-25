@@ -22,8 +22,8 @@ public class Controller {
         return myNode;
     }
 
-    public static void stopListenerThread() {
-        myNode.getListenerRunnable().closeListener();
+    public static void stopLoopThreads() {
+        myNode.stopLoopThreads();
     }
 
     /**
@@ -32,7 +32,10 @@ public class Controller {
      * @return true if given address is available, false otherwise.
      */
     public static boolean available(InetSocketAddress address) {
-        try (Socket ignored = new Socket(address.getAddress(), address.getPort())) {
+//        try (Socket ignored = new Socket(address.getAddress(), address.getPort())) {
+        Socket ignored = new Socket();
+        try {
+            ignored.connect(address, 1000);
             // Send message to check port availability
             // Send message to the server
             OutputStream outputStream = ignored.getOutputStream();
@@ -45,12 +48,13 @@ public class Controller {
             outputStream.close();
             ignored.close();
             return false;
-        } catch (ConnectException ignored) {
+        } catch (SocketTimeoutException e) {
+            System.out.println("Cannot connect to address");
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("port #" + address.getPort() + " available");
             return true;
-        }
-        catch ( Exception e) {
-            return false;
         }
     }
 
@@ -63,6 +67,7 @@ public class Controller {
             InetSocketAddress myAddress = new InetSocketAddress(InetAddress.getLocalHost(), initialPort);
             while (!available(myAddress)) {
                 initialPort += 1;
+                System.out.println("Checking port #" + initialPort);
                 myAddress = new InetSocketAddress(InetAddress.getLocalHost(), initialPort);
             }
             Controller.myNode = new Node(myAddress);

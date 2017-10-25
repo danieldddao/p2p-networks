@@ -10,7 +10,7 @@ import java.net.Socket;
 
 public class Node {
 
-    private static int m = 3;
+    private static int m = 7;
     private static int chordRingSize = (int) Math.pow(2, m);
 
     private InetSocketAddress hostAddress = null;
@@ -18,6 +18,7 @@ public class Node {
     private Node successor = null;
     private FingerTable fingerTable = null;
 
+    private String addressString = "";
     private long nodeId = -1;
     private String nodeName = "";
 
@@ -29,12 +30,8 @@ public class Node {
             hostAddress = address;
 
             // Initialize nodeId and nodeName
-            long hashKey = hashHostAddress(address.getAddress().getHostAddress() + ":" + address.getPort());
-            nodeId = hashKey;
-            nodeName = "N" + nodeId;
-
-            // Initialize a finger table
-            fingerTable = new FingerTable();
+            addressString = hostAddress.getAddress().getHostAddress() + ":" + hostAddress.getPort();
+            generateIdAndName(addressString);
 
             // initialize threads
             listenerRunnable = new ListenerRunnable(this);
@@ -43,8 +40,22 @@ public class Node {
 //        fix_fingers = new FixFingers(this);
 //        ask_predecessor = new AskPredecessor(this);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-
+    /**
+     * generate new hash key for node's ID and node's name from given address string
+     * @param addressString
+     */
+    private void generateIdAndName(String addressString) {
+        try {
+            long hashKey = hashHostAddress(addressString);
+            nodeId = hashKey;
+            nodeName = "N" + nodeId;
+            System.out.println("nodeId: " + nodeId);
+            System.out.println("nodeName: " + nodeName);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -64,7 +75,7 @@ public class Node {
     /**
      * Hash the give host address string using consistent hashing with Linear congruential generator
       * @param address
-     * @return hashKey used for nodeId whose value is not larger than the size of the Chord ring
+     * @return m-bit ID key used for nodeId whose value is not larger than the size of the Chord ring
      * @throws Exception
      */
     public static long hashHostAddress(String address) throws Exception {
@@ -79,7 +90,6 @@ public class Node {
                 break;
             }
         }
-        System.out.println("hashKey: " + hashKey);
         return hashKey;
     }
 
@@ -97,6 +107,11 @@ public class Node {
             if (splitted.length == 2) {
                 InetAddress address = InetAddress.getByName(splitted[0]);
                 int portNumber = Integer.parseInt(splitted[1]);
+
+                // Port number below 1024 and above 49150 is not available
+                if (portNumber <= 1024 || portNumber > 49150) {
+                    return null;
+                }
 
                 InetSocketAddress socketAddress = new InetSocketAddress(address, portNumber);
                 System.out.println("Created InetSocketAddress: " + address.getHostAddress() + ":" + portNumber);
@@ -122,6 +137,9 @@ public class Node {
      */
     public boolean createNewNetwork() {
         try {
+            // Initialize a finger table
+            fingerTable = new FingerTable(nodeId);
+
             startThreads();
             System.out.println("Created network. My nodeId=" + nodeId + ", nodeName=" + nodeName);
             return true;
@@ -143,12 +161,21 @@ public class Node {
             }
 
             // Check if nodeId already exists in the network
-            // If nodeIs already exists, continue generating and checking new nodeId until nodeId doesn't exist
-            do {
+            // If nodeId already exists, continue generating and checking new nodeId until nodeId doesn't exist
+            while(sendMessage(contactAddress, "DOES.ID.EXIST_" + nodeId).equals("ALREADY.EXIST")) {
+                System.out.println("ID " + nodeId + "already exists, generating new ID...");
+                addressString += "." + hostAddress.getPort();
+                generateIdAndName(addressString);
+            }
 
-            } while(sendMessage(contactAddress, "DOES.ID.EXIST_" + nodeId).equals("ALREADY.EXIST"));
-
+            // joining the network and get my successor's host address
+            System.out.println("Joining the network via contact " + contactAddress.getHostString());
             String response = sendMessage(contactAddress, "JOINING.FIND.MY.SUC_" + nodeId);
+
+
+            // update successor and predecessor in the finger table
+
+
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -169,7 +196,7 @@ public class Node {
             PrintStream printStream = new PrintStream(socket.getOutputStream());
             printStream.println(message);
 
-            // Wait 50 millisecs to receive the reponse
+            // Wait 50 millisecs to receive the response
             Thread.sleep(50);
 
             // Receive response message
@@ -187,6 +214,19 @@ public class Node {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public void stopLoopThreads() {
+        listenerRunnable.closeListener();
+    }
+
+
+    public static int getM() {
+        return m;
+    }
+
+    public static int getChordRingSize() {
+        return chordRingSize;
     }
 
     public InetSocketAddress getHostAddress() {
@@ -223,6 +263,10 @@ public class Node {
 
     public void setNodeName(String nodeName) {
         this.nodeName = nodeName;
+    }
+
+    public FingerTable getFingerTable() {
+        return fingerTable;
     }
 
     public Thread getListener() {
