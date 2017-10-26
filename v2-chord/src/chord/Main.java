@@ -1,7 +1,6 @@
 package chord;
 
 import chord.Components.Node;
-import chord.Runnable.ListenerRunnable;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -19,10 +18,11 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.net.InetSocketAddress;
+import java.util.concurrent.CountDownLatch;
 
 public class Main extends Application {
 
-    private void showMainScene(Stage primaryStage) throws Exception {
+    public void showMainScene(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
         primaryStage.setTitle("Book Sharing - Chord network");
         primaryStage.setScene(new Scene(root, 700, 500));
@@ -70,7 +70,6 @@ public class Main extends Application {
             if (address == null) {
                 alertLabel.setText("Cannot find the host address you are trying to join! Please try again!");
             } else {
-                System.out.println("Joining network...");
                 showLoadingScene(primaryStage, "Joining Network...");
 
                 // In a Thread:
@@ -82,13 +81,14 @@ public class Main extends Application {
                 } else {
                     alertLabel.setText("Unable to contact the host address you are trying to join! Please try again!");
                 }
+
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private Scene networkMenuScene(Stage primaryStage) throws Exception {
+    public Scene networkMenuScene(Stage primaryStage) throws Exception {
         BorderPane mainBorderPane = new BorderPane();
         BorderPane borderPane = new BorderPane();
 

@@ -48,7 +48,10 @@ public class Controller {
             outputStream.close();
             ignored.close();
             return false;
-        } catch (SocketTimeoutException e) {
+        } catch (SocketTimeoutException e ) {
+            System.out.println("Cannot connect to address");
+            return true;
+        } catch (ConnectException e ) {
             System.out.println("Cannot connect to address");
             return true;
         } catch (Exception e) {

@@ -109,7 +109,7 @@ public class Node {
                 int portNumber = Integer.parseInt(splitted[1]);
 
                 // Port number below 1024 and above 49150 is not available
-                if (portNumber <= 1024 || portNumber > 49150) {
+                if (portNumber <= 1110 || portNumber > 49150) {
                     return null;
                 }
 
@@ -156,12 +156,16 @@ public class Node {
      */
     public boolean joinNetwork(InetSocketAddress contactAddress) {
         try {
-            if (contactAddress == null || contactAddress == hostAddress) {
+//            System.out.println("join Network from contact " + contactAddress.getAddress().getHostAddress() + ":" + contactAddress.getPort());
+//            System.out.println("My host address: " + hostAddress.getAddress().getHostAddress() + ":" + hostAddress.getPort());
+            if (contactAddress == null || (contactAddress.getAddress().getHostAddress().equals(hostAddress.getAddress().getHostAddress()) && contactAddress.getPort() == hostAddress.getPort())) {
+                System.out.println("Can't join my own address");
                 return false;
             }
 
             // Check if nodeId already exists in the network
             // If nodeId already exists, continue generating and checking new nodeId until nodeId doesn't exist
+//            System.out.println("Check if nodeId exists");
             while(sendMessage(contactAddress, "DOES.ID.EXIST_" + nodeId).equals("ALREADY.EXIST")) {
                 System.out.println("ID " + nodeId + "already exists, generating new ID...");
                 addressString += "." + hostAddress.getPort();
@@ -169,7 +173,7 @@ public class Node {
             }
 
             // joining the network and get my successor's host address
-            System.out.println("Joining the network via contact " + contactAddress.getHostString());
+            System.out.println("Joining the network via contact " + contactAddress.getAddress().getHostAddress() + ":" + contactAddress.getPort());
             String response = sendMessage(contactAddress, "JOINING.FIND.MY.SUC_" + nodeId);
 
 

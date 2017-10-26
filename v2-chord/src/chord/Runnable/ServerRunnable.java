@@ -33,13 +33,14 @@ public class ServerRunnable implements Runnable{
             String message = reader.readLine();
             System.out.println("Message received: "+ message);
 
-            // Send response to the client
-            OutputStream outputStream = socket.getOutputStream();
-            PrintStream printStream = new PrintStream(outputStream);
-            printStream.println("OK");
-
             if (!message.equals("checking if port available") && message != null) {
-                processMessageRequest(message);
+                String response = processMessageRequest(message);
+
+                // Send response to the client
+                OutputStream outputStream = socket.getOutputStream();
+                PrintStream printStream = new PrintStream(outputStream);
+                printStream.println(response);
+
 //                System.out.println("ServerRunnable running");
 //                System.out.println("Accepted connection : " + socket);
 //
@@ -70,12 +71,13 @@ public class ServerRunnable implements Runnable{
 //                bufferedInputStream.close();
 //                out.close();
 //                outputStream.close();
+
+                outputStream.close();
+                printStream.close();
             }
 
             inputStream.close();
             reader.close();
-            outputStream.close();
-            printStream.close();
             socket.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -95,21 +97,23 @@ public class ServerRunnable implements Runnable{
                     System.out.println("Checking if ID exists: " + id);
 
                     FingerTable fingerTable = myNode.getFingerTable();
-                    for (int i = 1; i <= Node.getM(); i++) {
-                        Pair<Long, Long> range = fingerTable.getRange(i);
-                        if ((id >= range.getKey() && id <= range.getValue()) || (id >= range.getValue() && id <= range.getKey())) { // Found node ID in the ith finger
-                            System.out.println("Found ID in the " + i + "ith finger");
-                            fingerTable.printFingerTable();
-
-                            Pair<InetSocketAddress, Long> entry = fingerTable.getEntry(i);
-                            if (entry.getKey() != null && entry.getValue() != null) {
-
-                            }
-                            // If ID already exists in the network
-                            break;
-                        }
+                    int iThFinger = fingerTable.findIthFingerOf(id); // Find the finger that stores information of the node ID
+                    if (iThFinger == 0) {
+                        System.out.println("ID " + id + " is already assigned to me! Or ID is too large");
+                        break;
                     }
 
+                    System.out.println("Found ID in the " + iThFinger + "-th finger");
+                    fingerTable.printFingerTable();
+
+                    Pair<InetSocketAddress, Long> entry = fingerTable.getEntryNode(iThFinger);
+                    if (entry.getKey() != null && entry.getValue() != null) {   // If ID is already assigned to a node
+
+                        // Contact that node to see if ID belongs to another node
+
+
+                        //If ID already exists in the network
+                    }
 
 //                    if () {
 //                        responseMessage = "ALREADY.EXIST";

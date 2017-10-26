@@ -42,6 +42,9 @@ public class ListenerRunnable implements Runnable {
         }
     }
 
-    public void closeListener() {isRunning = false;}
+    public void closeListener() {
+        System.out.println("Closing listener");
+        isRunning = false;
+    }
 
 }
