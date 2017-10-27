@@ -31,7 +31,6 @@ public class FingerTable {
         printFingerTable();
     }
 
-
     /**
      * Update ith finger's entry with host address and nodeID in the finger table
      * @param i
@@ -51,7 +50,6 @@ public class FingerTable {
         }
     }
 
-
     /**
      * Update ith finger's range with lowerbound and upperbound the finger table
      * @param i
@@ -66,6 +64,11 @@ public class FingerTable {
         }
     }
 
+    /**
+     * Get Entry of the ith finger
+     * @param i
+     * @return entry of i-th finger
+     */
     public Pair<InetSocketAddress, Long> getEntryNode(int i) {
         try {
             return entryNodes.get(i);
@@ -75,6 +78,11 @@ public class FingerTable {
         }
     }
 
+    /**
+     * Get the range of the i-th finger
+     * @param i
+     * @return range of the i-th finger
+     */
     public Pair<Long, Long> getRange(int i) {
         try {
             return ranges.get(i);
@@ -90,7 +98,7 @@ public class FingerTable {
      * @return i-th finger
      */
     public int findIthFingerOf(long ID) {
-        if (ID == nodeID || ID >= Node.getChordRingSize()) {
+        if (ID >= Node.getChordRingSize()) {
             return 0;
         } else if (ID < nodeID) { // ID is smaller than nodeID, search from transition finger i-th
             Pair<Long, Long> range = getRange(transitionFinger);
@@ -132,9 +140,6 @@ public class FingerTable {
             if (entryNodes.get(i).getValue() != null) {
                 nodeID = "" + entryNodes.get(i).getValue();
             }
-//            System.out.println(i + "\t " +
-//                                ranges.get(i).getKey() + ".." + ranges.get(i).getValue() + "\t\t\t\t" +
-//                                address + ", " + nodeID);
             System.out.println(String.format( "%1s \t\t %-8s \t\t  %-8s", i, ranges.get(i).getKey() + ".." + ranges.get(i).getValue(), address + ", " + nodeID));
         }
         System.out.println();

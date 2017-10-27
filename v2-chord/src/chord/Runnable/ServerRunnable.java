@@ -2,6 +2,7 @@ package chord.Runnable;
 
 import chord.Components.FingerTable;
 import chord.Components.Node;
+import chord.Components.Utils;
 import javafx.util.Pair;
 
 import java.io.*;
@@ -35,6 +36,7 @@ public class ServerRunnable implements Runnable{
 
             if (!message.equals("checking if port available") && message != null) {
                 String response = processMessageRequest(message);
+                System.out.println("Response message: " + response + "\n");
 
                 // Send response to the client
                 OutputStream outputStream = socket.getOutputStream();
@@ -89,43 +91,69 @@ public class ServerRunnable implements Runnable{
             System.out.println("Processing message: " + message);
             String[] splitted = message.split("_");
             String responseMessage = null;
+            long id = Long.parseLong(splitted[1]);
 
             switch (splitted[0]) {
+                // Check if ID belongs to a node in the network
                 case "DOES.ID.EXIST":
                     responseMessage = "NOT.EXIST";
-                    long id = Long.parseLong(splitted[1]);
                     System.out.println("Checking if ID exists: " + id);
 
+                    // Check my nodeID
+                    if (id == myNode.getNodeId()) {
+                        System.out.println("ID belongs to me");
+                        responseMessage = "ALREADY.EXIST";
+                        break; // get out of switch statement
+                    }
+
+                    // Check my successor and predecessor
+                    if (id == myNode.getSuccessor().getNodeId() || id == myNode.getPredecessor().getNodeId()) {
+                        System.out.println("ID belongs to my predecessor or successor");
+                        responseMessage = "ALREADY.EXIST";
+                        break; // get out of switch statement
+                    }
+
+                    // Check the finger table
+                    System.out.println("Checking finger table");
                     FingerTable fingerTable = myNode.getFingerTable();
                     int iThFinger = fingerTable.findIthFingerOf(id); // Find the finger that stores information of the node ID
                     if (iThFinger == 0) {
-                        System.out.println("ID " + id + " is already assigned to me! Or ID is too large");
-                        break;
+                        System.out.println("ID " + id + " is too large");
+                        responseMessage = "ALREADY.EXIST";
+                        break; // get out of switch statement
                     }
 
                     System.out.println("Found ID in the " + iThFinger + "-th finger");
                     fingerTable.printFingerTable();
-
                     Pair<InetSocketAddress, Long> entry = fingerTable.getEntryNode(iThFinger);
                     if (entry.getKey() != null && entry.getValue() != null) {   // If ID is already assigned to a node
-
                         // Contact that node to see if ID belongs to another node
-
-
-                        //If ID already exists in the network
+                        System.out.println("Contacting node #" + entry.getValue() + " (" + entry.getKey().getAddress().getHostAddress() + ":" + entry.getKey().getPort() + ")...");
+                        responseMessage = Utils.sendMessage(entry.getKey(), "DOES.ID.EXIST_" + id);
                     }
 
-//                    if () {
-//                        responseMessage = "ALREADY.EXIST";
-//                    } else {
-//                    }
                     break;
-                case "FINDSUCCESSOR":
-                    System.out.println("socket wants to find successor of " + socket.getLocalAddress().getHostAddress() + ":" + socket.getLocalPort());
+
+
+                // New node is joining the network, find its successor
+                // Response is in the format: ipAddress:host_nodeID_nodeName-suc's suc-ipAddress:host_nodeID_nodeName
+                case "JOINING-FIND.MY.SUCCESSOR":
+                    System.out.println("New node wants to find its successor: " + socket.getLocalAddress().getHostAddress() + ":" + socket.getLocalPort());
+
+
+                    break;
+
+
+                // Response is in the format ipAddress:port_nodeID_nodeName
+                case "GET.YOUR.SUCCESSOR":
+                    break;
+
+
+                // My predecessor has changed, updating my predecessor
+                case "I.AM.YOUR.NEW.PREDECESSOR":
                     break;
 
             }
-            System.out.println("Response message: " + responseMessage + "\n");
             return responseMessage;
         } catch (Exception e){
             e.printStackTrace();

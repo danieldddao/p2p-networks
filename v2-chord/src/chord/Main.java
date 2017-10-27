@@ -2,6 +2,7 @@ package chord;
 
 import chord.Components.Node;
 
+import chord.Components.Utils;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -65,7 +66,7 @@ public class Main extends Application {
     private void joinNetworkButtonClicked(ActionEvent event, Stage primaryStage, TextField ipTextField, Label alertLabel) {
         try {
             // Check if given host address exists
-            InetSocketAddress address = Node.getSocketAddressFrom(ipTextField.getText());
+            InetSocketAddress address = Utils.checkHostAddressExist(ipTextField.getText());
 
             if (address == null) {
                 alertLabel.setText("Cannot find the host address you are trying to join! Please try again!");

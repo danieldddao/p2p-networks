@@ -51,8 +51,8 @@ public class Node {
      */
     private void generateIdAndName(String addressString) {
         try {
-            long hashKey = hashHostAddress(addressString);
-            nodeId = hashKey;
+            long hashValue = Utils.hashHostAddress(addressString);
+            nodeId = hashValue;
             nodeName = "N" + nodeId;
             System.out.println("nodeId: " + nodeId);
             System.out.println("nodeName: " + nodeName);
@@ -69,65 +69,6 @@ public class Node {
             listener.start();
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    /**
-     * Hash the give host address string using consistent hashing with Linear congruential generator
-      * @param address
-     * @return m-bit ID key used for nodeId whose value is not larger than the size of the Chord ring
-     * @throws Exception
-     */
-    public static long hashHostAddress(String address) throws Exception {
-        int hashKey = 0;
-        long generator = address.hashCode();
-        while (true) {
-            generator = 2862933555777941757L * generator + 1;
-            int next = (int) ((hashKey + 1) / (((double) ((int) (generator >>> 33) + 1)) / (0x1.0p31)));
-            if (next >= 0 && next < chordRingSize) {
-                hashKey = next;
-            } else {
-                break;
-            }
-        }
-        return hashKey;
-    }
-
-
-    /**
-     * Check if the given host address string exists, so that user can join the Chord network
-     * @return InetSocketAddress of the given host address if host address exists. Otherwise, null
-     */
-    public static InetSocketAddress getSocketAddressFrom(String hostAddress) {
-        try {
-
-            // split input host address into ip address and port number
-            String[] splitted = hostAddress.split(":");
-
-            if (splitted.length == 2) {
-                InetAddress address = InetAddress.getByName(splitted[0]);
-                int portNumber = Integer.parseInt(splitted[1]);
-
-                // Port number below 1024 and above 49150 is not available
-                if (portNumber <= 1110 || portNumber > 49150) {
-                    return null;
-                }
-
-                InetSocketAddress socketAddress = new InetSocketAddress(address, portNumber);
-                System.out.println("Created InetSocketAddress: " + address.getHostAddress() + ":" + portNumber);
-
-                if (Controller.available(socketAddress)) {
-                    return null;
-                } else {
-                    return socketAddress;
-                }
-            }
-            else {
-                return null;
-            }
-        } catch (Exception e) {
-            System.out.println("Given host address doesn't exist!");
-            return null;
         }
     }
 
@@ -166,16 +107,26 @@ public class Node {
             // Check if nodeId already exists in the network
             // If nodeId already exists, continue generating and checking new nodeId until nodeId doesn't exist
 //            System.out.println("Check if nodeId exists");
-            while(sendMessage(contactAddress, "DOES.ID.EXIST_" + nodeId).equals("ALREADY.EXIST")) {
+            while(Utils.sendMessage(contactAddress, "DOES.ID.EXIST_" + nodeId).equals("ALREADY.EXIST")) {
                 System.out.println("ID " + nodeId + "already exists, generating new ID...");
                 addressString += "." + hostAddress.getPort();
                 generateIdAndName(addressString);
             }
 
-            // joining the network and get my successor's host address
+            // joining the network
+            // find my new successor node
             System.out.println("Joining the network via contact " + contactAddress.getAddress().getHostAddress() + ":" + contactAddress.getPort());
-            String response = sendMessage(contactAddress, "JOINING.FIND.MY.SUC_" + nodeId);
+            successor = findMyNewSuccessor(contactAddress);
+            if (successor == null) {
+                System.out.println("Can't find my new successor in the network");
+                return false;
+            }
 
+            // notify my new successor that I'm its new predecessor
+
+
+            // Update finger table
+            System.out.println("Asking the contact to fill out the finger table");
 
             // update successor and predecessor in the finger table
 
@@ -188,35 +139,99 @@ public class Node {
     }
 
     /**
-     * Send message to the given address
-     * @param address
-     * @param message
-     * @return the response message from the given address
+     * Ask current node to find ID's successor.
+     * @param ID
+     * @return ID's successor node
      */
-    public String sendMessage(InetSocketAddress address, String message) {
+    public Node findSuccessorOf(long ID) {
         try {
-            // Send message to the server via server's address
-            Socket socket = new Socket(address.getAddress(), address.getPort());
-            PrintStream printStream = new PrintStream(socket.getOutputStream());
-            printStream.println(message);
+            Node successor = this.getSuccessor();
 
-            // Wait 50 millisecs to receive the response
-            Thread.sleep(50);
+            // Find predecessor
+            Node predecessor = findPredecessorOf(ID);
 
-            // Receive response message
-            InputStream inputStream = socket.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-            String response = reader.readLine();
+            // if other node found, ask it for its successor
+            if (predecessor.getNodeId() != this.nodeId) {
+                 // Response is in the format ipAddress:port_nodeID_nodeName
+                 String response = Utils.sendMessage(predecessor.getHostAddress(), "GET.YOUR.SUCCESSOR");
+                String[] splitted = response.split("_");
+                 successor = new Node(Utils.getInetSocketAddressFrom(splitted[0]));
+                 successor.setNodeId(Long.parseLong(splitted[1]));
+                 successor.setNodeName(splitted[2]);
+            }
+            if (successor == null) {
+                successor = this;
+            }
 
-            socket.close();
-            printStream.close();
-            inputStream.close();
-            reader.close();
-
-            return response;
+            return successor;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+
+    private Node findPredecessorOf(long ID) {
+        try {
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return  null;
+        }
+    }
+
+    /**
+     * Find my new successor from my contact host address
+     * @param contact
+     * @return new successor node
+     */
+    public Node findMyNewSuccessor(InetSocketAddress contact) {
+        try {
+            if (contact == null || (contact.getAddress().getHostAddress().equals(hostAddress.getAddress().getHostAddress()) && contact.getPort() == hostAddress.getPort())) {
+                System.out.println("Can't connect to my contact! wrong contact information");
+                return null;
+            } else {
+
+                // Response is in the format: ipAddress:host_nodeID_nodeName-suc's suc-ipAddress:host_nodeID_nodeName
+                String response = Utils.sendMessage(contact, "JOINING-FIND.MY.SUCCESSOR_" + hostAddress.getAddress().getHostAddress() + ":" + hostAddress.getPort());
+
+                String[] splitted = response.split("-");
+
+                // Construct my new successor's successor node
+                String[] mySucSuc = splitted[1].split("_");
+                InetSocketAddress mySucSucHostAddress = Utils.getInetSocketAddressFrom(mySucSuc[0]);
+                Node mySucSucNode = new Node(mySucSucHostAddress);
+                mySucSucNode.setNodeId(Long.parseLong(mySucSuc[1]));
+                mySucSucNode.setNodeName(mySucSuc[2]);
+
+                // Construct my new successor node
+                String[] mySuc = splitted[0].split("_");
+                InetSocketAddress mySucHostAddress = Utils.getInetSocketAddressFrom(mySuc[0]);
+                Node mySucNode = new Node(mySucHostAddress);
+                mySucNode.setNodeId(Long.parseLong(mySuc[1]));
+                mySucNode.setNodeName(mySuc[2]);
+                mySucNode.setPredecessor(this);
+                mySucNode.setSuccessor(mySucSucNode);
+
+                return mySucNode;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Notify my new successor that I'm its new predecessor
+     * @param successor
+     * @return successor's response
+     */
+    public String notifyMyNewSuccessor(InetSocketAddress successor) {
+        if (successor == null || (successor.getAddress().getHostAddress().equals(hostAddress.getAddress().getHostAddress()) && successor.getPort() == hostAddress.getPort())) {
+            System.out.println("Can't notify! empty successor information");
+            return null;
+        } else {
+            return Utils.sendMessage(successor, "I.AM.YOUR.NEW.PREDECESSOR_" + hostAddress.getAddress().getHostAddress() + ":" + hostAddress.getPort());
         }
     }
 
@@ -225,6 +240,9 @@ public class Node {
     }
 
 
+    /*****************************
+     * Getter and setter methods
+     */
     public static int getM() {
         return m;
     }
