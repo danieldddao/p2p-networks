@@ -114,10 +114,14 @@ public class Node implements Serializable {
             // Check if nodeId already exists in the network
             // If nodeId already exists, continue generating and checking new nodeId until nodeId doesn't exist
 //            System.out.println("Check if nodeId exists");
-            while(Utils.sendMessage(contactAddress, "DOES.ID.EXIST_" + nodeId).equals("ALREADY.EXIST")) {
+            Object[] objArray = new Object[2];
+            objArray[0] = "DOES ID EXIST";
+            objArray[1] = this.nodeId;
+            while(Utils.sendMessage(contactAddress, objArray).equals("ALREADY EXIST")) {
                 System.out.println("ID " + nodeId + "already exists, generating new ID...");
                 addressString += "." + address.getPort();
                 generateIdAndName(addressString);
+                objArray[1] = this.nodeId;
             }
 
             // joining the network
@@ -131,7 +135,7 @@ public class Node implements Serializable {
 
             // notify my new successor that I'm its new predecessor
             System.out.println("My successor: " + successor.getAddress().getAddress().getHostAddress() + ":" + successor.getAddress().getPort());
-//            notifyMyNewSuccessor(successor.getAddress());
+            notifyMyNewSuccessor(successor.getAddress());
 
             // Update finger table
 //            System.out.println("Asking the contact to fill out the finger table");
@@ -160,7 +164,10 @@ public class Node implements Serializable {
             } else {
 
                 // Response is a Node
-                Node newSuccessor = (Node) Utils.sendMessage(contactAddress, "JOINING-FIND.MY.SUCCESSOR_" + this.nodeId);
+                Object[] objArray = new Object[2];
+                objArray[0] = "JOINING. FIND MY SUCCESSOR";
+                objArray[1] = this.nodeId;
+                Node newSuccessor = (Node) Utils.sendMessage(contactAddress, objArray);
                 System.out.println("findMyNewSuccessor-response: id=" + newSuccessor.getNodeId() + ", address:" + newSuccessor.getAddress().getAddress().getHostAddress() + ":" + newSuccessor.getAddress().getPort());
 
                 return newSuccessor;
@@ -189,7 +196,9 @@ public class Node implements Serializable {
                  // Find successor of predecessor of ID
                 // Successor of ID = current successor of predecessor of ID
 //                String response = Utils.sendMessage(predecessor.getAddress(), "GET.YOUR.SUCCESSOR");
-                successor = (Node) Utils.sendMessage(predecessor.getAddress(), "GET.YOUR.SUCCESSOR");
+                Object[] objArray = new Object[1];
+                objArray[0] = "GET YOUR SUCCESSOR";
+                successor = (Node) Utils.sendMessage(predecessor.getAddress(), objArray);
 
 //                 successor = Utils.constructNodeFrom(response);
             }
@@ -291,20 +300,23 @@ public class Node implements Serializable {
      * @param successorAddress
      * @return successor's response
      */
-//    public String notifyMyNewSuccessor(InetSocketAddress successorAddress) {
-//        try {
-//            if (successorAddress == null || (successorAddress.getAddress().getHostAddress().equals(address.getAddress().getHostAddress()) && successorAddress.getPort() == address.getPort())) {
-//                System.out.println("Can't notify! empty successor information");
-//                return null;
-//            } else {
-//                System.out.println("Notifying my new successor (" + successorAddress.getAddress().getHostAddress() + ":" + successorAddress.getPort() + ") that I'm (" + address.getAddress().getHostAddress() + ":" + address.getPort() + ") its new predecessor: ");
-//                return Utils.sendMessage(successorAddress, "I.AM.YOUR.NEW.PREDECESSOR_" + address.getAddress().getHostAddress() + ":" + address.getPort() + "-" + nodeId + "-" + nodeName);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
+    public String notifyMyNewSuccessor(InetSocketAddress successorAddress) {
+        try {
+            if (successorAddress == null || (successorAddress.getAddress().getHostAddress().equals(address.getAddress().getHostAddress()) && successorAddress.getPort() == address.getPort())) {
+                System.out.println("Can't notify! empty successor information");
+                return null;
+            } else {
+                System.out.println("Notifying my new successor (" + successorAddress.getAddress().getHostAddress() + ":" + successorAddress.getPort() + ") that I'm (" + address.getAddress().getHostAddress() + ":" + address.getPort() + ") its new predecessor: ");
+                Object[] objArray = new Object[2];
+                objArray[0] = "I AM YOUR NEW PREDECESSOR";
+                objArray[1] = this;
+                return (String) Utils.sendMessage(successorAddress, objArray);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 
     /**

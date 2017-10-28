@@ -2,10 +2,8 @@ package chord.Components;
 
 import chord.Controller;
 
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -34,39 +32,29 @@ public class Utils {
     }
 
     /**
-     * Send message to the given address and receive a response object
+     * Send message array to the given address and receive a response object
      * @param address
-     * @param message
+     * @param messageArray (first element is a message string)
      * @return the response object from the given address
      */
-    public static Object sendMessage(InetSocketAddress address, String message) {
+    public static Object sendMessage(InetSocketAddress address, Object[] messageArray) {
         try {
             // Send message to the server via server's address
+            System.out.println("Sending message " + messageArray);
             Socket socket = new Socket(address.getAddress(), address.getPort());
-//            PrintStream printStream = new PrintStream(socket.getOutputStream());
-//            printStream.println(message);
-//            OutputStream outputStream = socket.getOutputStream();
+
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-            objectOutputStream.writeObject(message);
+            objectOutputStream.writeObject(messageArray);
             objectOutputStream.flush();
 
             // Wait 50 millisecs to receive the response
             Thread.sleep(50);
 
             // Receive response object
-//            InputStream inputStream = socket.getInputStream();
-//            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-//            String response = reader.readLine();
-
-//            InputStream inputStream = socket.getInputStream();
             ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
             Object response = objectInputStream.readObject();
+
             objectInputStream.close();
-
-//            printStream.close();
-//            inputStream.close();
-//            reader.close();
-
             objectOutputStream.close();
             socket.close();
             return response;
@@ -103,30 +91,6 @@ public class Utils {
                 return null;
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * Construct a node from a given nodeString, which has the following format:
-     * ipAddress:port-nodeID-nodeName
-     * @param nodeString
-     * @return constructed node
-     */
-    public static Node constructNodeFrom(String nodeString) {
-        try {
-            // Construct a node from given message
-            // Message is in the format: ipAddress:port-nodeID-nodeName
-            String[] splitted = nodeString.split("-");
-            InetSocketAddress mySucAddress = getInetSocketAddressFrom(splitted[0]);
-            if (mySucAddress == null) {
-                return  null;
-            } else {
-                Node node = new Node(mySucAddress, Long.parseLong(splitted[1]), splitted[2]);
-                return node;
-            }
         } catch (Exception e) {
             e.printStackTrace();
             return null;

@@ -36,11 +36,18 @@ public class Controller {
 //        try (Socket ignored = new Socket(address.getAddress(), address.getPort())) {
         Socket ignored = new Socket();
         try {
+            System.out.println("Connecting to " + address.getAddress().getHostAddress() + ":" + address.getPort());
             ignored.connect(address, 1000);
             // Send message to server to check port availability
-            Utils.sendMessage(address, "checking if port is available");
+            Object[] objArray = new Object[1];
+            objArray[0] = "CHECKING IF PORT IS AVAILABLE";
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(ignored.getOutputStream());
+            objectOutputStream.writeObject(objArray);
+            objectOutputStream.flush();
+
             System.out.println("port #" + address.getPort() + " not available");
 
+            objectOutputStream.close();
             ignored.close();
             return false;
         } catch (SocketTimeoutException e ) {
