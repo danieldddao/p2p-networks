@@ -2,12 +2,12 @@ package chord.Components;
 
 import javafx.util.Pair;
 
-import java.net.InetSocketAddress;
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class FingerTable {
+public class FingerTable implements Serializable {
 
-    private HashMap<Integer, Pair<InetSocketAddress, Long>> entryNodes = null;
+    private HashMap<Integer, Node> entryNodes = null;
     private HashMap<Integer, Pair<Long, Long>> ranges = null;
     private int transitionFinger = 0; // finger that transitions from the max ID to 0 in a circle
     private Long nodeID = null;
@@ -17,7 +17,7 @@ public class FingerTable {
         this.entryNodes = new HashMap();
         this.ranges = new HashMap();
         for (int i = 1; i <= Node.getM(); i++) {
-            updateEntryNode(i, null, null);
+            updateEntryNode(i, null);
             if (i == 1) {
                 updateRange(i, nodeID + 1, nodeID + 1);
             } else {
@@ -32,15 +32,16 @@ public class FingerTable {
     }
 
     /**
-     * Update ith finger's entry with host address and nodeID in the finger table
+     * Update ith finger's entry with a node in the finger table
      * @param i
-     * @param address
-     * @param id
+     * @param newEntryNode
      */
-    public void updateEntryNode(int i, InetSocketAddress address, Long id) {
+    public void updateEntryNode(int i, Node newEntryNode) {
         try {
-            entryNodes.put(i, new Pair(address, id));
-
+            if (newEntryNode != null) {
+                System.out.println("Updating entry " + i + "-th with new node having address: " + newEntryNode.getAddress().getAddress().getHostAddress() + ":" +  newEntryNode.getAddress().getPort() + " and id " + newEntryNode.getNodeId());
+            }
+            entryNodes.put(i, newEntryNode);
 //            // if the updated one is successor, notify the new successor
 //            if (i == 1 && value != null && !value.equals(localAddress)) {
 //                notify(value);
@@ -65,11 +66,11 @@ public class FingerTable {
     }
 
     /**
-     * Get Entry of the ith finger
+     * Get entry node of the ith finger
      * @param i
-     * @return entry of i-th finger
+     * @return entry node of i-th finger
      */
-    public Pair<InetSocketAddress, Long> getEntryNode(int i) {
+    public Node getEntryNode(int i) {
         try {
             return entryNodes.get(i);
         } catch (Exception e) {
@@ -134,11 +135,9 @@ public class FingerTable {
         for (int i = 1; i <= Node.getM(); i++) {
             String address = "null";
             String nodeID = "null";
-            if (entryNodes.get(i).getKey() != null) {
-                address = entryNodes.get(i).getKey().getHostString();
-            }
-            if (entryNodes.get(i).getValue() != null) {
-                nodeID = "" + entryNodes.get(i).getValue();
+            if (entryNodes.get(i) != null) {
+                address = entryNodes.get(i).getAddress().getHostString();
+                nodeID = "" + entryNodes.get(i).getNodeId();
             }
             System.out.println(String.format( "%1s \t\t %-8s \t\t  %-8s", i, ranges.get(i).getKey() + ".." + ranges.get(i).getValue(), address + ", " + nodeID));
         }

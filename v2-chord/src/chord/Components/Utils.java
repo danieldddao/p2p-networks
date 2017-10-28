@@ -2,10 +2,10 @@ package chord.Components;
 
 import chord.Controller;
 
-import java.io.BufferedReader;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -13,12 +13,12 @@ import java.net.Socket;
 public class Utils {
 
     /**
-     * Hash the give host address string using consistent hashing with Linear congruential generator
+     * Hash the give address string using consistent hashing with Linear congruential generator
      * @param address
      * @return m-bit ID key used for nodeId whose value is not larger than the size of the Chord ring
      * @throws Exception
      */
-    public static long hashHostAddress(String address) throws Exception {
+    public static long hashAddress(String address) throws Exception {
         int hashValue = 0;
         long generator = address.hashCode();
         while (true) {
@@ -34,31 +34,41 @@ public class Utils {
     }
 
     /**
-     * Send message to the given address
+     * Send message to the given address and receive a response object
      * @param address
      * @param message
-     * @return the response message from the given address
+     * @return the response object from the given address
      */
-    public static String sendMessage(InetSocketAddress address, String message) {
+    public static Object sendMessage(InetSocketAddress address, String message) {
         try {
             // Send message to the server via server's address
             Socket socket = new Socket(address.getAddress(), address.getPort());
-            PrintStream printStream = new PrintStream(socket.getOutputStream());
-            printStream.println(message);
+//            PrintStream printStream = new PrintStream(socket.getOutputStream());
+//            printStream.println(message);
+//            OutputStream outputStream = socket.getOutputStream();
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+            objectOutputStream.writeObject(message);
+            objectOutputStream.flush();
 
             // Wait 50 millisecs to receive the response
             Thread.sleep(50);
 
-            // Receive response message
-            InputStream inputStream = socket.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-            String response = reader.readLine();
+            // Receive response object
+//            InputStream inputStream = socket.getInputStream();
+//            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+//            String response = reader.readLine();
 
+//            InputStream inputStream = socket.getInputStream();
+            ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
+            Object response = objectInputStream.readObject();
+            objectInputStream.close();
+
+//            printStream.close();
+//            inputStream.close();
+//            reader.close();
+
+            objectOutputStream.close();
             socket.close();
-            printStream.close();
-            inputStream.close();
-            reader.close();
-
             return response;
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,14 +77,15 @@ public class Utils {
     }
 
     /**
-     * Get host address which contains ip address and port number from a gien hostAddress String
-     * @param hostAddress
+     * Get address which contains ip address and port number from a given address String
+     * @param addressString
      * @return InetSocketAddress of the host address
      */
-    public static InetSocketAddress getInetSocketAddressFrom(String hostAddress) {
+    public static InetSocketAddress getInetSocketAddressFrom(String addressString) {
         try {
-            // split input host address into ip address and port number
-            String[] splitted = hostAddress.split(":");
+            System.out.println("Getting InetSocketAddress from " + addressString);
+            // split input address into ip address and port number
+            String[] splitted = addressString.split(":");
 
             if (splitted.length == 2) {
                 InetAddress address = InetAddress.getByName(splitted[0]);
@@ -99,20 +110,44 @@ public class Utils {
     }
 
     /**
-     * Check if the given host address string exists, so that user can join the Chord network
-     * @return InetSocketAddress of the given host address if host address exists. Otherwise, null
+     * Construct a node from a given nodeString, which has the following format:
+     * ipAddress:port-nodeID-nodeName
+     * @param nodeString
+     * @return constructed node
      */
-    public static InetSocketAddress checkHostAddressExist(String hostAddress) {
+    public static Node constructNodeFrom(String nodeString) {
         try {
-
-            InetSocketAddress socketAddress = getInetSocketAddressFrom(hostAddress);
-            if (Controller.available(socketAddress)) {
-                return null;
+            // Construct a node from given message
+            // Message is in the format: ipAddress:port-nodeID-nodeName
+            String[] splitted = nodeString.split("-");
+            InetSocketAddress mySucAddress = getInetSocketAddressFrom(splitted[0]);
+            if (mySucAddress == null) {
+                return  null;
             } else {
-                return socketAddress;
+                Node node = new Node(mySucAddress, Long.parseLong(splitted[1]), splitted[2]);
+                return node;
             }
         } catch (Exception e) {
-            System.out.println("Given host address doesn't exist!");
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Check if the given address string exists, so that user can join the Chord network
+     * @return address of the given address string if address string exists. Otherwise, null
+     */
+    public static InetSocketAddress checkAddressExist(String addressString) {
+        try {
+
+            InetSocketAddress address = getInetSocketAddressFrom(addressString);
+            if (Controller.available(address)) {
+                return null;
+            } else {
+                return address;
+            }
+        } catch (Exception e) {
+            System.out.println("Given address doesn't exist!");
             return null;
         }
     }

@@ -1,19 +1,16 @@
 package chord.Components;
 
-import chord.Controller;
-import chord.Runnable.ListenerRunnable;
+import chord.Runnable.Listener;
 
-import java.io.*;
-import java.net.InetAddress;
+import java.io.Serializable;
 import java.net.InetSocketAddress;
-import java.net.Socket;
 
-public class Node {
+public class Node implements Serializable {
 
     private static int m = 7;
     private static int chordRingSize = (int) Math.pow(2, m);
 
-    private InetSocketAddress hostAddress = null;
+    private InetSocketAddress address = null;
     private Node predecessor = null;
     private Node successor = null;
     private FingerTable fingerTable = null;
@@ -22,21 +19,20 @@ public class Node {
     private long nodeId = -1;
     private String nodeName = "";
 
-    private Thread listener;
-    private ListenerRunnable listenerRunnable;
+    private Listener listener;
 
-    public Node (InetSocketAddress address) {
+    public Node(InetSocketAddress address) {
         try {
-            hostAddress = address;
+            this.address = address;
 
             // Initialize nodeId and nodeName
-            addressString = hostAddress.getAddress().getHostAddress() + ":" + hostAddress.getPort();
+            addressString = address.getAddress().getHostAddress() + ":" + address.getPort();
             generateIdAndName(addressString);
 
             // initialize threads
-            listenerRunnable = new ListenerRunnable(this);
-            listener = new Thread(listenerRunnable);
-//        stabilize = new Stabilize(this);
+            listener = new Listener(this);
+
+            //        stabilize = new Stabilize(this);
 //        fix_fingers = new FixFingers(this);
 //        ask_predecessor = new AskPredecessor(this);
 
@@ -45,13 +41,22 @@ public class Node {
         }
     }
 
+    public Node(InetSocketAddress address, long nodeId, String nodeName) {
+        try {
+            this.address = address;
+            this.nodeId = nodeId;
+            this.nodeName = nodeName;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * generate new hash key for node's ID and node's name from given address string
      * @param addressString
      */
     private void generateIdAndName(String addressString) {
         try {
-            long hashValue = Utils.hashHostAddress(addressString);
+            long hashValue = Utils.hashAddress(addressString);
             nodeId = hashValue;
             nodeName = "N" + nodeId;
             System.out.println("nodeId: " + nodeId);
@@ -66,7 +71,8 @@ public class Node {
      */
     private void startThreads() {
         try {
-            listener.start();
+            Thread listenerThread = new Thread(listener);
+            listenerThread.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -78,6 +84,7 @@ public class Node {
      */
     public boolean createNewNetwork() {
         try {
+            System.out.println("Creating new network with 1 node (ID=" + nodeId + ") ...");
             // Initialize a finger table
             fingerTable = new FingerTable(nodeId);
 
@@ -91,15 +98,15 @@ public class Node {
     }
 
     /**
-     * Join the ring in the Chord network from the given contact host address
+     * Join the ring in the Chord network from the given contact address
      * @param contactAddress
      * @return true if successfully joining the network. Otherwise, false
      */
     public boolean joinNetwork(InetSocketAddress contactAddress) {
         try {
 //            System.out.println("join Network from contact " + contactAddress.getAddress().getHostAddress() + ":" + contactAddress.getPort());
-//            System.out.println("My host address: " + hostAddress.getAddress().getHostAddress() + ":" + hostAddress.getPort());
-            if (contactAddress == null || (contactAddress.getAddress().getHostAddress().equals(hostAddress.getAddress().getHostAddress()) && contactAddress.getPort() == hostAddress.getPort())) {
+//            System.out.println("My address: " + address.getAddress().getHostAddress() + ":" + address.getPort());
+            if (contactAddress == null || (contactAddress.getAddress().getHostAddress().equals(address.getAddress().getHostAddress()) && contactAddress.getPort() == address.getPort())) {
                 System.out.println("Can't join my own address");
                 return false;
             }
@@ -109,7 +116,7 @@ public class Node {
 //            System.out.println("Check if nodeId exists");
             while(Utils.sendMessage(contactAddress, "DOES.ID.EXIST_" + nodeId).equals("ALREADY.EXIST")) {
                 System.out.println("ID " + nodeId + "already exists, generating new ID...");
-                addressString += "." + hostAddress.getPort();
+                addressString += "." + address.getPort();
                 generateIdAndName(addressString);
             }
 
@@ -123,10 +130,11 @@ public class Node {
             }
 
             // notify my new successor that I'm its new predecessor
-
+            System.out.println("My successor: " + successor.getAddress().getAddress().getHostAddress() + ":" + successor.getAddress().getPort());
+//            notifyMyNewSuccessor(successor.getAddress());
 
             // Update finger table
-            System.out.println("Asking the contact to fill out the finger table");
+//            System.out.println("Asking the contact to fill out the finger table");
 
             // update successor and predecessor in the finger table
 
@@ -138,8 +146,34 @@ public class Node {
         }
     }
 
+
     /**
-     * Ask current node to find ID's successor.
+     * Find my new successor from my contact address
+     * @param contactAddress
+     * @return new successor node
+     */
+    public Node findMyNewSuccessor(InetSocketAddress contactAddress) {
+        try {
+            if (contactAddress == null || (contactAddress.getAddress().getHostAddress().equals(address.getAddress().getHostAddress()) && contactAddress.getPort() == address.getPort())) {
+                System.out.println("Can't connect to my contact! wrong contact information");
+                return null;
+            } else {
+
+                // Response is a Node
+                Node newSuccessor = (Node) Utils.sendMessage(contactAddress, "JOINING-FIND.MY.SUCCESSOR_" + this.nodeId);
+                System.out.println("findMyNewSuccessor-response: id=" + newSuccessor.getNodeId() + ", address:" + newSuccessor.getAddress().getAddress().getHostAddress() + ":" + newSuccessor.getAddress().getPort());
+
+                return newSuccessor;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    /**
+     * Current node helps find ID's successor.
      * @param ID
      * @return ID's successor node
      */
@@ -147,19 +181,21 @@ public class Node {
         try {
             Node successor = this.getSuccessor();
 
-            // Find predecessor
+            // Find predecessor of ID
             Node predecessor = findPredecessorOf(ID);
 
             // if other node found, ask it for its successor
             if (predecessor.getNodeId() != this.nodeId) {
-                 // Response is in the format ipAddress:port_nodeID_nodeName
-                 String response = Utils.sendMessage(predecessor.getHostAddress(), "GET.YOUR.SUCCESSOR");
-                String[] splitted = response.split("_");
-                 successor = new Node(Utils.getInetSocketAddressFrom(splitted[0]));
-                 successor.setNodeId(Long.parseLong(splitted[1]));
-                 successor.setNodeName(splitted[2]);
+                 // Find successor of predecessor of ID
+                // Successor of ID = current successor of predecessor of ID
+//                String response = Utils.sendMessage(predecessor.getAddress(), "GET.YOUR.SUCCESSOR");
+                successor = (Node) Utils.sendMessage(predecessor.getAddress(), "GET.YOUR.SUCCESSOR");
+
+//                 successor = Utils.constructNodeFrom(response);
             }
+
             if (successor == null) {
+                System.out.println("Can't find " + ID + "'s successor. I'll be your successor");
                 successor = this;
             }
 
@@ -171,9 +207,28 @@ public class Node {
     }
 
 
+    /**
+     * Current node helps find ID's predecessor.
+     * @param ID
+     * @return ID's predecessor node
+     */
     private Node findPredecessorOf(long ID) {
         try {
+            // Start with myself
+            Node n = this;
 
+            // ID is not between n and n's successor
+            if (n.getSuccessor() != null) {
+                while(!(ID >= n.getNodeId() && ID <= n.getSuccessor().getNodeId())) {
+                    if (n == null) {
+                        System.out.println("Node is null, can't find ID's predecessor");
+                        return null;
+                    }
+                    n = n.closestPrecedingFingerOf(ID);
+                }
+            }
+
+            return n;
         } catch (Exception e) {
             e.printStackTrace();
             return  null;
@@ -181,63 +236,85 @@ public class Node {
     }
 
     /**
-     * Find my new successor from my contact host address
-     * @param contact
-     * @return new successor node
+     * Find closest preceding finger node of ID
+     * @param ID
+     * @return closest preceding finger node of ID
      */
-    public Node findMyNewSuccessor(InetSocketAddress contact) {
+    public Node closestPrecedingFingerOf(long ID) {
         try {
-            if (contact == null || (contact.getAddress().getHostAddress().equals(hostAddress.getAddress().getHostAddress()) && contact.getPort() == hostAddress.getPort())) {
-                System.out.println("Can't connect to my contact! wrong contact information");
-                return null;
-            } else {
-
-                // Response is in the format: ipAddress:host_nodeID_nodeName-suc's suc-ipAddress:host_nodeID_nodeName
-                String response = Utils.sendMessage(contact, "JOINING-FIND.MY.SUCCESSOR_" + hostAddress.getAddress().getHostAddress() + ":" + hostAddress.getPort());
-
-                String[] splitted = response.split("-");
-
-                // Construct my new successor's successor node
-                String[] mySucSuc = splitted[1].split("_");
-                InetSocketAddress mySucSucHostAddress = Utils.getInetSocketAddressFrom(mySucSuc[0]);
-                Node mySucSucNode = new Node(mySucSucHostAddress);
-                mySucSucNode.setNodeId(Long.parseLong(mySucSuc[1]));
-                mySucSucNode.setNodeName(mySucSuc[2]);
-
-                // Construct my new successor node
-                String[] mySuc = splitted[0].split("_");
-                InetSocketAddress mySucHostAddress = Utils.getInetSocketAddressFrom(mySuc[0]);
-                Node mySucNode = new Node(mySucHostAddress);
-                mySucNode.setNodeId(Long.parseLong(mySuc[1]));
-                mySucNode.setNodeName(mySuc[2]);
-                mySucNode.setPredecessor(this);
-                mySucNode.setSuccessor(mySucSucNode);
-
-                return mySucNode;
+            for (int i = Node.getM(); i < 1; i--) {
+                Node entryNode = fingerTable.getEntryNode(i);
+                if (entryNode != null) {
+                    long entryNodeId = entryNode.getNodeId();
+                    if (entryNodeId >= this.getNodeId() && entryNodeId <= ID) {
+                        return fingerTable.getEntryNode(i);
+                    }
+                }
             }
+            return  null;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
+//        long findid_relative = Helper.computeRelativeId(findid, localId);
+//
+//        // check from last item in finger table
+//        for (int i = 32; i > 0; i--) {
+//            InetSocketAddress ith_finger = finger.get(i);
+//            if (ith_finger == null) {
+//                continue;
+//            }
+//            long ith_finger_id = Helper.hashSocketAddress(ith_finger);
+//            long ith_finger_relative_id = Helper.computeRelativeId(ith_finger_id, localId);
+//
+//            // if its relative id is the closest, check if its alive
+//            if (ith_finger_relative_id > 0 && ith_finger_relative_id < findid_relative)  {
+//                String response  = Helper.sendRequest(ith_finger, "KEEP");
+//
+//                //it is alive, return it
+//                if (response!=null &&  response.equals("ALIVE")) {
+//                    return ith_finger;
+//                }
+//
+//                // else, remove its existence from finger table
+//                else {
+//                    updateFingers(-2, ith_finger);
+//                }
+//            }
+//        }
+//        return localAddress;
     }
+
 
     /**
      * Notify my new successor that I'm its new predecessor
-     * @param successor
+     * @param successorAddress
      * @return successor's response
      */
-    public String notifyMyNewSuccessor(InetSocketAddress successor) {
-        if (successor == null || (successor.getAddress().getHostAddress().equals(hostAddress.getAddress().getHostAddress()) && successor.getPort() == hostAddress.getPort())) {
-            System.out.println("Can't notify! empty successor information");
-            return null;
-        } else {
-            return Utils.sendMessage(successor, "I.AM.YOUR.NEW.PREDECESSOR_" + hostAddress.getAddress().getHostAddress() + ":" + hostAddress.getPort());
-        }
+//    public String notifyMyNewSuccessor(InetSocketAddress successorAddress) {
+//        try {
+//            if (successorAddress == null || (successorAddress.getAddress().getHostAddress().equals(address.getAddress().getHostAddress()) && successorAddress.getPort() == address.getPort())) {
+//                System.out.println("Can't notify! empty successor information");
+//                return null;
+//            } else {
+//                System.out.println("Notifying my new successor (" + successorAddress.getAddress().getHostAddress() + ":" + successorAddress.getPort() + ") that I'm (" + address.getAddress().getHostAddress() + ":" + address.getPort() + ") its new predecessor: ");
+//                return Utils.sendMessage(successorAddress, "I.AM.YOUR.NEW.PREDECESSOR_" + address.getAddress().getHostAddress() + ":" + address.getPort() + "-" + nodeId + "-" + nodeName);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
+
+
+    /**
+     * Stop all threads that have while loop
+     */
+    public void stopLoopThreads() {
+        listener.closeListener();
     }
 
-    public void stopLoopThreads() {
-        listenerRunnable.closeListener();
-    }
+
 
 
     /*****************************
@@ -251,8 +328,8 @@ public class Node {
         return chordRingSize;
     }
 
-    public InetSocketAddress getHostAddress() {
-        return hostAddress;
+    public InetSocketAddress getAddress() {
+        return address;
     }
 
     public Node getPredecessor() {
@@ -291,12 +368,8 @@ public class Node {
         return fingerTable;
     }
 
-    public Thread getListener() {
+    public Listener getListener() {
         return listener;
-    }
-
-    public ListenerRunnable getListenerRunnable() {
-        return listenerRunnable;
     }
 }
 

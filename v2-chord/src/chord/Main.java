@@ -19,7 +19,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.net.InetSocketAddress;
-import java.util.concurrent.CountDownLatch;
 
 public class Main extends Application {
 
@@ -65,22 +64,22 @@ public class Main extends Application {
 
     private void joinNetworkButtonClicked(ActionEvent event, Stage primaryStage, TextField ipTextField, Label alertLabel) {
         try {
-            // Check if given host address exists
-            InetSocketAddress address = Utils.checkHostAddressExist(ipTextField.getText());
+            // Check if given address exists
+            InetSocketAddress address = Utils.checkAddressExist(ipTextField.getText());
 
             if (address == null) {
-                alertLabel.setText("Cannot find the host address you are trying to join! Please try again!");
+                alertLabel.setText("Cannot find the address you are trying to join! Please try again!");
             } else {
                 showLoadingScene(primaryStage, "Joining Network...");
 
                 // In a Thread:
-                // Contact the given host address to join the network
+                // Contact the given address to join the network
                 boolean status = Controller.getMyNode().joinNetwork(address);
                 if (status) {
                     // Show the main window scene
                     showMainScene(primaryStage);
                 } else {
-                    alertLabel.setText("Unable to contact the host address you are trying to join! Please try again!");
+                    alertLabel.setText("Unable to contact the address you are trying to join! Please try again!");
                 }
 
             }
@@ -109,7 +108,7 @@ public class Main extends Application {
 
         // Pane to join an existing network
         BorderPane joinNetworkPane = new BorderPane();
-        Label joinNetworkLabel = new Label("Enter host address to join existing network:     \n(e.g. 127.0.0.1:8080)");
+        Label joinNetworkLabel = new Label("Enter address to join existing network:     \n(e.g. 127.0.0.1:8080)");
         TextField joinNetworkField = new TextField();
         Button joinNetworkBtn = new Button("Join");
         joinNetworkBtn.setOnAction(e -> joinNetworkButtonClicked(e, primaryStage, joinNetworkField, alertLabel));

@@ -2,6 +2,7 @@ package chord;
 
 import chord.Components.Node;
 
+import chord.Components.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -36,16 +37,10 @@ public class Controller {
         Socket ignored = new Socket();
         try {
             ignored.connect(address, 1000);
-            // Send message to check port availability
-            // Send message to the server
-            OutputStream outputStream = ignored.getOutputStream();
-            PrintStream printStream = new PrintStream(outputStream);
-            printStream.println("checking if port available");
-
+            // Send message to server to check port availability
+            Utils.sendMessage(address, "checking if port is available");
             System.out.println("port #" + address.getPort() + " not available");
 
-            printStream.close();
-            outputStream.close();
             ignored.close();
             return false;
         } catch (SocketTimeoutException e ) {
@@ -70,7 +65,7 @@ public class Controller {
             InetSocketAddress myAddress = new InetSocketAddress(InetAddress.getLocalHost(), initialPort);
             while (!available(myAddress)) {
                 initialPort += 1;
-                System.out.println("Checking port #" + initialPort);
+//                System.out.println("Checking port #" + initialPort);
                 myAddress = new InetSocketAddress(InetAddress.getLocalHost(), initialPort);
             }
             Controller.myNode = new Node(myAddress);
@@ -88,8 +83,8 @@ public class Controller {
      */
     public void initialize() {
         try {
-            InetSocketAddress address = Controller.myNode.getHostAddress();
-            addressLabel.setText("My host address: " + address.getAddress().getHostAddress() + ":" + address.getPort());
+            InetSocketAddress address = Controller.myNode.getAddress();
+            addressLabel.setText("My address: " + address.getAddress().getHostAddress() + ":" + address.getPort());
         } catch (Exception e) {
             e.printStackTrace();
         }
