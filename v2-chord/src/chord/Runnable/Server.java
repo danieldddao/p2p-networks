@@ -147,13 +147,12 @@ public class Server implements Runnable{
 
                 // New node is joining the network, find its successor
                 // Response is the successor node
-                case "JOINING. FIND MY SUCCESSOR":
+                case "FIND SUCCESSOR":
                     id = (long) messageArray[1];
                     System.out.println("New node wants to find its successor: " + socket.getLocalAddress().getHostAddress() + ":" + socket.getLocalPort());
                     Node successor = myNode.findSuccessorOf(id);
                     System.out.println("Found new node's successor: id=" + successor.getNodeId() + ", address:" + successor.getAddress().getAddress().getHostAddress() + ":" + successor.getAddress().getPort());
                     response = successor;
-
                     break;
 
 

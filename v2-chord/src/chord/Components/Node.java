@@ -29,6 +29,10 @@ public class Node implements Serializable {
             addressString = address.getAddress().getHostAddress() + ":" + address.getPort();
             generateIdAndName(addressString);
 
+            // Initialize a finger table and predecessor
+            fingerTable = new FingerTable(this);
+            this.predecessor = this;
+
             // initialize threads
             listener = new Listener(this);
 
@@ -85,10 +89,9 @@ public class Node implements Serializable {
     public boolean createNewNetwork() {
         try {
             System.out.println("Creating new network with 1 node (ID=" + nodeId + ") ...");
-            // Initialize a finger table
-            fingerTable = new FingerTable(nodeId);
 
             startThreads();
+
             System.out.println("Created network. My nodeId=" + nodeId + ", nodeName=" + nodeName);
             return true;
         } catch (Exception e) {
@@ -124,7 +127,14 @@ public class Node implements Serializable {
                 objArray[1] = this.nodeId;
             }
 
-            // joining the network
+            /*
+             * Joining the network
+             */
+            // Initialize finger table of local node
+            initFingerTable(contactAddress);
+
+            // Update all nodes whose finger tables should refer to local node
+
             // find my new successor node
             System.out.println("Joining the network via contact " + contactAddress.getAddress().getHostAddress() + ":" + contactAddress.getPort());
             successor = findMyNewSuccessor(contactAddress);
@@ -150,6 +160,26 @@ public class Node implements Serializable {
         }
     }
 
+    /**
+     * Ask contact to initialize finger table of local node
+     * @param contactAddress
+     */
+    public void initFingerTable(InetSocketAddress contactAddress) {
+        try {
+            //finger[1].node = contact.find_successor(finger[1].start)
+            // Ask contact to find the entry node of the 1st finger
+            Object[] objArray = new Object[2];
+            objArray[0] = "FIND SUCCESSOR";
+            objArray[1] = this.fingerTable.getRange(1).getKey();
+            System.out.println("INIT.FINGER.TABLE: ask contact " + contactAddress.getAddress().getHostAddress() + ":" + contactAddress.getPort() + " to find successor of id=" + objArray[1]);
+            Node firstFingerEntry = (Node) Utils.sendMessage(contactAddress, objArray);
+            this.fingerTable.updateEntryNode(1, firstFingerEntry);
+
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Find my new successor from my contact address
@@ -165,7 +195,7 @@ public class Node implements Serializable {
 
                 // Response is a Node
                 Object[] objArray = new Object[2];
-                objArray[0] = "JOINING. FIND MY SUCCESSOR";
+                objArray[0] = "FIND SUCCESSOR";
                 objArray[1] = this.nodeId;
                 Node newSuccessor = (Node) Utils.sendMessage(contactAddress, objArray);
                 System.out.println("findMyNewSuccessor-response: id=" + newSuccessor.getNodeId() + ", address:" + newSuccessor.getAddress().getAddress().getHostAddress() + ":" + newSuccessor.getAddress().getPort());
@@ -180,9 +210,10 @@ public class Node implements Serializable {
 
 
     /**
-     * Current node helps find ID's successor.
+     * Ask current node to find ID's successor.
      * @param ID
      * @return ID's successor node
+     *
      */
     public Node findSuccessorOf(long ID) {
         try {
@@ -191,22 +222,21 @@ public class Node implements Serializable {
             // Find predecessor of ID
             Node predecessor = findPredecessorOf(ID);
 
-            // if other node found, ask it for its successor
-            if (predecessor.getNodeId() != this.nodeId) {
-                 // Find successor of predecessor of ID
-                // Successor of ID = current successor of predecessor of ID
-//                String response = Utils.sendMessage(predecessor.getAddress(), "GET.YOUR.SUCCESSOR");
-                Object[] objArray = new Object[1];
-                objArray[0] = "GET YOUR SUCCESSOR";
-                successor = (Node) Utils.sendMessage(predecessor.getAddress(), objArray);
-
-//                 successor = Utils.constructNodeFrom(response);
+            // Find successor of predecessor of ID
+            // Successor of ID = successor of predecessor of ID
+            if (predecessor != null) {
+                return predecessor.getSuccessor();
             }
 
-            if (successor == null) {
-                System.out.println("Can't find " + ID + "'s successor. I'll be your successor");
-                successor = this;
-            }
+            // if ID's predecessor is found, ask it for its successor
+//                Object[] objArray = new Object[1];
+//                objArray[0] = "GET YOUR SUCCESSOR";
+//                successor = (Node) Utils.sendMessage(predecessor.getAddress(), objArray);
+
+//            if (successor == null) {
+//                System.out.println("Can't find " + ID + "'s successor. I'll be your successor");
+//                successor = this;
+//            }
 
             return successor;
         } catch (Exception e) {
@@ -217,7 +247,7 @@ public class Node implements Serializable {
 
 
     /**
-     * Current node helps find ID's predecessor.
+     * Ask current node to find ID's predecessor.
      * @param ID
      * @return ID's predecessor node
      */
@@ -245,9 +275,9 @@ public class Node implements Serializable {
     }
 
     /**
-     * Find closest preceding finger node of ID
+     * Find closest finger preceding ID
      * @param ID
-     * @return closest preceding finger node of ID
+     * @return closest finger preceding ID
      */
     public Node closestPrecedingFingerOf(long ID) {
         try {
@@ -255,43 +285,16 @@ public class Node implements Serializable {
                 Node entryNode = fingerTable.getEntryNode(i);
                 if (entryNode != null) {
                     long entryNodeId = entryNode.getNodeId();
-                    if (entryNodeId >= this.getNodeId() && entryNodeId <= ID) {
+                    if (entryNodeId > this.getNodeId() && entryNodeId < ID) {
                         return fingerTable.getEntryNode(i);
                     }
                 }
             }
-            return  null;
+            return  this;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
-//        long findid_relative = Helper.computeRelativeId(findid, localId);
-//
-//        // check from last item in finger table
-//        for (int i = 32; i > 0; i--) {
-//            InetSocketAddress ith_finger = finger.get(i);
-//            if (ith_finger == null) {
-//                continue;
-//            }
-//            long ith_finger_id = Helper.hashSocketAddress(ith_finger);
-//            long ith_finger_relative_id = Helper.computeRelativeId(ith_finger_id, localId);
-//
-//            // if its relative id is the closest, check if its alive
-//            if (ith_finger_relative_id > 0 && ith_finger_relative_id < findid_relative)  {
-//                String response  = Helper.sendRequest(ith_finger, "KEEP");
-//
-//                //it is alive, return it
-//                if (response!=null &&  response.equals("ALIVE")) {
-//                    return ith_finger;
-//                }
-//
-//                // else, remove its existence from finger table
-//                else {
-//                    updateFingers(-2, ith_finger);
-//                }
-//            }
-//        }
-//        return localAddress;
     }
 
 

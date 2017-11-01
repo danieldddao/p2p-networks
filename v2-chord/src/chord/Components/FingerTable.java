@@ -12,12 +12,12 @@ public class FingerTable implements Serializable {
     private int transitionFinger = 0; // finger that transitions from the max ID to 0 in a circle
     private Long nodeID = null;
 
-    public FingerTable(long nodeID) {
-        this.nodeID = nodeID;
+    public FingerTable(Node node) {
+        this.nodeID = node.getNodeId();
         this.entryNodes = new HashMap();
         this.ranges = new HashMap();
         for (int i = 1; i <= Node.getM(); i++) {
-            updateEntryNode(i, null);
+            updateEntryNode(i, node);
             if (i == 1) {
                 updateRange(i, nodeID + 1, nodeID + 1);
             } else {
