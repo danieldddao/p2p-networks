@@ -39,7 +39,7 @@ public class FingerTable implements Serializable {
     public void updateEntryNode(int i, Node newEntryNode) {
         try {
             if (newEntryNode != null) {
-                System.out.println("Updating entry " + i + "-th with new node having address: " + newEntryNode.getAddress().getAddress().getHostAddress() + ":" +  newEntryNode.getAddress().getPort() + " and id " + newEntryNode.getNodeId());
+                System.out.println(nodeID + " - Updating entry " + i + "-th with new node having address: " + newEntryNode.getAddress().getAddress().getHostAddress() + ":" +  newEntryNode.getAddress().getPort() + " and id=" + newEntryNode.getNodeName());
             }
             entryNodes.put(i, newEntryNode);
 //            // if the updated one is successor, notify the new successor
@@ -130,13 +130,13 @@ public class FingerTable implements Serializable {
     }
 
     public void printFingerTable() {
-        System.out.println("\nFinger Table:");
+        System.out.println(nodeID + " - Finger Table:");
         System.out.println("i\t\t range\t\t\t entry");
         for (int i = 1; i <= Node.getM(); i++) {
             String address = "null";
             String nodeID = "null";
             if (entryNodes.get(i) != null) {
-                address = entryNodes.get(i).getAddress().getHostString();
+                address = entryNodes.get(i).getAddress().getAddress().getHostAddress() + ":" + entryNodes.get(i).getAddress().getPort();
                 nodeID = "" + entryNodes.get(i).getNodeId();
             }
             System.out.println(String.format( "%1s \t\t %-8s \t\t  %-8s", i, ranges.get(i).getKey() + ".." + ranges.get(i).getValue(), address + ", " + nodeID));

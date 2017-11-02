@@ -1,6 +1,7 @@
 package chord.Runnable;
 
 import chord.Components.FingerTable;
+import chord.Components.MessageType;
 import chord.Components.Node;
 import chord.Components.Utils;
 
@@ -30,14 +31,14 @@ public class Server implements Runnable{
             // Receive message from the client
             ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
             Object[] messageArray = (Object[]) objectInputStream.readObject();
-            System.out.println("Message received: "+ messageArray[0]);
+            System.out.println(myNode.getNodeName() + "-SERVER: Message received: "+ messageArray[0]);
             if (messageArray.length >= 2) {
-                System.out.println("Object received: " + messageArray[1]);
+                System.out.println("SERVER: Object received: " + messageArray[1]);
             }
 
             if (messageArray[0] != null) {
                 Object response = processMessageRequest(messageArray);
-                System.out.println("Response message: " + response + "\n");
+                System.out.println(myNode.getNodeName() + "-SERVER: Response message: " + response + "\n");
 
                 // Send response to the client
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
@@ -92,81 +93,116 @@ public class Server implements Runnable{
     private Object processMessageRequest(Object[] messageArray) {
         Object response = null;
         try {
-            System.out.println("Processing message array: " + messageArray);
-            String message = (String) messageArray[0];
-            if (message.equals("CHECKING IF PORT IS AVAILABLE")) {
-                return "OK";
+            System.out.println(myNode.getNodeName() + "-SERVER: Processing message array: " + messageArray);
+            MessageType message = (MessageType) messageArray[0];
+            if (message == MessageType.CHECKING_IF_PORT_IS_AVAILABLE) {
+                return MessageType.OK;
             }
             long id;
 
             switch (message) {
                 // Check if ID belongs to a node in the network
-                case "DOES ID EXIST":
+                case DOES_ID_EXIST:
                     id = (long) messageArray[1];
-                    response = "NOT EXIST";
-                    System.out.println("Checking if ID exists: " + id);
+                    response = MessageType.NOT_EXIST;
+                    System.out.println(myNode.getNodeName() + "-SERVER: Checking if ID exists: " + id);
 
                     // Check my nodeID
                     if (id == myNode.getNodeId()) {
-                        System.out.println("ID belongs to me");
-                        response = "ALREADY EXIST";
+                        System.out.println(myNode.getNodeName() + "-SERVER: ID belongs to me");
+                        response = MessageType.ALREADY_EXIST;
                         break; // get out of switch statement
                     }
 
                     // Check my successor and predecessor
                     if ((myNode.getSuccessor() != null && id == myNode.getSuccessor().getNodeId()) || (myNode.getPredecessor() != null && id == myNode.getPredecessor().getNodeId())) {
-                        System.out.println("ID belongs to my predecessor or successor");
-                        response = "ALREADY EXIST";
+                        System.out.println(myNode.getNodeName() + "-SERVER: ID belongs to my predecessor or successor");
+                        response = MessageType.ALREADY_EXIST;
                         break; // get out of switch statement
                     }
 
                     // Check the finger table
-                    System.out.println("Checking finger table");
+                    System.out.println(myNode.getNodeName() + "-SERVER: Checking finger table");
                     FingerTable fingerTable = myNode.getFingerTable();
                     int iThFinger = fingerTable.findIthFingerOf(id); // Find the finger that stores information of the node ID
                     if (iThFinger == 0) {
-                        System.out.println("ID " + id + " is too large");
-                        response = "ALREADY EXIST";
+                        System.out.println(myNode.getNodeName() + "-SERVER: ID " + id + " is too large");
+                        response = MessageType.ALREADY_EXIST;
                         break; // get out of switch statement
                     }
 
-                    System.out.println("Found ID in the " + iThFinger + "-th finger");
+                    System.out.println(myNode.getNodeName() + "-SERVER: Found ID in the " + iThFinger + "-th finger");
                     fingerTable.printFingerTable();
                     Node entryNode = fingerTable.getEntryNode(iThFinger);
-                    if (entryNode != null) {   // If ID is already assigned to a node
+                    if (entryNode != null && entryNode.getNodeId() != myNode.getNodeId()) {   // If ID is already assigned to a node which is not me
                         // Contact that node to see if ID belongs to another node
-                        System.out.println("Contacting node #" + entryNode.getNodeId() + " (" + entryNode.getAddress().getAddress().getHostAddress() + ":" + entryNode.getAddress().getPort() + ")...");
+                        System.out.println(myNode.getNodeName() + "-SERVER: Contacting node #" + entryNode.getNodeId() + " (" + entryNode.getAddress().getAddress().getHostAddress() + ":" + entryNode.getAddress().getPort() + ")...");
                         Object[] objArray = new Object[2];
-                        objArray[0] = "DOES ID EXIST";
+                        objArray[0] = MessageType.DOES_ID_EXIST;
                         objArray[1] = id;
                         response = Utils.sendMessage(entryNode.getAddress(), objArray);
                     }
-
                     break;
 
 
                 // New node is joining the network, find its successor
                 // Response is the successor node
-                case "FIND SUCCESSOR":
+                case FIND_SUCCESSOR:
                     id = (long) messageArray[1];
-                    System.out.println("New node wants to find its successor: " + socket.getLocalAddress().getHostAddress() + ":" + socket.getLocalPort());
+                    System.out.println(myNode.getNodeName() + "-SERVER: A node wants to find successor of id=" + id);
                     Node successor = myNode.findSuccessorOf(id);
-                    System.out.println("Found new node's successor: id=" + successor.getNodeId() + ", address:" + successor.getAddress().getAddress().getHostAddress() + ":" + successor.getAddress().getPort());
+                    System.out.println(myNode.getNodeName() + "-SERVER: Found new node's successor: " + successor.getNodeName() + ", address:" + successor.getAddress().getAddress().getHostAddress() + ":" + successor.getAddress().getPort());
                     response = successor;
                     break;
 
 
-                // Response is a Node
-                case "GET YOUR SUCCESSOR":
+                // Find closest finger preceding id
+                // Response is a node
+                case CLOSEST_PRECEDING_FINGER:
+                    id = (long) messageArray[1];
+                    System.out.println(myNode.getNodeName() + "-SERVER: A node wants to find closest finger preceding id=" + id);
+                    Node closestFinger = myNode.closestPrecedingFingerOf(id);
+                    System.out.println(myNode.getNodeName() + "-SERVER: Found closest finger preceding id: " + closestFinger.getNodeName() + ", address:" + closestFinger.getAddress().getAddress().getHostAddress() + ":" + closestFinger.getAddress().getPort());
+                    response = closestFinger;
+                    break;
+
+//                // Response is a my successor Node
+                case GET_YOUR_SUCCESSOR:
+                    System.out.println(myNode.getNodeName() + "-SERVER: A node wants to get my successor " + myNode.getNodeName());
                     response = myNode.getSuccessor();
+                    System.out.println(myNode.getNodeName() + "-SERVER: Return my successor: " + myNode.getSuccessor().getNodeName() + ", address:" + myNode.getSuccessor().getAddress().getAddress().getHostAddress() + ":" + myNode.getSuccessor().getAddress().getPort());
+                    break;
+
+
+                // Return my predecessor
+                // Response is my predecessor a Node
+                case GET_YOUR_PREDECESSOR:
+                    System.out.println(myNode.getNodeName() + "-SERVER: A node wants to find predecessor of me " + myNode.getNodeName());
+                    response = myNode.getPredecessor();
+                    System.out.println(myNode.getNodeName() + "-SERVER: Return my predecessor: " + myNode.getPredecessor().getNodeName() + ", address:" + myNode.getPredecessor().getAddress().getAddress().getHostAddress() + ":" + myNode.getPredecessor().getAddress().getPort());
                     break;
 
 
                 // My predecessor has changed, updating my predecessor
-                case "I AM YOUR NEW PREDECESSOR":
+                case I_AM_YOUR_NEW_PREDECESSOR:
                     Node pre = (Node) messageArray[1];
                     myNode.setPredecessor(pre);
-                    response = "GOT IT";
+                    response = MessageType.GOT_IT;
+                    System.out.println(myNode.getNodeName() + "-SERVER: new predecessor id=" + pre.getNodeName() + ", address:" + pre.getAddress().getAddress().getHostAddress() + ":" + pre.getAddress().getPort());
+
+                    // Check if I need to update my successor
+                    myNode.getFingerTable().printFingerTable();
+                    break;
+
+
+                // Update i-th finger with node p
+                case UPDATE_FINGER_TABLE:
+                    Object[] msgObjArray = (Object[]) messageArray[1];
+                    int i = (int) msgObjArray[0];
+                    Node n = (Node) msgObjArray[1];
+                    System.out.println(myNode.getNodeName() + "-SERVER: Updating " + i + "-th finger with new node entry: " + n.getNodeName() + ", " + n.getAddress().getAddress().getHostAddress() + ":" + n.getAddress().getPort());
+                    myNode.updateFingerTable(i, n);
+                    response = MessageType.GOT_IT;
                     break;
 
             }

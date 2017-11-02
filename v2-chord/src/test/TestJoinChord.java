@@ -20,10 +20,10 @@ public class TestJoinChord {
         secondNode.joinNetwork(firstNode.getAddress()); // Join first node's network
 
         // Third Node
-        System.out.println("\n\n*****************************************************");
-        System.out.println("Third Node\n\n");
-        Controller.createSocketWhenAppStarts();
-        Node thirdNode = Controller.getMyNode();
-        thirdNode.joinNetwork(firstNode.getAddress()); // Join first node's network
+//        System.out.println("\n\n*****************************************************");
+//        System.out.println("Third Node\n\n");
+//        Controller.createSocketWhenAppStarts();
+//        Node thirdNode = Controller.getMyNode();
+//        thirdNode.joinNetwork(firstNode.getAddress()); // Join first node's network
     }
 }

@@ -1,5 +1,6 @@
 package chord;
 
+import chord.Components.MessageType;
 import chord.Components.Node;
 
 import chord.Components.Utils;
@@ -40,15 +41,20 @@ public class Controller {
             ignored.connect(address, 1000);
             // Send message to server to check port availability
             Object[] objArray = new Object[1];
-            objArray[0] = "CHECKING IF PORT IS AVAILABLE";
+            objArray[0] = MessageType.CHECKING_IF_PORT_IS_AVAILABLE;
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(ignored.getOutputStream());
             objectOutputStream.writeObject(objArray);
             objectOutputStream.flush();
 
-            System.out.println("port #" + address.getPort() + " not available");
+            // Receive response message
+            ObjectInputStream objectInputStream = new ObjectInputStream(ignored.getInputStream());
+            objectInputStream.readObject();
 
+            objectInputStream.close();
             objectOutputStream.close();
             ignored.close();
+
+            System.out.println("port #" + address.getPort() + " not available");
             return false;
         } catch (SocketTimeoutException e ) {
             System.out.println("Cannot connect to address");
@@ -57,7 +63,7 @@ public class Controller {
             System.out.println("Cannot connect to address");
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             System.out.println("port #" + address.getPort() + " available");
             return true;
         }
