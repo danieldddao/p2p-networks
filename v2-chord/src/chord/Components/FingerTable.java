@@ -130,17 +130,22 @@ public class FingerTable implements Serializable {
     }
 
     public void printFingerTable() {
-        System.out.println(nodeID + " - Finger Table:");
-        System.out.println("i\t\t range\t\t\t entry");
+        System.out.println("\nN" + nodeID + " - Finger Table:");
+        System.out.println("i\t\t range\t\t\t\t entry");
         for (int i = 1; i <= Node.getM(); i++) {
             String address = "null";
             String nodeID = "null";
             if (entryNodes.get(i) != null) {
                 address = entryNodes.get(i).getAddress().getAddress().getHostAddress() + ":" + entryNodes.get(i).getAddress().getPort();
-                nodeID = "" + entryNodes.get(i).getNodeId();
+                nodeID = "" + entryNodes.get(i).getNodeName();
             }
-            System.out.println(String.format( "%1s \t\t %-8s \t\t  %-8s", i, ranges.get(i).getKey() + ".." + ranges.get(i).getValue(), address + ", " + nodeID));
+            System.out.println(String.format( "%1s \t\t %-8s \t\t  %-8s", i, ranges.get(i).getKey() + ".." + ranges.get(i).getValue(), nodeID + " (" + address + ")"));
         }
         System.out.println();
     }
+
+    public int getTransitionFinger() {
+        return transitionFinger;
+    }
+
 }

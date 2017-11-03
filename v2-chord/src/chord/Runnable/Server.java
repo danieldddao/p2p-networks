@@ -133,6 +133,11 @@ public class Server implements Runnable{
 
                     System.out.println(myNode.getNodeName() + "-SERVER: Found ID in the " + iThFinger + "-th finger");
                     fingerTable.printFingerTable();
+                    // If ID is in the 1st finger and if ID exists, ID must be my successor.
+                    if (iThFinger == 1 && myNode.getSuccessor().getNodeId() != id) {
+                        System.out.println(myNode.getNodeName() + "-SERVER: ID is not my successor, so it doesn't exist");
+                        break;
+                    }
                     Node entryNode = fingerTable.getEntryNode(iThFinger);
                     if (entryNode != null && entryNode.getNodeId() != myNode.getNodeId()) {   // If ID is already assigned to a node which is not me
                         // Contact that node to see if ID belongs to another node
@@ -166,6 +171,7 @@ public class Server implements Runnable{
                     response = closestFinger;
                     break;
 
+
 //                // Response is a my successor Node
                 case GET_YOUR_SUCCESSOR:
                     System.out.println(myNode.getNodeName() + "-SERVER: A node wants to get my successor " + myNode.getNodeName());
@@ -191,7 +197,9 @@ public class Server implements Runnable{
                     System.out.println(myNode.getNodeName() + "-SERVER: new predecessor id=" + pre.getNodeName() + ", address:" + pre.getAddress().getAddress().getHostAddress() + ":" + pre.getAddress().getPort());
 
                     // Check if I need to update my successor
-                    myNode.getFingerTable().printFingerTable();
+                    if (myNode.getNodeId() == myNode.getSuccessor().getNodeId()) { // Only I was in the network, now I have a new successor
+                        myNode.setSuccessor(pre);
+                    }
                     break;
 
 
@@ -202,9 +210,14 @@ public class Server implements Runnable{
                     Node n = (Node) msgObjArray[1];
                     System.out.println(myNode.getNodeName() + "-SERVER: Updating " + i + "-th finger with new node entry: " + n.getNodeName() + ", " + n.getAddress().getAddress().getHostAddress() + ":" + n.getAddress().getPort());
                     myNode.updateFingerTable(i, n);
+                    myNode.getFingerTable().printFingerTable();
                     response = MessageType.GOT_IT;
                     break;
 
+                case PRINT_YOUR_FINGER_TABLE:
+                    myNode.getFingerTable().printFingerTable();
+                    response = MessageType.OK;
+                    break;
             }
             return response;
         } catch (Exception e){

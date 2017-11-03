@@ -44,15 +44,22 @@ public class Node implements Serializable {
         }
     }
 
-//    public Node(InetSocketAddress address, long nodeId, String nodeName) {
-//        try {
-//            this.address = address;
-//            this.nodeId = nodeId;
-//            this.nodeName = nodeName;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+    // For testing
+    public Node(InetSocketAddress address, long nodeId, String nodeName) {
+        try {
+            this.address = address;
+            this.nodeId = nodeId;
+            this.nodeName = nodeName;
+
+            // Initialize a finger table
+            fingerTable = new FingerTable(this);
+
+            // initialize threads
+            listener = new Listener(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * generate new hash key for node's ID and node's name from given address string
@@ -139,7 +146,7 @@ public class Node implements Serializable {
             if (status == false) {return false;}
 
             // Update all nodes whose finger tables should refer to local node
-            status = updateOtherNodes();
+            status = updateFingerTableOfOtherNodes();
             if (status == false) {return false;}
 
             // Transferring keys
@@ -164,7 +171,10 @@ public class Node implements Serializable {
 
             startThreads();
 
-            System.out.println(nodeName + "joined network from contact " + contactAddress.getAddress().getHostAddress() + ":" + contactAddress.getPort());
+            objArray[0] = MessageType.PRINT_YOUR_FINGER_TABLE;
+            Utils.sendMessage(contactAddress, objArray);
+            this.fingerTable.printFingerTable();
+            System.out.println("\n" + nodeName + " joined network from contact " + contactAddress.getAddress().getHostAddress() + ":" + contactAddress.getPort());
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -180,6 +190,7 @@ public class Node implements Serializable {
      */
     public boolean initFingerTable(InetSocketAddress contactAddress) {
         try {
+            System.out.println("**************************************************************");
             Object[] objArray = new Object[2];
 
             /*
@@ -223,7 +234,8 @@ public class Node implements Serializable {
                 long iplus1_start = this.fingerTable.getRange(i+1).getKey();
                 System.out.println(nodeName + ": INIT.FINGER.TABLE: Updating " + (i+1) + "-th finger entry, ask contact " + contactAddress.getAddress().getHostAddress() + ":" + contactAddress.getPort() +
                         " to find successor of id=" +iplus1_start);
-                if (iplus1_start >= this.nodeId && iplus1_start < this.fingerTable.getEntryNode(i).getNodeId()) {
+                //if (iplus1_start >= this.nodeId && iplus1_start < this.fingerTable.getEntryNode(i).getNodeId()) {
+                if (isIdBetweenLowerEq(iplus1_start, this.nodeId, this.fingerTable.getEntryNode(i).getNodeId())) {
                     this.fingerTable.updateEntryNode(i+1, this.fingerTable.getEntryNode(i));
 
                 // Otherwise, (i+1)-th finger entry is the successor of (i+1)-th finger's start position
@@ -237,7 +249,7 @@ public class Node implements Serializable {
                     this.fingerTable.updateEntryNode(i+1, n);
                 }
             }
-
+            System.out.println(nodeName + " - Successfully initialized finger table!\n");
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -254,15 +266,17 @@ public class Node implements Serializable {
      *
      * @return true if successfully update other nodes. Otherwise, false.
      */
-    public boolean updateOtherNodes() {
+    public boolean updateFingerTableOfOtherNodes() {
         try {
+            System.out.println("**************************************************************");
+            this.fingerTable.printFingerTable();
             for (int i=1; i <= getM(); i++) {
-
+                System.out.println();
                 // find last node p whose i-th finger might be this local node
                 long id = this.nodeId - (long) Math.pow(2, i-1);
-                System.out.println(nodeName + ": UPDATE.OTHER.NODES: id=" + id);
+                System.out.println(nodeName + ": UPDATE.OTHER.NODES: i=" + i + ", id=" + id);
                 Node p = findPredecessorOf(id);
-                if (p != null) {
+                if (p != null && p.getNodeId() != this.nodeId) {
                     // Update i-th finger in the finger table of p
                     Object[] msgArray = new Object[2];
                     msgArray[0] = i;
@@ -274,6 +288,7 @@ public class Node implements Serializable {
                     if (response != MessageType.GOT_IT) { return false;}
                 }
             }
+            System.out.println(nodeName + " - Successfully updated finger table of other nodes!\n");
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -288,21 +303,24 @@ public class Node implements Serializable {
      */
     public void updateFingerTable(int i, Node n) {
         try {
-            if (n.getNodeId() >= this.nodeId && n.getNodeId() < this.fingerTable.getEntryNode(i).getNodeId()) {
+            //if (n.getNodeId() >= this.nodeId && n.getNodeId() < this.fingerTable.getEntryNode(i).getNodeId()) {
+            if (isIdBetweenLowerEq(n.getNodeId(), this.nodeId, this.fingerTable.getEntryNode(i).getNodeId())) {
+                System.out.println(nodeName + " - UPDATE.FINGER.TABLE - Updating " + i + "-th finger with new node: " + n.getNodeName());
                 this.fingerTable.updateEntryNode(i, n);
 
-                // tell predecessor p to update finger table
-                // predecessor.updateFingerTable(i, n);
-                Node p = this.predecessor;
-
-                // Update i-th finger in the finger table of p
-                Object[] msgArray = new Object[2];
-                msgArray[0] = i;
-                msgArray[1] = n;
-                System.out.println(nodeName + ": UPDATE.FINGER.TABLE: Updating " + i + "-th finger of node " +
-                        p.getNodeName() + ", " + p.getAddress().getAddress().getHostAddress() + ":" + p.getAddress().getPort() +
-                        " with node " + n.nodeName + ", " + n.getAddress().getAddress().getHostAddress() + ":" + n.getAddress().getPort());
-                sendUpdateFingerTableMessage(p.getAddress(), msgArray);
+                Node p = this.predecessor; // get first preceding node
+                if (p.getNodeId() != n.getNodeId()) {
+                    // tell predecessor p to update finger table
+                    // Update i-th finger in the finger table of p
+                    // p.updateFingerTable(i, n);
+                    Object[] msgArray = new Object[2];
+                    msgArray[0] = i;
+                    msgArray[1] = n;
+                    System.out.println(nodeName + " - UPDATE.FINGER.TABLE: Tell to Update " + i + "-th finger of node " +
+                            p.getNodeName() + ", " + p.getAddress().getAddress().getHostAddress() + ":" + p.getAddress().getPort() +
+                            " with node " + n.nodeName + ", " + n.getAddress().getAddress().getHostAddress() + ":" + n.getAddress().getPort());
+                    sendUpdateFingerTableMessage(p.getAddress(), msgArray);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -320,34 +338,6 @@ public class Node implements Serializable {
             return null;
         }
     }
-
-        /**
-         * Find my new successor from my contact address
-         * @param contactAddress
-         * @return new successor node
-         */
-//    public Node findMyNewSuccessor(InetSocketAddress contactAddress) {
-//        try {
-//            if (contactAddress == null || (contactAddress.getAddress().getHostAddress().equals(address.getAddress().getHostAddress()) && contactAddress.getPort() == address.getPort())) {
-//                System.out.println("Can't connect to my contact! wrong contact information");
-//                return null;
-//            } else {
-//
-//                // Response is a Node
-//                Object[] objArray = new Object[2];
-//                objArray[0] = "FIND SUCCESSOR";
-//                objArray[1] = this.nodeId;
-//                Node newSuccessor = (Node) Utils.sendMessage(contactAddress, objArray);
-//                System.out.println("findMyNewSuccessor-response: id=" + newSuccessor.getNodeId() + ", address:" + newSuccessor.getAddress().getAddress().getHostAddress() + ":" + newSuccessor.getAddress().getPort());
-//
-//                return newSuccessor;
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
-
 
     /**
      * Ask current node to find ID's successor.
@@ -368,9 +358,11 @@ public class Node implements Serializable {
             // Successor of ID = successor of predecessor of ID
             if (predecessor != null) {
                 System.out.println(nodeName + ": FIND SUCCESSOR OF " + ID + " - FOUND PRE " + predecessor.getNodeName() + ". SUC is " + predecessor.getSuccessor().getNodeName());
-                Object[] objArray = new Object[1];
-                objArray[0] = MessageType.GET_YOUR_SUCCESSOR;
-                successor = (Node) Utils.sendMessage(predecessor.getAddress(), objArray);
+                if (predecessor.getNodeId() != this.nodeId) {
+                    Object[] objArray = new Object[1];
+                    objArray[0] = MessageType.GET_YOUR_SUCCESSOR;
+                    successor = (Node) Utils.sendMessage(predecessor.getAddress(), objArray);
+                }
             }
 
             System.out.println(nodeName + ": FIND SUCCESSOR OF " + ID + " - FOUND " + successor.getNodeName());
@@ -397,21 +389,36 @@ public class Node implements Serializable {
 
             // ID is not between n and n's successor
             if (n.getSuccessor() != null) {
-                while(!(ID > n.getNodeId() && ID <= n.getSuccessor().getNodeId()) && n.getNodeId() != n.getSuccessor().getNodeId()) {
+                while( !isIdBetweenUpperEq(ID, n.getNodeId(), n.getSuccessor().getNodeId()) ) {
                     System.out.println(nodeName + ": FINDING PREDECESSOR OF id=" + ID + ", n.getNodeId()=" + n.getNodeId() + ", n.getSuccessor().getNodeId()=" + n.getSuccessor().getNodeId());
                     if (n == null) {
                         System.out.println(nodeName + ": FIND PREDECESSOR: Node is null, can't find ID's predecessor");
                         return null;
                     }
+                    if (n.getNodeId() == n.getSuccessor().getNodeId()) {
+                        System.out.println(nodeName + ": FINDING PREDECESSOR OF id=" + ID + ", n is the successor of itself");
+                        break;
+                    }
+//                    if (this.fingerTable.findIthFingerOf(ID) >= this.fingerTable.getTransitionFinger()) {
+//                        System.out.println(nodeName + ": FINDING PREDECESSOR OF id=" + ID + ", ID is in the finger over transition finger");
+////                        if (n.getSuccessor().getNodeId() == n.getPredecessor().getNodeId()) {
+////                            n = n.getSuccessor();
+////                        }
+//                        break;
+//                    }
 
                     // Ask n to find closest finger preceding ID
-                    Object[] objArray = new Object[2];
-                    objArray[0] = MessageType.CLOSEST_PRECEDING_FINGER;
-                    objArray[1] = ID;
-                    n = (Node) Utils.sendMessage(n.getAddress(), objArray);
+                    if (n.getNodeId() == this.nodeId) {
+                        n = closestPrecedingFingerOf(ID);
+                    } else {
+                        Object[] objArray = new Object[2];
+                        objArray[0] = MessageType.CLOSEST_PRECEDING_FINGER;
+                        objArray[1] = ID;
+                        n = (Node) Utils.sendMessage(n.getAddress(), objArray);
+                    }
                 }
             }
-
+            System.out.println(nodeName + ": FIND PREDECESSOR: FOUND ID=" + ID + " 's predecessor: " + n.getNodeName());
             return n;
         } catch (Exception e) {
             e.printStackTrace();
@@ -427,12 +434,13 @@ public class Node implements Serializable {
     public Node closestPrecedingFingerOf(long ID) {
         try {
             if (ID < 0 || ID > chordRingSize) { return null; }
-
-            for (int i = Node.getM(); i < 1; i--) {
+            System.out.println(nodeName + "- FINDING CLOSEST.PRECEDING.FINGER.OF " + ID);
+//            this.fingerTable.printFingerTable();
+            for (int i = Node.getM(); i > 1; i--) {
                 Node entryNode = fingerTable.getEntryNode(i);
+                System.out.println(nodeName + "- CLOSEST.PRECEDING.FINGER.OF " + ID + ", i-th finger=" + i + " , entryNode=" + entryNode.getNodeName());
                 if (entryNode != null) {
-                    long entryNodeId = entryNode.getNodeId();
-                    if (entryNodeId > this.getNodeId() && entryNodeId < ID) {
+                    if (isIdBetweenNotEq(entryNode.getNodeId(), this.nodeId, ID)) {
                         Node returnNode = fingerTable.getEntryNode(i);
                         System.out.println(nodeName + "- CLOSEST.PRECEDING.FINGER.OF " + ID + " is " + returnNode.getNodeName() + ", " + returnNode.getAddress().getAddress().getHostAddress() + ":" + returnNode.getAddress().getPort());
                         return returnNode;
@@ -447,6 +455,56 @@ public class Node implements Serializable {
         }
     }
 
+    private boolean isIdBetweenUpperEq(long id, long n, long np) {
+        try {
+            System.out.println(nodeName + " - IS.ID.BETWEENUpperEq id=" + id + " , n=" + n + " , np=" + np);
+            boolean res;
+            if (n < np) {
+                res =  id > n && id <= np;
+            } else {
+                res =  id < n && id <= np || id > n && id >= np;
+            }
+            System.out.println(res);
+            return res;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private boolean isIdBetweenLowerEq(long id, long n, long np) {
+        try {
+            System.out.println(nodeName + " - IS.ID.BETWEENLowerEq id=" + id + " , n=" + n + " , np=" + np);
+            boolean res;
+            if (n < np) {
+                res =  id >= n && id < np;
+            } else {
+                res =  id <= n && id < np || id >= n && id > np;
+            }
+            System.out.println(res);
+            return res;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private boolean isIdBetweenNotEq(long id, long n, long np) {
+        try {
+            System.out.println(nodeName + " - IS.ID.BETWEENNotEq id=" + id + " , n=" + n + " , np=" + np);
+            boolean res;
+            if (n < np) {
+                res =  id > n && id < np;
+            } else {
+                res =  id < n && id < np || id > n && id > np;
+            }
+            System.out.println(res);
+            return res;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     /**
      * Notify my new successor that I'm its new predecessor
@@ -485,6 +543,10 @@ public class Node implements Serializable {
     /*****************************
      * Getter and setter methods
      */
+    public static void setM(int m) {
+        Node.m = m;
+        Node.chordRingSize = (int) Math.pow(2, m);
+    }
     public static int getM() {
         return m;
     }

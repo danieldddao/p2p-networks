@@ -23,6 +23,7 @@ public class Controller {
     public static Node getMyNode() {
         return myNode;
     }
+    public static void setMyNode(Node n) {myNode = n; }
 
     public static void stopLoopThreads() {
         myNode.stopLoopThreads();
@@ -57,10 +58,10 @@ public class Controller {
             System.out.println("port #" + address.getPort() + " not available");
             return false;
         } catch (SocketTimeoutException e ) {
-            System.out.println("Cannot connect to address");
+            System.out.println("port #" + address.getPort() + " available");
             return true;
         } catch (ConnectException e ) {
-            System.out.println("Cannot connect to address");
+            System.out.println("port #" + address.getPort() + " available");
             return true;
         } catch (Exception e) {
 //            e.printStackTrace();
