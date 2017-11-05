@@ -39,7 +39,7 @@ public class FingerTable implements Serializable {
     public void updateEntryNode(int i, Node newEntryNode) {
         try {
             if (newEntryNode != null) {
-                System.out.println(nodeID + " - Updating entry " + i + "-th with new node having address: " + newEntryNode.getAddress().getAddress().getHostAddress() + ":" +  newEntryNode.getAddress().getPort() + " and id=" + newEntryNode.getNodeName());
+                System.out.println(nodeID + " - FINGER.TABLE - Updating entry # " + i + " with new node having address: " + newEntryNode.getAddress().getAddress().getHostAddress() + ":" +  newEntryNode.getAddress().getPort() + " and id=" + newEntryNode.getNodeName());
             }
             entryNodes.put(i, newEntryNode);
 //            // if the updated one is successor, notify the new successor

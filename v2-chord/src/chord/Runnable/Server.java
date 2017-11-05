@@ -131,7 +131,7 @@ public class Server implements Runnable{
                         break; // get out of switch statement
                     }
 
-                    System.out.println(myNode.getNodeName() + "-SERVER: Found ID in the " + iThFinger + "-th finger");
+                    System.out.println(myNode.getNodeName() + "-SERVER: Found ID in the finger # " + iThFinger);
                     fingerTable.printFingerTable();
                     // If ID is in the 1st finger and if ID exists, ID must be my successor.
                     if (iThFinger == 1 && myNode.getSuccessor().getNodeId() != id) {
@@ -197,9 +197,20 @@ public class Server implements Runnable{
                     System.out.println(myNode.getNodeName() + "-SERVER: new predecessor id=" + pre.getNodeName() + ", address:" + pre.getAddress().getAddress().getHostAddress() + ":" + pre.getAddress().getPort());
 
                     // Check if I need to update my successor
-                    if (myNode.getNodeId() == myNode.getSuccessor().getNodeId()) { // Only I was in the network, now I have a new successor
-                        myNode.setSuccessor(pre);
-                    }
+//                    if (myNode.getNodeId() == myNode.getSuccessor().getNodeId()) { // Only I was in the network, now I have a new successor
+//                        myNode.setSuccessor(pre);
+//                    }
+                    break;
+
+
+                // My successor has changed, updating my successor
+                case I_AM_YOUR_NEW_SUCCESSOR:
+                    Node suc = (Node) messageArray[1];
+                    myNode.setSuccessor(suc);
+                    // Update my 1-st finger as well
+                    myNode.getFingerTable().updateEntryNode(1, suc);
+                    response = MessageType.GOT_IT;
+                    System.out.println(myNode.getNodeName() + "-SERVER: new predecessor id=" + suc.getNodeName() + ", address:" + suc.getAddress().getAddress().getHostAddress() + ":" + suc.getAddress().getPort());
                     break;
 
 

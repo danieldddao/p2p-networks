@@ -70,17 +70,28 @@ public class Controller {
         }
     }
 
+    private static InetAddress getLocalHost() {
+        try {
+            InetAddress address = InetAddress.getByName("127.0.0.1");
+            return address;
+//            return InetAddress.getLocalHost();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     /**
      * Find available port, create server socket, and initialize Chord node
      */
     public static void createSocketWhenAppStarts() {
         try {
             int initialPort = 1111;
-            InetSocketAddress myAddress = new InetSocketAddress(InetAddress.getLocalHost(), initialPort);
+            InetSocketAddress myAddress = new InetSocketAddress(getLocalHost(), initialPort);
             while (!available(myAddress)) {
                 initialPort += 1;
 //                System.out.println("Checking port #" + initialPort);
-                myAddress = new InetSocketAddress(InetAddress.getLocalHost(), initialPort);
+                myAddress = new InetSocketAddress(getLocalHost(), initialPort);
             }
             Controller.myNode = new Node(myAddress);
             System.out.println("Socket created on " + myAddress.getAddress().getHostAddress() + ":" + myAddress.getPort());
