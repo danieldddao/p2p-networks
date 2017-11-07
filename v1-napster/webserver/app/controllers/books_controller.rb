@@ -11,7 +11,7 @@ class BooksController < ApplicationController
 
   def create
     puts "user ip: " + params[:user_ip]
-    book = Book.new(:user_ip => params[:user_ip], :port_number => params[:port_number], :title => params[:title], :isbn => params[:isbn], :author => params[:author], :location => params[:location])
+    book = Book.new(:user_ip => params[:user_ip], :port_number => params[:port_number], :title => params[:title].downcase, :isbn => params[:isbn], :author => params[:author].downcase, :location => params[:location])
     if book.save
       puts "#{book.title} at #{book.location} was successfully added to #{book.user_ip}"
       render json: book, status: 201
@@ -90,13 +90,13 @@ class BooksController < ApplicationController
       books = Book.where(:isShared => true)
       render json: books, status: 200
     else
-      books = Book.where(:title => params[:search_term], :isShared => true)
+      books = Book.where(:title => params[:search_term].downcase, :isShared => true)
       if !(books.blank?)
         puts "found books by title"
         puts books
         render json: books, status: 200
       else
-        books = Book.where(:author => params[:search_term], :isShared => true)
+        books = Book.where(:author => params[:search_term].downcase, :isShared => true)
         if !(books.blank?)
           puts "found books by author"
           puts books

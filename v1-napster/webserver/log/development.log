@@ -12763,3 +12763,609 @@ Processing by BooksController#search as HTML
 Completed 200 OK in 2ms (Views: 1.2ms | ActiveRecord: 0.3ms)
 
 
+Started POST "/books/allmybooks" for 10.0.1.159 at 2017-11-06 21:42:04 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"10.0.1.159", "port_number"=>"1111"}
+  [1m[36mBook Load (0.6ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_ip", "10.0.1.159"], ["port_number", "1111"]]
+Completed 204 No Content in 31ms (Views: 0.2ms | ActiveRecord: 0.9ms)
+
+
+Started POST "/books/search" for 10.0.1.159 at 2017-11-06 21:42:08 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.6ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 18ms (Views: 15.9ms | ActiveRecord: 1.7ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.159 at 2017-11-06 21:42:14 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"10.0.1.159", "port_number"=>"1111"}
+  [1m[36mBook Load (0.2ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_ip", "10.0.1.159"], ["port_number", "1111"]]
+Completed 204 No Content in 2ms (Views: 0.1ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.159 at 2017-11-06 21:42:16 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"10.0.1.159", "port_number"=>"1111"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_ip", "10.0.1.159"], ["port_number", "1111"]]
+Completed 204 No Content in 2ms (Views: 0.1ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/unsharebook" for 10.0.1.159 at 2017-11-06 21:42:34 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#unshareBook as HTML
+  Parameters: {"user_ip"=>"10.0.1.159"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_ip" = ?[0m  [["user_ip", "10.0.1.159"]]
+No template found for BooksController#unshareBook, rendering head :no_content
+Completed 204 No Content in 137ms (ActiveRecord: 0.3ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.159 at 2017-11-06 21:43:12 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+):
+  
+activerecord (5.1.4) lib/active_record/migration.rb:576:in `check_pending!'
+activerecord (5.1.4) lib/active_record/migration.rb:553:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/callbacks.rb:26:in `block in call'
+activesupport (5.1.4) lib/active_support/callbacks.rb:97:in `run_callbacks'
+actionpack (5.1.4) lib/action_dispatch/middleware/callbacks.rb:24:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/debug_exceptions.rb:59:in `call'
+web-console (3.5.1) lib/web_console/middleware.rb:135:in `call_app'
+web-console (3.5.1) lib/web_console/middleware.rb:20:in `block in call'
+web-console (3.5.1) lib/web_console/middleware.rb:18:in `catch'
+web-console (3.5.1) lib/web_console/middleware.rb:18:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.1.4) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.1.4) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.1.4) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.1.4) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.1.4) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.1.4) lib/rails/rack/logger.rb:24:in `call'
+sprockets-rails (3.2.1) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/request_id.rb:25:in `call'
+rack (2.0.3) lib/rack/method_override.rb:22:in `call'
+rack (2.0.3) lib/rack/runtime.rb:22:in `call'
+activesupport (5.1.4) lib/active_support/cache/strategy/local_cache_middleware.rb:27:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/static.rb:125:in `call'
+rack (2.0.3) lib/rack/sendfile.rb:111:in `call'
+railties (5.1.4) lib/rails/engine.rb:522:in `call'
+puma (3.10.0) lib/puma/configuration.rb:225:in `call'
+puma (3.10.0) lib/puma/server.rb:605:in `handle_request'
+puma (3.10.0) lib/puma/server.rb:437:in `process_client'
+puma (3.10.0) lib/puma/server.rb:301:in `block in run'
+puma (3.10.0) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started POST "/books/unsharebook" for 10.0.1.159 at 2017-11-06 21:43:33 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+):
+  
+activerecord (5.1.4) lib/active_record/migration.rb:576:in `check_pending!'
+activerecord (5.1.4) lib/active_record/migration.rb:553:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/callbacks.rb:26:in `block in call'
+activesupport (5.1.4) lib/active_support/callbacks.rb:97:in `run_callbacks'
+actionpack (5.1.4) lib/action_dispatch/middleware/callbacks.rb:24:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/debug_exceptions.rb:59:in `call'
+web-console (3.5.1) lib/web_console/middleware.rb:135:in `call_app'
+web-console (3.5.1) lib/web_console/middleware.rb:20:in `block in call'
+web-console (3.5.1) lib/web_console/middleware.rb:18:in `catch'
+web-console (3.5.1) lib/web_console/middleware.rb:18:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.1.4) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.1.4) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.1.4) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.1.4) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.1.4) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.1.4) lib/rails/rack/logger.rb:24:in `call'
+sprockets-rails (3.2.1) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/request_id.rb:25:in `call'
+rack (2.0.3) lib/rack/method_override.rb:22:in `call'
+rack (2.0.3) lib/rack/runtime.rb:22:in `call'
+activesupport (5.1.4) lib/active_support/cache/strategy/local_cache_middleware.rb:27:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/static.rb:125:in `call'
+rack (2.0.3) lib/rack/sendfile.rb:111:in `call'
+railties (5.1.4) lib/rails/engine.rb:522:in `call'
+puma (3.10.0) lib/puma/configuration.rb:225:in `call'
+puma (3.10.0) lib/puma/server.rb:605:in `handle_request'
+puma (3.10.0) lib/puma/server.rb:437:in `process_client'
+puma (3.10.0) lib/puma/server.rb:301:in `block in run'
+puma (3.10.0) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (3.0ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (1.9ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateBooks (20171004144640)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.6ms)[0m  [1m[35mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "user_ip" varchar, "port_number" varchar, "title" varchar, "author" varchar, "isbn" varchar, "location" varchar, "isShared" boolean DEFAULT 't')[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE UNIQUE INDEX "user_ip_and_port_and_location" ON "books" ("user_ip", "port_number", "location")[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20171004144640"]]
+  [1m[35m (1.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "development"], ["created_at", "2017-11-07 03:44:15.178872"], ["updated_at", "2017-11-07 03:44:15.178872"]]
+  [1m[35m (1.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='user_ip_and_port_and_location' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='user_ip_and_port_and_location' AND type='index'
+[0m
+Started POST "/books/allmybooks" for 10.0.1.159 at 2017-11-06 21:44:32 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"10.0.1.159", "port_number"=>"1111"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_ip", "10.0.1.159"], ["port_number", "1111"]]
+Completed 204 No Content in 73ms (Views: 0.3ms | ActiveRecord: 1.0ms)
+
+
+Started POST "/books/search" for 10.0.1.159 at 2017-11-06 21:44:39 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 3ms (Views: 1.4ms | ActiveRecord: 0.7ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.159 at 2017-11-06 21:44:44 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"10.0.1.159", "port_number"=>"1111"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_ip", "10.0.1.159"], ["port_number", "1111"]]
+Completed 204 No Content in 2ms (Views: 0.1ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.159 at 2017-11-06 21:44:45 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"10.0.1.159", "port_number"=>"1111"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_ip", "10.0.1.159"], ["port_number", "1111"]]
+Completed 204 No Content in 1ms (Views: 0.1ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.159 at 2017-11-06 21:44:46 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"10.0.1.159", "port_number"=>"1111"}
+  [1m[36mBook Load (0.5ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_ip", "10.0.1.159"], ["port_number", "1111"]]
+Completed 204 No Content in 2ms (Views: 0.1ms | ActiveRecord: 0.5ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.159 at 2017-11-06 21:44:47 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"10.0.1.159", "port_number"=>"1111"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_ip", "10.0.1.159"], ["port_number", "1111"]]
+Completed 204 No Content in 2ms (Views: 0.4ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/unsharebook" for 10.0.1.159 at 2017-11-06 21:44:49 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#unshareBook as HTML
+  Parameters: {"user_ip"=>"10.0.1.159"}
+  [1m[36mBook Load (0.2ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_ip" = ?[0m  [["user_ip", "10.0.1.159"]]
+No template found for BooksController#unshareBook, rendering head :no_content
+Completed 204 No Content in 150ms (ActiveRecord: 0.2ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.159 at 2017-11-06 21:45:02 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"10.0.1.159", "port_number"=>"1111"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_ip", "10.0.1.159"], ["port_number", "1111"]]
+Completed 204 No Content in 2ms (Views: 0.2ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.159 at 2017-11-06 21:47:27 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"10.0.1.159", "port_number"=>"1111"}
+  [1m[36mBook Load (1.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_ip", "10.0.1.159"], ["port_number", "1111"]]
+Completed 204 No Content in 8ms (Views: 0.2ms | ActiveRecord: 1.4ms)
+
+
+Started POST "/books/new" for 10.0.1.159 at 2017-11-06 21:47:58 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#create as HTML
+  Parameters: {"user_ip"=>"10.0.1.159", "port_number"=>"1111", "title"=>"Skip Graphs", "isbn"=>"", "author"=>"James Aspnes, Gauri Shah", "location"=>"/Users/danieldao/Downloads/skip-graphs.pdf"}
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "books" ("user_ip", "port_number", "title", "author", "isbn", "location") VALUES (?, ?, ?, ?, ?, ?)[0m  [["user_ip", "10.0.1.159"], ["port_number", "1111"], ["title", "Skip Graphs"], ["author", "James Aspnes, Gauri Shah"], ["isbn", ""], ["location", "/Users/danieldao/Downloads/skip-graphs.pdf"]]
+  [1m[35m (2.3ms)[0m  [1m[36mcommit transaction[0m
+Completed 201 Created in 64ms (Views: 0.5ms | ActiveRecord: 5.8ms)
+
+
+Started POST "/books/search" for 10.0.1.159 at 2017-11-06 21:55:41 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>" Skip graphs"}
+  [1m[36mBook Load (1.5ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."title" = ? AND "books"."isShared" = ?[0m  [["title", " Skip graphs"], ["isShared", "t"]]
+  [1m[36mBook Load (0.7ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."author" = ? AND "books"."isShared" = ?[0m  [["author", " Skip graphs"], ["isShared", "t"]]
+  [1m[36mBook Load (0.5ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isbn" = ? AND "books"."isShared" = ?[0m  [["isbn", " Skip graphs"], ["isShared", "t"]]
+Completed 204 No Content in 8ms (Views: 0.2ms | ActiveRecord: 2.7ms)
+
+
+Started POST "/books/search" for 10.0.1.159 at 2017-11-06 21:55:49 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>"Skip graphs"}
+  [1m[36mBook Load (0.6ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."title" = ? AND "books"."isShared" = ?[0m  [["title", "Skip graphs"], ["isShared", "t"]]
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."author" = ? AND "books"."isShared" = ?[0m  [["author", "Skip graphs"], ["isShared", "t"]]
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isbn" = ? AND "books"."isShared" = ?[0m  [["isbn", "Skip graphs"], ["isShared", "t"]]
+Completed 204 No Content in 6ms (Views: 0.3ms | ActiveRecord: 1.3ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.159 at 2017-11-06 21:56:25 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"10.0.1.159", "port_number"=>"1111"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_ip", "10.0.1.159"], ["port_number", "1111"]]
+Completed 200 OK in 7ms (Views: 0.9ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.159 at 2017-11-06 21:56:28 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"10.0.1.159", "port_number"=>"1111"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_ip", "10.0.1.159"], ["port_number", "1111"]]
+Completed 200 OK in 3ms (Views: 0.5ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/books/search" for 10.0.1.159 at 2017-11-06 21:56:51 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>"Skip graphs"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."title" = ? AND "books"."isShared" = ?[0m  [["title", "Skip graphs"], ["isShared", "t"]]
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."author" = ? AND "books"."isShared" = ?[0m  [["author", "Skip graphs"], ["isShared", "t"]]
+  [1m[36mBook Load (0.2ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isbn" = ? AND "books"."isShared" = ?[0m  [["isbn", "Skip graphs"], ["isShared", "t"]]
+Completed 204 No Content in 4ms (Views: 0.1ms | ActiveRecord: 0.8ms)
+
+
+Started POST "/books/search" for 10.0.1.159 at 2017-11-06 21:56:55 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>"skip"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."title" = ? AND "books"."isShared" = ?[0m  [["title", "skip"], ["isShared", "t"]]
+  [1m[36mBook Load (0.2ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."author" = ? AND "books"."isShared" = ?[0m  [["author", "skip"], ["isShared", "t"]]
+  [1m[36mBook Load (0.2ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isbn" = ? AND "books"."isShared" = ?[0m  [["isbn", "skip"], ["isShared", "t"]]
+Completed 204 No Content in 3ms (Views: 0.1ms | ActiveRecord: 0.6ms)
+
+
+Started POST "/books/search" for 10.0.1.159 at 2017-11-06 21:56:57 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>""}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isShared" = ?[0m  [["isShared", "t"]]
+Completed 200 OK in 2ms (Views: 1.3ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/search" for 10.0.1.159 at 2017-11-06 21:57:02 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>"Skip Graphs"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."title" = ? AND "books"."isShared" = ?[0m  [["title", "Skip Graphs"], ["isShared", "t"]]
+Completed 200 OK in 2ms (Views: 0.4ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/search" for 10.0.1.159 at 2017-11-06 21:57:07 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>"Skip Graphs"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."title" = ? AND "books"."isShared" = ?[0m  [["title", "Skip Graphs"], ["isShared", "t"]]
+Completed 200 OK in 2ms (Views: 0.4ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/search" for 10.0.1.159 at 2017-11-06 21:57:10 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>"a"}
+  [1m[36mBook Load (0.5ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."title" = ? AND "books"."isShared" = ?[0m  [["title", "a"], ["isShared", "t"]]
+  [1m[36mBook Load (1.2ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."author" = ? AND "books"."isShared" = ?[0m  [["author", "a"], ["isShared", "t"]]
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isbn" = ? AND "books"."isShared" = ?[0m  [["isbn", "a"], ["isShared", "t"]]
+Completed 204 No Content in 7ms (Views: 0.1ms | ActiveRecord: 2.0ms)
+
+
+Started POST "/books/unsharebook" for 10.0.1.159 at 2017-11-06 21:57:15 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#unshareBook as HTML
+  Parameters: {"user_ip"=>"10.0.1.159"}
+  [1m[36mBook Load (0.2ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_ip" = ?[0m  [["user_ip", "10.0.1.159"]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[33mUPDATE "books" SET "isShared" = ? WHERE "books"."id" = ?[0m  [["isShared", "f"], ["id", 1]]
+  [1m[35m (2.0ms)[0m  [1m[36mcommit transaction[0m
+No template found for BooksController#unshareBook, rendering head :no_content
+Completed 204 No Content in 215ms (ActiveRecord: 2.7ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.159 at 2017-11-06 21:57:22 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"10.0.1.159", "port_number"=>"1111"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_ip", "10.0.1.159"], ["port_number", "1111"]]
+Completed 200 OK in 3ms (Views: 0.7ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/books/updatesharingstatus" for 10.0.1.159 at 2017-11-06 21:57:22 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#updateSharingStatus as HTML
+  Parameters: {"user_ip"=>"10.0.1.159", "port_number"=>"1111", "location"=>"/Users/danieldao/Downloads/skip-graphs.pdf", "sharing_status"=>"true"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_ip" = ? AND "books"."port_number" = ? AND "books"."location" = ?[0m  [["user_ip", "10.0.1.159"], ["port_number", "1111"], ["location", "/Users/danieldao/Downloads/skip-graphs.pdf"]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[33mUPDATE "books" SET "isShared" = ? WHERE "books"."id" = ?[0m  [["isShared", "t"], ["id", 1]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+Completed 200 OK in 7ms (Views: 0.6ms | ActiveRecord: 2.2ms)
+
+
+Started POST "/books/search" for 10.0.1.159 at 2017-11-06 21:58:55 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>"Skip Graph"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."title" = ? AND "books"."isShared" = ?[0m  [["title", "skip graph"], ["isShared", "t"]]
+  [1m[36mBook Load (0.2ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."author" = ? AND "books"."isShared" = ?[0m  [["author", "skip graph"], ["isShared", "t"]]
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isbn" = ? AND "books"."isShared" = ?[0m  [["isbn", "Skip Graph"], ["isShared", "t"]]
+Completed 204 No Content in 44ms (Views: 0.4ms | ActiveRecord: 1.9ms)
+
+
+Started POST "/books/search" for 10.0.1.159 at 2017-11-06 21:59:05 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>"Skip Graphs"}
+  [1m[36mBook Load (0.2ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."title" = ? AND "books"."isShared" = ?[0m  [["title", "skip graphs"], ["isShared", "t"]]
+  [1m[36mBook Load (0.1ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."author" = ? AND "books"."isShared" = ?[0m  [["author", "skip graphs"], ["isShared", "t"]]
+  [1m[36mBook Load (0.1ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."isbn" = ? AND "books"."isShared" = ?[0m  [["isbn", "Skip Graphs"], ["isShared", "t"]]
+Completed 204 No Content in 4ms (Views: 0.1ms | ActiveRecord: 0.8ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.159 at 2017-11-06 21:59:07 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"10.0.1.159", "port_number"=>"1111"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_ip", "10.0.1.159"], ["port_number", "1111"]]
+Completed 200 OK in 16ms (Views: 0.5ms | ActiveRecord: 0.9ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.159 at 2017-11-06 21:59:08 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"10.0.1.159", "port_number"=>"1111"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_ip", "10.0.1.159"], ["port_number", "1111"]]
+Completed 200 OK in 2ms (Views: 0.6ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/unsharebook" for 10.0.1.159 at 2017-11-06 21:59:16 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#unshareBook as HTML
+  Parameters: {"user_ip"=>"10.0.1.159"}
+  [1m[36mBook Load (0.6ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_ip" = ?[0m  [["user_ip", "10.0.1.159"]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[33mUPDATE "books" SET "isShared" = ? WHERE "books"."id" = ?[0m  [["isShared", "f"], ["id", 1]]
+  [1m[35m (2.3ms)[0m  [1m[36mcommit transaction[0m
+No template found for BooksController#unshareBook, rendering head :no_content
+Completed 204 No Content in 180ms (ActiveRecord: 3.5ms)
+
+
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "environment"]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "environment"]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "environment"]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (3.0ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateBooks (20171004144640)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "user_ip" varchar, "port_number" varchar, "title" varchar, "author" varchar, "isbn" varchar, "location" varchar, "isShared" boolean DEFAULT 't')[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE UNIQUE INDEX "user_ip_and_port_and_location" ON "books" ("user_ip", "port_number", "location")[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20171004144640"]]
+  [1m[35m (1.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "development"], ["created_at", "2017-11-07 03:59:27.401300"], ["updated_at", "2017-11-07 03:59:27.401300"]]
+  [1m[35m (1.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.3ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='user_ip_and_port_and_location' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='user_ip_and_port_and_location' AND type='index'
+[0m
+Started POST "/books/allmybooks" for 10.0.1.159 at 2017-11-06 21:59:42 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"10.0.1.159", "port_number"=>"1111"}
+  [1m[36mBook Load (0.2ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_ip", "10.0.1.159"], ["port_number", "1111"]]
+Completed 204 No Content in 30ms (Views: 0.2ms | ActiveRecord: 0.6ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.159 at 2017-11-06 21:59:48 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"10.0.1.159", "port_number"=>"1111"}
+  [1m[36mBook Load (0.2ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_ip", "10.0.1.159"], ["port_number", "1111"]]
+Completed 204 No Content in 3ms (Views: 0.1ms | ActiveRecord: 0.5ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.159 at 2017-11-06 21:59:48 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"10.0.1.159", "port_number"=>"1111"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_ip", "10.0.1.159"], ["port_number", "1111"]]
+Completed 204 No Content in 1ms (Views: 0.1ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/new" for 10.0.1.159 at 2017-11-06 22:00:28 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#create as HTML
+  Parameters: {"user_ip"=>"10.0.1.159", "port_number"=>"1111", "title"=>"Skip Graphs", "isbn"=>"", "author"=>"James Aspnes, Gauri Shah", "location"=>"/Users/danieldao/Downloads/skip-graphs.pdf"}
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.8ms)[0m  [1m[32mINSERT INTO "books" ("user_ip", "port_number", "title", "author", "isbn", "location") VALUES (?, ?, ?, ?, ?, ?)[0m  [["user_ip", "10.0.1.159"], ["port_number", "1111"], ["title", "skip graphs"], ["author", "james aspnes, gauri shah"], ["isbn", ""], ["location", "/Users/danieldao/Downloads/skip-graphs.pdf"]]
+  [1m[35m (2.0ms)[0m  [1m[36mcommit transaction[0m
+Completed 201 Created in 19ms (Views: 0.6ms | ActiveRecord: 3.6ms)
+
+
+Started POST "/books/search" for 10.0.1.159 at 2017-11-06 22:00:34 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>"Skip graphs"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."title" = ? AND "books"."isShared" = ?[0m  [["title", "skip graphs"], ["isShared", "t"]]
+Completed 200 OK in 5ms (Views: 0.5ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/search" for 10.0.1.159 at 2017-11-06 22:00:39 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>"skip graphs"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."title" = ? AND "books"."isShared" = ?[0m  [["title", "skip graphs"], ["isShared", "t"]]
+Completed 200 OK in 2ms (Views: 0.6ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/books/unsharebook" for 10.0.1.159 at 2017-11-06 22:00:41 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#unshareBook as HTML
+  Parameters: {"user_ip"=>"10.0.1.159"}
+  [1m[36mBook Load (0.2ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_ip" = ?[0m  [["user_ip", "10.0.1.159"]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[33mUPDATE "books" SET "isShared" = ? WHERE "books"."id" = ?[0m  [["isShared", "f"], ["id", 1]]
+  [1m[35m (2.3ms)[0m  [1m[36mcommit transaction[0m
+No template found for BooksController#unshareBook, rendering head :no_content
+Completed 204 No Content in 186ms (ActiveRecord: 3.1ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.159 at 2017-11-06 22:00:48 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"10.0.1.159", "port_number"=>"1111"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_ip", "10.0.1.159"], ["port_number", "1111"]]
+Completed 200 OK in 3ms (Views: 0.5ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/books/updatesharingstatus" for 10.0.1.159 at 2017-11-06 22:00:48 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#updateSharingStatus as HTML
+  Parameters: {"user_ip"=>"10.0.1.159", "port_number"=>"1111", "location"=>"/Users/danieldao/Downloads/skip-graphs.pdf", "sharing_status"=>"true"}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_ip" = ? AND "books"."port_number" = ? AND "books"."location" = ?[0m  [["user_ip", "10.0.1.159"], ["port_number", "1111"], ["location", "/Users/danieldao/Downloads/skip-graphs.pdf"]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.8ms)[0m  [1m[33mUPDATE "books" SET "isShared" = ? WHERE "books"."id" = ?[0m  [["isShared", "t"], ["id", 1]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+Completed 200 OK in 7ms (Views: 0.5ms | ActiveRecord: 2.3ms)
+
+
+Started POST "/books/search" for 10.0.1.159 at 2017-11-06 22:01:11 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>"skip graphs"}
+  [1m[36mBook Load (0.5ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."title" = ? AND "books"."isShared" = ?[0m  [["title", "skip graphs"], ["isShared", "t"]]
+Completed 200 OK in 2ms (Views: 0.4ms | ActiveRecord: 0.5ms)
+
+
+Started POST "/books/unsharebook" for 10.0.1.159 at 2017-11-06 22:01:37 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#unshareBook as HTML
+  Parameters: {"user_ip"=>"10.0.1.159"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_ip" = ?[0m  [["user_ip", "10.0.1.159"]]
+  [1m[35m (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.9ms)[0m  [1m[33mUPDATE "books" SET "isShared" = ? WHERE "books"."id" = ?[0m  [["isShared", "f"], ["id", 1]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+No template found for BooksController#unshareBook, rendering head :no_content
+Completed 204 No Content in 237ms (ActiveRecord: 2.6ms)
+
+
+Started POST "/books/allmybooks" for 10.0.1.159 at 2017-11-06 22:01:58 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#getAllMyBooks as HTML
+  Parameters: {"user_ip"=>"10.0.1.159", "port_number"=>"1111"}
+  [1m[36mBook Load (0.5ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_ip" = ? AND "books"."port_number" = ?[0m  [["user_ip", "10.0.1.159"], ["port_number", "1111"]]
+Completed 200 OK in 3ms (Views: 0.7ms | ActiveRecord: 0.5ms)
+
+
+Started POST "/books/updatesharingstatus" for 10.0.1.159 at 2017-11-06 22:01:59 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#updateSharingStatus as HTML
+  Parameters: {"user_ip"=>"10.0.1.159", "port_number"=>"1111", "location"=>"/Users/danieldao/Downloads/skip-graphs.pdf", "sharing_status"=>"true"}
+  [1m[36mBook Load (0.6ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_ip" = ? AND "books"."port_number" = ? AND "books"."location" = ?[0m  [["user_ip", "10.0.1.159"], ["port_number", "1111"], ["location", "/Users/danieldao/Downloads/skip-graphs.pdf"]]
+  [1m[35m (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (1.5ms)[0m  [1m[33mUPDATE "books" SET "isShared" = ? WHERE "books"."id" = ?[0m  [["isShared", "t"], ["id", 1]]
+  [1m[35m (2.7ms)[0m  [1m[36mcommit transaction[0m
+Completed 200 OK in 15ms (Views: 1.1ms | ActiveRecord: 4.9ms)
+
+
+Started POST "/books/search" for 10.0.1.159 at 2017-11-06 22:02:37 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#search as HTML
+  Parameters: {"search_term"=>"skip graphs"}
+  [1m[36mBook Load (0.6ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."title" = ? AND "books"."isShared" = ?[0m  [["title", "skip graphs"], ["isShared", "t"]]
+Completed 200 OK in 4ms (Views: 0.6ms | ActiveRecord: 0.6ms)
+
+
+Started POST "/books/unsharebook" for 10.0.1.159 at 2017-11-06 22:19:35 -0600
+Cannot render console from 10.0.1.159! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by BooksController#unshareBook as HTML
+  Parameters: {"user_ip"=>"10.0.1.159"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."user_ip" = ?[0m  [["user_ip", "10.0.1.159"]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (3.0ms)[0m  [1m[33mUPDATE "books" SET "isShared" = ? WHERE "books"."id" = ?[0m  [["isShared", "f"], ["id", 1]]
+  [1m[35m (2.3ms)[0m  [1m[36mcommit transaction[0m
+No template found for BooksController#unshareBook, rendering head :no_content
+Completed 204 No Content in 214ms (ActiveRecord: 5.8ms)
+
+
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "environment"]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "environment"]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "environment"]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (3.0ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (1.4ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateBooks (20171004144640)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.6ms)[0m  [1m[35mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "user_ip" varchar, "port_number" varchar, "title" varchar, "author" varchar, "isbn" varchar, "location" varchar, "isShared" boolean DEFAULT 't')[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE UNIQUE INDEX "user_ip_and_port_and_location" ON "books" ("user_ip", "port_number", "location")[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20171004144640"]]
+  [1m[35m (1.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.9ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "development"], ["created_at", "2017-11-07 04:19:58.164792"], ["updated_at", "2017-11-07 04:19:58.164792"]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.2ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='user_ip_and_port_and_location' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='user_ip_and_port_and_location' AND type='index'
+[0m
