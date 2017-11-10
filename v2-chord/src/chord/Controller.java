@@ -1,9 +1,9 @@
 package chord;
 
+import chord.Components.Book;
 import chord.Components.MessageType;
 import chord.Components.Node;
 
-import chord.Components.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

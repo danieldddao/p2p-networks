@@ -1,4 +1,4 @@
-package chord;
+package chord.Components;
 
 public class Book {
     private int id;

@@ -1,6 +1,8 @@
 package chord.Components;
 
+import chord.Runnable.FixFingers;
 import chord.Runnable.Listener;
+import chord.Runnable.Stabilize;
 
 import java.io.Serializable;
 import java.net.InetSocketAddress;
@@ -20,6 +22,8 @@ public class Node implements Serializable {
     private String nodeName = "";
 
     private Listener listener;
+    private Stabilize stabilize;
+    private FixFingers fixFingers;
 
     public Node(InetSocketAddress address) {
         try {
@@ -34,10 +38,8 @@ public class Node implements Serializable {
 
             // initialize threads
             listener = new Listener(this);
-
-            //        stabilize = new Stabilize(this);
-//        fix_fingers = new FixFingers(this);
-//        ask_predecessor = new AskPredecessor(this);
+            stabilize = new Stabilize(this);
+            fixFingers = new FixFingers(this);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,12 +80,17 @@ public class Node implements Serializable {
     }
 
     /**
-     * Start listener thread,
+     * Start listener thread, stabilize thread, and fixFingers thread
      */
     private void startThreads() {
         try {
             Thread listenerThread = new Thread(listener);
+            Thread stabilizeThread = new Thread(stabilize);
+            Thread fixFingersThread = new Thread(fixFingers);
+
             listenerThread.start();
+            stabilizeThread.start();
+            fixFingersThread.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -244,7 +251,7 @@ public class Node implements Serializable {
                         " to find successor of id=" +iplus1_start);
                 //if (iplus1_start >= this.nodeId && iplus1_start < this.fingerTable.getEntryNode(i).getNodeId()) {
 //                if (isIdBetweenLowerEq(iplus1_start, this.nodeId, this.fingerTable.getEntryNode(i).getNodeId())) {
-                if (isIdBetweenEq(iplus1_start, this.nodeId, this.fingerTable.getEntryNode(i).getNodeId())) {
+                if (Utils.isIdBetweenEq(iplus1_start, this.nodeId, this.fingerTable.getEntryNode(i).getNodeId())) {
                     this.fingerTable.updateEntryNode(i+1, this.fingerTable.getEntryNode(i));
 
                 // Otherwise, (i+1)-th finger entry is the successor of (i+1)-th finger's start position
@@ -314,7 +321,7 @@ public class Node implements Serializable {
     public void updateFingerTable(int i, Node n) {
         try {
             //if (n.getNodeId() >= this.nodeId && n.getNodeId() < this.fingerTable.getEntryNode(i).getNodeId()) {
-            if (isIdBetweenLowerEq(n.getNodeId(), this.nodeId, this.fingerTable.getEntryNode(i).getNodeId())) {
+            if (Utils.isIdBetweenLowerEq(n.getNodeId(), this.nodeId, this.fingerTable.getEntryNode(i).getNodeId())) {
                 System.out.println(nodeName + " - UPDATE.FINGER.TABLE - Updating " + i + "-th finger with new node: " + n.getNodeName());
                 this.fingerTable.updateEntryNode(i, n);
                 // If my 1-st finger needs to be updated, my successor needs to be updated as well
@@ -415,7 +422,7 @@ public class Node implements Serializable {
 
             // ID is not between n and n's successor
             if (n.getSuccessor() != null) {
-                while( !isIdBetweenUpperEq(ID, n.getNodeId(), n.getSuccessor().getNodeId()) ) {
+                while( !Utils.isIdBetweenUpperEq(ID, n.getNodeId(), n.getSuccessor().getNodeId()) ) {
                     System.out.println(nodeName + ": FINDING PREDECESSOR OF id=" + ID + ", n.getNodeId()=" + n.getNodeId() + ", n.getSuccessor().getNodeId()=" + n.getSuccessor().getNodeId());
                     if (n == null) {
                         System.out.println(nodeName + ": FIND PREDECESSOR: Node is null, can't find ID's predecessor");
@@ -466,7 +473,7 @@ public class Node implements Serializable {
                 Node entryNode = fingerTable.getEntryNode(i);
                 System.out.println(nodeName + "- CLOSEST.PRECEDING.FINGER.OF " + ID + ", i-th finger=" + i + " , entryNode=" + entryNode.getNodeName());
                 if (entryNode != null) {
-                    if (isIdBetweenNotEq(entryNode.getNodeId(), this.nodeId, ID)) {
+                    if (Utils.isIdBetweenNotEq(entryNode.getNodeId(), this.nodeId, ID)) {
                         Node returnNode = fingerTable.getEntryNode(i);
                         System.out.println(nodeName + "- CLOSEST.PRECEDING.FINGER.OF " + ID + " is " + returnNode.getNodeName() + ", " + returnNode.getAddress().getAddress().getHostAddress() + ":" + returnNode.getAddress().getPort());
                         return returnNode;
@@ -481,73 +488,7 @@ public class Node implements Serializable {
         }
     }
 
-    private boolean isIdBetweenUpperEq(long id, long n, long np) {
-        try {
-            System.out.println(nodeName + " - IS.ID.BETWEENUpperEq id=" + id + " , n=" + n + " , np=" + np);
-            boolean res;
-            if (n < np) {
-                res =  id > n && id <= np;
-            } else {
-                res =  id < n && id <= np || id > n && id >= np;
-            }
-            System.out.println(res);
-            return res;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
 
-    private boolean isIdBetweenLowerEq(long id, long n, long np) {
-        try {
-            System.out.println(nodeName + " - IS.ID.BETWEENLowerEq id=" + id + " , n=" + n + " , np=" + np);
-            boolean res;
-            if (n < np) {
-                res =  id >= n && id < np;
-            } else {
-                res =  id <= n && id < np || id >= n && id > np;
-            }
-            System.out.println(res);
-            return res;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    private boolean isIdBetweenEq(long id, long n, long np) {
-        try {
-            System.out.println(nodeName + " - IS.ID.BETWEENEq id=" + id + " , n=" + n + " , np=" + np);
-            boolean res;
-            if (n < np) {
-                res =  id >= n && id <= np;
-            } else {
-                res =  id <= n && id <= np || id >= n && id >= np;
-            }
-            System.out.println(res);
-            return res;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    private boolean isIdBetweenNotEq(long id, long n, long np) {
-        try {
-            System.out.println(nodeName + " - IS.ID.BETWEENNotEq id=" + id + " , n=" + n + " , np=" + np);
-            boolean res;
-            if (n < np) {
-                res =  id > n && id < np;
-            } else {
-                res =  id < n && id < np || id > n && id > np;
-            }
-            System.out.println(res);
-            return res;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
 
     /**
      * Notify my new successor that I'm its new predecessor
@@ -601,6 +542,8 @@ public class Node implements Serializable {
      */
     public void stopLoopThreads() {
         listener.closeListener();
+        stabilize.closeStabilize();
+        fixFingers.closeFixFingers();
     }
 
 
@@ -618,6 +561,7 @@ public class Node implements Serializable {
     }
 
     public static int getChordRingSize() {
+        chordRingSize = (int) Math.pow(2, m);
         return chordRingSize;
     }
 

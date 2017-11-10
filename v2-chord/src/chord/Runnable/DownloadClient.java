@@ -2,7 +2,7 @@ package chord.Runnable;
 
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ProgressBar;
-import chord.Book;
+import chord.Components.Book;
 
 import java.io.*;
 import java.net.Socket;

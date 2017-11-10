@@ -131,7 +131,7 @@ public class FingerTable implements Serializable {
 
     public void printFingerTable() {
         System.out.println("\nN" + nodeID + " - Finger Table:");
-        System.out.println("i\t\t range\t\t\t\t entry");
+        System.out.println("i\t\t range\t\t\t\t");
         for (int i = 1; i <= Node.getM(); i++) {
             String address = "null";
             String nodeID = "null";

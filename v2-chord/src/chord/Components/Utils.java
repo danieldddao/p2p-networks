@@ -116,4 +116,104 @@ public class Utils {
         }
     }
 
+    /**
+     * Check if id > n and id <= np
+     * id, n, np are ids of nodes in the Chord ring
+     * @param id
+     * @param n
+     * @param np
+     * @return true if id > n and id <= np. Otherwise, false
+     */
+    public static boolean isIdBetweenUpperEq(long id, long n, long np) {
+        try {
+            System.out.println(" - IS.ID.BETWEENUpperEq id=" + id + " , n=" + n + " , np=" + np);
+            boolean res;
+            if (n < np) {
+                res =  id > n && id <= np;
+            } else {
+                res =  id < n && id <= np || id > n && id >= np;
+            }
+            System.out.println(res);
+            return res;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Check if id >= n and id < np
+     * id, n, np are ids of nodes in the Chord ring
+     * @param id
+     * @param n
+     * @param np
+     * @return true if id >= n and id < np. Otherwise, false
+     */
+    public static boolean isIdBetweenLowerEq(long id, long n, long np) {
+        try {
+            System.out.println(" - IS.ID.BETWEENLowerEq id=" + id + " , n=" + n + " , np=" + np);
+            boolean res;
+            if (n < np) {
+                res =  id >= n && id < np;
+            } else {
+                res =  id <= n && id < np || id >= n && id > np;
+            }
+            System.out.println(res);
+            return res;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Check if id >= n and id <= np
+     * id, n, np are ids of nodes in the Chord ring
+     * @param id
+     * @param n
+     * @param np
+     * @return true if id >= n and id <= np. Otherwise, false
+     */
+    public static boolean isIdBetweenEq(long id, long n, long np) {
+        try {
+            System.out.println(" - IS.ID.BETWEENEq id=" + id + " , n=" + n + " , np=" + np);
+            boolean res;
+            if (n < np) {
+                res =  id >= n && id <= np;
+            } else {
+                res =  id <= n && id <= np || id >= n && id >= np;
+            }
+            System.out.println(res);
+            return res;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Check if id > n and id < np
+     * id, n, np are ids of nodes in the Chord ring
+     * @param id
+     * @param n
+     * @param np
+     * @return true if id > n and id < np. Otherwise, false
+     */
+    public static boolean isIdBetweenNotEq(long id, long n, long np) {
+        try {
+            System.out.println(" - IS.ID.BETWEENNotEq id=" + id + " , n=" + n + " , np=" + np);
+            boolean res;
+            if (n < np) {
+                res =  id > n && id < np;
+            } else {
+                res =  id < n && id < np || id > n && id > np;
+            }
+            System.out.println(res);
+            return res;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }
