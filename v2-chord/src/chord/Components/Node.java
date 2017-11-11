@@ -10,7 +10,7 @@ import java.net.InetSocketAddress;
 public class Node implements Serializable {
 
     private static int m = 7;
-    private static int chordRingSize = (int) Math.pow(2, m);
+    private static long chordRingSize = (long) Math.pow(2, m);
 
     private InetSocketAddress address = null;
     private Node predecessor = null;
@@ -537,6 +537,79 @@ public class Node implements Serializable {
     }
 
 
+    public boolean shareABook(String title, String author, String isbn, String location) {
+        try {
+            String bookString = title + author + isbn;
+            long id = Utils.hashAddress(bookString);
+
+            while(checkIfIdExists(id) == MessageType.ALREADY_EXIST) {
+                System.out.println("ID " + id + "already exists, generating new ID...");
+                bookString += ".";
+                id = Utils.hashAddress(bookString);
+            }
+
+            Book newBook = new Book(id, this.address, title, author, isbn, location, true);
+            // send book to the appropriate node who is responsible for it
+
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    public MessageType checkIfIdExists(long id) {
+        try {
+            MessageType response = MessageType.NOT_EXIST;
+
+            // Check my nodeID
+            if (id == this.getNodeId()) {
+                System.out.println(this.getNodeName() + " - CHECK.IF.ID.EXISTS: ID belongs to me");
+                return MessageType.ALREADY_EXIST;
+            }
+
+            // Check my successor and predecessor
+            if ((this.getSuccessor() != null && id == this.getSuccessor().getNodeId()) || (this.getPredecessor() != null && id == this.getPredecessor().getNodeId())) {
+                System.out.println(this.getNodeName() + " - CHECK.IF.ID.EXISTS: ID belongs to my predecessor or successor");
+                return MessageType.ALREADY_EXIST;
+            }
+
+            // Check the finger table
+            System.out.println(this.getNodeName() + " - CHECK.IF.ID.EXISTS: Checking finger table");
+            FingerTable fingerTable = this.getFingerTable();
+            int iThFinger = fingerTable.findIthFingerOf(id); // Find the finger that stores information of the node ID
+            if (iThFinger == 0) {
+                System.out.println(this.getNodeName() + " - CHECK.IF.ID.EXISTS: ID " + id + " is too large");
+                return MessageType.ALREADY_EXIST;
+            }
+
+            System.out.println(this.getNodeName() + " - CHECK.IF.ID.EXISTS: Found ID in the finger # " + iThFinger);
+            fingerTable.printFingerTable();
+            // If ID is in the 1st finger and if ID exists, ID must be my successor.
+            if (iThFinger == 1 && this.getSuccessor().getNodeId() != id) {
+                System.out.println(this.getNodeName() + " - CHECK.IF.ID.EXISTS: ID is not my successor, so it doesn't exist");
+                return MessageType.NOT_EXIST;
+            }
+            Node entryNode = fingerTable.getEntryNode(iThFinger);
+            if (entryNode != null && entryNode.getNodeId() != this.getNodeId()) {   // If ID is already assigned to a node which is not me
+                // Contact that node to see if ID belongs to another node
+                System.out.println(this.getNodeName() + " - CHECK.IF.ID.EXISTS: Contacting node #" + entryNode.getNodeId() + " (" + entryNode.getAddress().getAddress().getHostAddress() + ":" + entryNode.getAddress().getPort() + ")...");
+                Object[] objArray = new Object[2];
+                objArray[0] = MessageType.DOES_ID_EXIST;
+                objArray[1] = id;
+                response = (MessageType) Utils.sendMessage(entryNode.getAddress(), objArray);
+            }
+
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return MessageType.NOT_EXIST;
+        }
+    }
+
+
     /**
      * Stop all threads that have while loop
      */
@@ -545,7 +618,6 @@ public class Node implements Serializable {
         stabilize.closeStabilize();
         fixFingers.closeFixFingers();
     }
-
 
 
 
@@ -560,8 +632,8 @@ public class Node implements Serializable {
         return m;
     }
 
-    public static int getChordRingSize() {
-        chordRingSize = (int) Math.pow(2, m);
+    public static long getChordRingSize() {
+        chordRingSize = (long) Math.pow(2, m);
         return chordRingSize;
     }
 

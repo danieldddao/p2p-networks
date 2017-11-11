@@ -17,11 +17,11 @@ public class Utils {
      * @throws Exception
      */
     public static long hashAddress(String address) throws Exception {
-        int hashValue = 0;
+        long hashValue = 0;
         long generator = address.hashCode();
         while (true) {
             generator = 2862933555777941757L * generator + 1;
-            int next = (int) ((hashValue + 1) / (((double) ((int) (generator >>> 33) + 1)) / (0x1.0p31)));
+            long next = (long) ((hashValue + 1) / (((double) ((int) (generator >>> 33) + 1)) / (0x1.0p31)));
             if (next >= 0 && next < Node.getChordRingSize()) {
                 hashValue = next;
             } else {

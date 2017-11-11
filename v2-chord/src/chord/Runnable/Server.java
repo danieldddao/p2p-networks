@@ -106,47 +106,7 @@ public class Server implements Runnable{
                     id = (long) messageArray[1];
                     response = MessageType.NOT_EXIST;
                     System.out.println(myNode.getNodeName() + "-SERVER: Checking if ID exists: " + id);
-
-                    // Check my nodeID
-                    if (id == myNode.getNodeId()) {
-                        System.out.println(myNode.getNodeName() + "-SERVER: ID belongs to me");
-                        response = MessageType.ALREADY_EXIST;
-                        break; // get out of switch statement
-                    }
-
-                    // Check my successor and predecessor
-                    if ((myNode.getSuccessor() != null && id == myNode.getSuccessor().getNodeId()) || (myNode.getPredecessor() != null && id == myNode.getPredecessor().getNodeId())) {
-                        System.out.println(myNode.getNodeName() + "-SERVER: ID belongs to my predecessor or successor");
-                        response = MessageType.ALREADY_EXIST;
-                        break; // get out of switch statement
-                    }
-
-                    // Check the finger table
-                    System.out.println(myNode.getNodeName() + "-SERVER: Checking finger table");
-                    FingerTable fingerTable = myNode.getFingerTable();
-                    int iThFinger = fingerTable.findIthFingerOf(id); // Find the finger that stores information of the node ID
-                    if (iThFinger == 0) {
-                        System.out.println(myNode.getNodeName() + "-SERVER: ID " + id + " is too large");
-                        response = MessageType.ALREADY_EXIST;
-                        break; // get out of switch statement
-                    }
-
-                    System.out.println(myNode.getNodeName() + "-SERVER: Found ID in the finger # " + iThFinger);
-                    fingerTable.printFingerTable();
-                    // If ID is in the 1st finger and if ID exists, ID must be my successor.
-                    if (iThFinger == 1 && myNode.getSuccessor().getNodeId() != id) {
-                        System.out.println(myNode.getNodeName() + "-SERVER: ID is not my successor, so it doesn't exist");
-                        break;
-                    }
-                    Node entryNode = fingerTable.getEntryNode(iThFinger);
-                    if (entryNode != null && entryNode.getNodeId() != myNode.getNodeId()) {   // If ID is already assigned to a node which is not me
-                        // Contact that node to see if ID belongs to another node
-                        System.out.println(myNode.getNodeName() + "-SERVER: Contacting node #" + entryNode.getNodeId() + " (" + entryNode.getAddress().getAddress().getHostAddress() + ":" + entryNode.getAddress().getPort() + ")...");
-                        Object[] objArray = new Object[2];
-                        objArray[0] = MessageType.DOES_ID_EXIST;
-                        objArray[1] = id;
-                        response = Utils.sendMessage(entryNode.getAddress(), objArray);
-                    }
+                    response = myNode.checkIfIdExists(id);
                     break;
 
 
@@ -224,6 +184,7 @@ public class Server implements Runnable{
                     myNode.getFingerTable().printFingerTable();
                     response = MessageType.GOT_IT;
                     break;
+
 
                 case PRINT_YOUR_FINGER_TABLE:
                     myNode.getFingerTable().printFingerTable();

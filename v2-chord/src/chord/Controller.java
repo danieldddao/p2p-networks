@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 
 import java.io.*;
 import java.net.*;
@@ -168,11 +169,40 @@ public class Controller {
     }
 
     public void chooseFileButtonSelected(ActionEvent event) {
+        FileChooser fc = new FileChooser();
+        selectedFile = fc.showOpenDialog(null);
 
+        if (selectedFile != null) {
+            chooseFileText.setText("File selected: " + selectedFile);
+        } else {
+            alertText.setText("No file selected");
+        }
     }
 
     public void shareNewBook(ActionEvent event) {
-
+        System.out.println("Save button pressed");
+        alertText.setText("");
+        try {
+            if (titleTextField.getText().isEmpty()) {
+                alertText.setText("Title can't be empty");
+            } else if (authorTextField.getText().isEmpty()) {
+                alertText.setText("Author can't be empty");
+            } else if (selectedFile == null) {
+                alertText.setText("Please choose a file");
+            } else if (!selectedFile.exists()) {
+                alertText.setText("Selected file doesn't exist");
+            } else {
+                // Share a new book with the network
+                boolean status = Controller.getMyNode().shareABook(titleTextField.getText(), authorTextField.getText(), isbnTextField.getText(), selectedFile.toString());
+                if (status) {
+                    alertText.setText("New Book '" + titleTextField.getText() + "' successfully shared");
+                } else {
+                    alertText.setText("Can't share book! Please try again!");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

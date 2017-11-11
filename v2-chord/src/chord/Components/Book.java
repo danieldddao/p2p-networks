@@ -1,19 +1,21 @@
 package chord.Components;
 
+import java.net.InetSocketAddress;
+
 public class Book {
-    private int id;
-    private String user_ip;
-    private int port;
+    private long id;
+    private String name;
+    private InetSocketAddress ownerAddress;
     private String title;
     private String author;
     private String isbn;
     private String location;
     private Boolean isShared;
 
-    public Book(int id, String user_ip, int port, String title, String author, String isbn, String location, Boolean isShared) {
+    public Book(long id, InetSocketAddress address, String title, String author, String isbn, String location, Boolean isShared) {
         this.id = id;
-        this.user_ip = user_ip;
-        this.port = port;
+        this.name = "B" + id;
+        this.ownerAddress = address;
         this.title = title;
         this.author = author;
         this.isbn = isbn;
@@ -21,28 +23,28 @@ public class Book {
         this.isShared = isShared;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int ip) {
+    public void setId(long ip) {
         this.id = id;
     }
 
-    public String getUser_ip() {
-        return user_ip;
+    public String getName() {
+        return name;
     }
 
-    public void setUser_ip(String user_ip) {
-        this.user_ip = user_ip;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public int getPort() {
-        return port;
+    public InetSocketAddress getOwnerAddress() {
+        return ownerAddress;
     }
 
-    public void setPort(int port) {
-        this.port = port;
+    public void setOwnerAddress(InetSocketAddress ownerAddress) {
+        this.ownerAddress = ownerAddress;
     }
 
     public String getTitle() {
