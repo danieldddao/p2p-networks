@@ -93,7 +93,7 @@ public class Server implements Runnable{
     private Object processMessageRequest(Object[] messageArray) {
         Object response = null;
         try {
-            System.out.println(myNode.getNodeName() + "-SERVER: Processing message array: " + messageArray);
+            System.out.println(myNode.getNodeName() + " - SERVER: Processing message array: " + messageArray);
             MessageType message = (MessageType) messageArray[0];
             if (message == MessageType.CHECKING_IF_PORT_IS_AVAILABLE) {
                 return MessageType.OK;
@@ -105,8 +105,17 @@ public class Server implements Runnable{
                 case DOES_ID_EXIST:
                     id = (long) messageArray[1];
                     response = MessageType.NOT_EXIST;
-                    System.out.println(myNode.getNodeName() + "-SERVER: Checking if ID exists: " + id);
+                    System.out.println(myNode.getNodeName() + " - SERVER: Checking if ID exists: " + id);
                     response = myNode.checkIfIdExists(id);
+                    break;
+
+
+                // Check if book id belongs to a book in the network
+                case DOES_BOOK_ID_EXIST:
+                    id = (long) messageArray[1];
+                    response = MessageType.NOT_EXIST;
+                    System.out.println(myNode.getNodeName() + " - SERVER: Checking if BOOK ID exists: " + id);
+                    response = myNode.checkIfBookIdExists(id);
                     break;
 
 
@@ -114,9 +123,9 @@ public class Server implements Runnable{
                 // Response is the successor node
                 case FIND_SUCCESSOR:
                     id = (long) messageArray[1];
-                    System.out.println(myNode.getNodeName() + "-SERVER: A node wants to find successor of id=" + id);
+                    System.out.println(myNode.getNodeName() + " - SERVER: A node wants to find successor of id=" + id);
                     Node successor = myNode.findSuccessorOf(id);
-                    System.out.println(myNode.getNodeName() + "-SERVER: Found new node's successor: " + successor.getNodeName() + ", address:" + successor.getAddress().getAddress().getHostAddress() + ":" + successor.getAddress().getPort());
+                    System.out.println(myNode.getNodeName() + " - SERVER: Found new node's successor: " + successor.getNodeName() + ", address:" + successor.getAddress().getAddress().getHostAddress() + ":" + successor.getAddress().getPort());
                     response = successor;
                     break;
 

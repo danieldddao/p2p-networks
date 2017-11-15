@@ -6,6 +6,8 @@ import chord.Runnable.Stabilize;
 
 import java.io.Serializable;
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Node implements Serializable {
 
@@ -16,6 +18,7 @@ public class Node implements Serializable {
     private Node predecessor = null;
     private Node successor = null;
     private FingerTable fingerTable = null;
+    private List<Book> bookList = null;
 
     private String addressString = "";
     private long nodeId = -1;
@@ -35,6 +38,9 @@ public class Node implements Serializable {
 
             // Initialize a finger table
             fingerTable = new FingerTable(this);
+
+            // Initialize list of books
+            bookList = new ArrayList();
 
             // initialize threads
             listener = new Listener(this);
@@ -134,7 +140,6 @@ public class Node implements Serializable {
 
             // Check if nodeId already exists in the network
             // If nodeId already exists, continue generating and checking new nodeId until nodeId doesn't exist
-//            System.out.println("Check if nodeId exists");
             Object[] objArray = new Object[2];
             objArray[0] = MessageType.DOES_ID_EXIST;
             objArray[1] = this.nodeId;
@@ -146,7 +151,7 @@ public class Node implements Serializable {
             }
 
             /*
-             * Joining the network
+             * Join the network
              */
             // Initialize finger table of local node
             boolean status = initFingerTable(contactAddress);
@@ -156,25 +161,8 @@ public class Node implements Serializable {
             status = updateFingerTableOfOtherNodes();
             if (status == false) {return false;}
 
-            // Transferring keys
+            // Transferring books to me
 
-
-            // find my new successor node
-//            System.out.println("Joining the network via contact " + contactAddress.getAddress().getHostAddress() + ":" + contactAddress.getPort());
-//            successor = findMyNewSuccessor(contactAddress);
-//            if (successor == null) {
-//                System.out.println("Can't find my new successor in the network");
-//                return false;
-//            }
-
-            // notify my new successor that I'm its new predecessor
-//            System.out.println("My successor: " + successor.getAddress().getAddress().getHostAddress() + ":" + successor.getAddress().getPort());
-//            notifyMyNewSuccessor(successor.getAddress());
-
-            // Update finger table
-//            System.out.println("Asking the contact to fill out the finger table");
-
-            // update successor and predecessor in the finger table
 
             startThreads();
 
@@ -537,18 +525,29 @@ public class Node implements Serializable {
     }
 
 
+    /**
+     * Share a book with its information with the network including:
+     * Assign it an id
+     * Assign it to a node
+     * @param title
+     * @param author
+     * @param isbn
+     * @param location
+     * @return True if successfully shared the book. Otherwise, False
+     */
     public boolean shareABook(String title, String author, String isbn, String location) {
         try {
             String bookString = title + author + isbn;
             long id = Utils.hashAddress(bookString);
 
-            while(checkIfIdExists(id) == MessageType.ALREADY_EXIST) {
+            while(checkIfBookIdExists(id) == MessageType.ALREADY_EXIST) {
                 System.out.println("ID " + id + "already exists, generating new ID...");
                 bookString += ".";
                 id = Utils.hashAddress(bookString);
             }
-
+            System.out.println(nodeName + " - SHARE.NEW.BOOK - new book: " + title + " (" + location + ") : id=" + id);
             Book newBook = new Book(id, this.address, title, author, isbn, location, true);
+
             // send book to the appropriate node who is responsible for it
 
 
@@ -560,6 +559,60 @@ public class Node implements Serializable {
     }
 
 
+    /**
+     * Check if a given id already belongs to a book shared by a user
+     * @param id
+     * @return True if it belongs to a book. Otherwise, False.
+     */
+    public MessageType checkIfBookIdExists(long id) {
+        try {
+            MessageType response = MessageType.NOT_EXIST;
+
+            // Check my nodeID
+            if (id == this.getNodeId()) {
+                System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: ID belongs to me");
+                // Check if id belongs to some books assigned to me
+                for (Book b : bookList) {
+                    if (b.getId() == id) {
+                        System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: ID belongs to a book " + b.getTitle());
+                        return MessageType.ALREADY_EXIST;
+                    }
+                }
+            // Check my finger table
+            } else {
+                FingerTable fingerTable = this.getFingerTable();
+                int iThFinger = fingerTable.findIthFingerOf(id); // Find the finger that stores information of the node ID
+                if (iThFinger == 0) {
+                    System.out.println(this.getNodeName() + " - CHECK.IF.ID.EXISTS: ID " + id + " is too large");
+                    response = MessageType.ALREADY_EXIST;
+                } else {
+                    System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: Found BOOK ID in the finger # " + iThFinger);
+                    fingerTable.printFingerTable();
+
+                    // Ask i-th entry node to check book id
+                    Node contact = fingerTable.getEntryNode(iThFinger);
+                    System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: Contacting node #" + contact.getNodeId() + " (" + contact.getAddress().getAddress().getHostAddress() + ":" + contact.getAddress().getPort() + ")...");
+                    Object[] objArray = new Object[2];
+                    objArray[0] = MessageType.DOES_BOOK_ID_EXIST;
+                    objArray[1] = id;
+                    response = (MessageType) Utils.sendMessage(contact.getAddress(), objArray);
+                }
+            }
+
+            System.out.println(this.getNodeName() + " - CHECK.IF.ID.EXISTS: Response=" + response);
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return MessageType.ALREADY_EXIST;
+        }
+    }
+
+
+    /**
+     * Check if given id already belongs to a node/user in the network
+     * @param id
+     * @return True if it belongs to a node/user. Otherwise, False
+     */
     public MessageType checkIfIdExists(long id) {
         try {
             MessageType response = MessageType.NOT_EXIST;
@@ -605,7 +658,7 @@ public class Node implements Serializable {
             return response;
         } catch (Exception e) {
             e.printStackTrace();
-            return MessageType.NOT_EXIST;
+            return MessageType.ALREADY_EXIST;
         }
     }
 
@@ -626,7 +679,7 @@ public class Node implements Serializable {
      */
     public static void setM(int m) {
         Node.m = m;
-        Node.chordRingSize = (int) Math.pow(2, m);
+        chordRingSize = (long) Math.pow(2, m);
     }
     public static int getM() {
         return m;

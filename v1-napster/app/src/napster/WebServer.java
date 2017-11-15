@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.URL;
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ public class WebServer {
         }
     }
 
-    public static int addNewBook(String user_ip, int port, String title, String isbn, String author, String location) {
+    public static int addNewBook(String username, String user_ip, int port, String title, String isbn, String author, String location) {
         try {
 //            userIp = user_ip;
 
@@ -72,6 +73,7 @@ public class WebServer {
 
             List<NameValuePair> urlParameters = new ArrayList();
 //        urlParameters.add(new BasicNameValuePair("authenticity_token", token));
+            urlParameters.add(new BasicNameValuePair("username", username));
             urlParameters.add(new BasicNameValuePair("user_ip", user_ip));
             urlParameters.add(new BasicNameValuePair("port_number", "" + port));
             urlParameters.add(new BasicNameValuePair("title", title));
@@ -82,12 +84,8 @@ public class WebServer {
             post.setEntity(new UrlEncodedFormEntity(urlParameters));
             HttpResponse response = client.execute(post);
             System.out.println("\nSending 'POST' request to URL : " + url);
-//        System.out.println("Post parameters : " + post.getEntity());
             System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
 
-//            if (response.getStatusLine().getStatusCode() == 201) {
-//                portList.add(port);
-//            }
             return response.getStatusLine().getStatusCode();
         } catch(Exception e)
         {
@@ -125,8 +123,8 @@ public class WebServer {
             } else if (response.getStatusLine().getStatusCode() == 204) {
                 System.out.println("No Book Found");
             }
-            return result.toString();
 
+            return result.toString();
         } catch(Exception e)
         {
             e.printStackTrace();
@@ -135,17 +133,16 @@ public class WebServer {
     }
 
 
-    public static String findAllMySharedBooks(String user_ip, int port) {
+    public static String findAllMySharedBooks(String username) {
         try {
-            System.out.println("Getting all books that I've shared ");
+            System.out.println("Getting all books that I'd shared previously ");
             HttpClient client = HttpClientBuilder.create().build();
             HttpPost post = new HttpPost(url + "/books/allmybooks");
             post.setHeader("User-Agent", USER_AGENT);
 
             List<NameValuePair> urlParameters = new ArrayList();
 //        urlParameters.add(new BasicNameValuePair("authenticity_token", token));
-            urlParameters.add(new BasicNameValuePair("user_ip", user_ip));
-            urlParameters.add(new BasicNameValuePair("port_number", port + ""));
+            urlParameters.add(new BasicNameValuePair("username", username));
 
             post.setEntity(new UrlEncodedFormEntity(urlParameters));
             HttpResponse response = client.execute(post);
@@ -174,24 +171,24 @@ public class WebServer {
     }
 
 
-    public static void unshareBooksFromServerWhenExiting(String userIp) {
+    public static void unshareBooksFromServerWhenExiting(String username) {
         try {
-            System.out.println("Unsharing books");
-            HttpClient client = HttpClientBuilder.create().build();
-            HttpPost post = new HttpPost(url + "/books/unsharebook");
-            post.setHeader("User-Agent", USER_AGENT);
-//            for (int port:portList) {
-//                System.out.println("unshare port number: " + port);
-            List<NameValuePair> urlParameters = new ArrayList();
+            if (!username.isEmpty() && !username.equals("")) {
+                System.out.println("Unsharing books");
+                HttpClient client = HttpClientBuilder.create().build();
+                HttpPost post = new HttpPost(url + "/books/unsharebook");
+                post.setHeader("User-Agent", USER_AGENT);
+                List<NameValuePair> urlParameters = new ArrayList();
 //        urlParameters.add(new BasicNameValuePair("authenticity_token", token));
-                urlParameters.add(new BasicNameValuePair("user_ip", userIp));
-//                urlParameters.add(new BasicNameValuePair("port_number", "" + port));
+                urlParameters.add(new BasicNameValuePair("username", username));
 
-            post.setEntity(new UrlEncodedFormEntity(urlParameters));
-            HttpResponse response = client.execute(post);
-            System.out.println("Sending 'POST' request to URL : " + url);
-            System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-//            }
+                post.setEntity(new UrlEncodedFormEntity(urlParameters));
+                HttpResponse response = client.execute(post);
+                System.out.println("Sending 'POST' request to URL : " + url);
+                System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+
+                logoutFromServer(username);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -206,8 +203,7 @@ public class WebServer {
 
             List<NameValuePair> urlParameters = new ArrayList();
 //        urlParameters.add(new BasicNameValuePair("authenticity_token", token));
-            urlParameters.add(new BasicNameValuePair("user_ip", book.getUser_ip()));
-            urlParameters.add(new BasicNameValuePair("port_number", "" + book.getPort()));
+            urlParameters.add(new BasicNameValuePair("username", book.getUsername()));
             urlParameters.add(new BasicNameValuePair("title", book.getTitle()));
             urlParameters.add(new BasicNameValuePair("author", book.getAuthor()));
             urlParameters.add(new BasicNameValuePair("location", book.getLocation()));
@@ -235,6 +231,7 @@ public class WebServer {
 
             List<NameValuePair> urlParameters = new ArrayList();
 //        urlParameters.add(new BasicNameValuePair("authenticity_token", token));
+            urlParameters.add(new BasicNameValuePair("username", book.getUsername()));
             urlParameters.add(new BasicNameValuePair("user_ip", book.getUser_ip()));
             urlParameters.add(new BasicNameValuePair("port_number", "" + book.getPort()));
             urlParameters.add(new BasicNameValuePair("location", book.getLocation()));
@@ -253,6 +250,98 @@ public class WebServer {
             }
             return false;
         } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    /**
+     * User table
+     */
+
+    public static boolean createNewUser(String username, String password) {
+        try {
+            HttpClient client = HttpClientBuilder.create().build();
+            HttpPost post = new HttpPost(url + "/users/create");
+
+            // add header
+            post.setHeader("User-Agent", USER_AGENT);
+
+            List<NameValuePair> urlParameters = new ArrayList();
+//        urlParameters.add(new BasicNameValuePair("authenticity_token", token));
+            urlParameters.add(new BasicNameValuePair("username", username));
+            urlParameters.add(new BasicNameValuePair("password", password));
+            post.setEntity(new UrlEncodedFormEntity(urlParameters));
+            HttpResponse response = client.execute(post);
+
+            System.out.println("\nSending 'POST' request to URL : " + url);
+//        System.out.println("Post parameters : " + post.getEntity());
+            System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+
+            if (response.getStatusLine().getStatusCode() == 201) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static int loginToServer(String username, String password, InetSocketAddress address) {
+        try {
+            HttpClient client = HttpClientBuilder.create().build();
+            HttpPost post = new HttpPost(url + "/users/login");
+
+            // add header
+            post.setHeader("User-Agent", USER_AGENT);
+
+            List<NameValuePair> urlParameters = new ArrayList();
+//        urlParameters.add(new BasicNameValuePair("authenticity_token", token));
+            urlParameters.add(new BasicNameValuePair("username", username));
+            urlParameters.add(new BasicNameValuePair("password", password));
+            urlParameters.add(new BasicNameValuePair("user_ip", address.getAddress().getHostAddress()));
+            urlParameters.add(new BasicNameValuePair("port_number", address.getPort() + ""));
+
+            post.setEntity(new UrlEncodedFormEntity(urlParameters));
+            HttpResponse response = client.execute(post);
+
+            System.out.println("\nSending 'POST' request to URL : " + url);
+//        System.out.println("Post parameters : " + post.getEntity());
+            System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+
+            return response.getStatusLine().getStatusCode();
+        } catch(Exception e) {
+            e.printStackTrace();
+            return 400;
+        }
+    }
+
+    public static boolean logoutFromServer(String username) {
+        try {
+            HttpClient client = HttpClientBuilder.create().build();
+            HttpPost post = new HttpPost(url + "/users/logout");
+
+            // add header
+            post.setHeader("User-Agent", USER_AGENT);
+
+            List<NameValuePair> urlParameters = new ArrayList();
+//        urlParameters.add(new BasicNameValuePair("authenticity_token", token));
+            urlParameters.add(new BasicNameValuePair("username", username));
+            post.setEntity(new UrlEncodedFormEntity(urlParameters));
+            HttpResponse response = client.execute(post);
+
+            System.out.println("\nSending 'POST' request to URL : " + url);
+            System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+
+            if (response.getStatusLine().getStatusCode() == 200) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch(Exception e) {
             e.printStackTrace();
             return false;
         }

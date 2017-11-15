@@ -5,6 +5,7 @@ public enum MessageType
     CHECKING_IF_PORT_IS_AVAILABLE,
     OK,
     DOES_ID_EXIST,
+    DOES_BOOK_ID_EXIST,
     NOT_EXIST,
     ALREADY_EXIST,
     FIND_SUCCESSOR,

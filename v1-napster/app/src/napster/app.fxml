@@ -38,36 +38,48 @@
                   </AnchorPane>
               </content>
             </Tab>
-          <Tab closable="false" onSelectionChanged="#shareABookTabSelected" text="Share a new book">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <TextField fx:id="titleTextField" layoutX="331.0" layoutY="90.0" prefHeight="27.0" prefWidth="216.0" />
-                        <Text layoutX="178.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Book's Title" />
-                        <TextField fx:id="authorTextField" layoutX="331.0" layoutY="135.0" prefHeight="27.0" prefWidth="216.0" />
-                        <Text layoutX="177.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Book's Author" />
-                        <Text layoutX="178.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Book's ISBN" />
-                        <TextField fx:id="isbnTextField" layoutX="331.0" layoutY="176.0" prefHeight="27.0" prefWidth="215.0" />
-                        <Button layoutX="322.0" layoutY="348.0" mnemonicParsing="false" onAction="#shareNewBook" prefHeight="40.0" prefWidth="75.0" text="Add">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Button>
-                        <Button layoutX="269.0" layoutY="228.0" mnemonicParsing="false" onAction="#chooseFileButtonSelected" prefHeight="27.0" prefWidth="164.0" text="Choose book's location" />
-                        <Text fx:id="alertText" fill="RED" fontSmoothingType="LCD" layoutX="171.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="383.1080322265625">
-                           <font>
-                              <Font size="17.0" />
-                           </font>
-                        </Text>
-                        <Text fx:id="chooseFileText" layoutX="176.0" layoutY="294.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="368.8667907714844">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Text>
-                     </children>
-                  </AnchorPane>
-            </content>
-          </Tab>
+            <Tab closable="false" onSelectionChanged="#shareABookTabSelected" text="Share a new book">
+                <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <children>
+                            <TextField fx:id="titleTextField" layoutX="159.0" layoutY="90.0" prefHeight="27.0" prefWidth="216.0" />
+                            <Text layoutX="18.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Book's Title" />
+                            <TextField fx:id="authorTextField" layoutX="159.0" layoutY="135.0" prefHeight="27.0" prefWidth="216.0" />
+                            <Text layoutX="17.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Book's Author" />
+                            <Text layoutX="17.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Book's ISBN" />
+                            <TextField fx:id="isbnTextField" layoutX="159.0" layoutY="181.0" prefHeight="27.0" prefWidth="215.0" />
+                            <Button fx:id="addButton" layoutX="180.0" layoutY="318.0" mnemonicParsing="false" onAction="#shareNewBook" prefHeight="40.0" prefWidth="75.0" text="Add">
+                                <font>
+                                    <Font size="15.0" />
+                                </font>
+                            </Button>
+                            <Button fx:id="chooseAFileButton" layoutX="137.0" layoutY="232.0" mnemonicParsing="false" onAction="#chooseFileButtonSelected" prefHeight="27.0" prefWidth="164.0" text="Choose a file" />
+                            <Text fx:id="alertText" fill="RED" fontSmoothingType="LCD" layoutX="17.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter book information" textAlignment="CENTER" wrappingWidth="383.1080322265625">
+                                <font>
+                                    <Font size="17.0" />
+                                </font>
+                            </Text>
+                            <Text fx:id="chooseFileText" layoutX="16.0" layoutY="288.0" strokeType="OUTSIDE" strokeWidth="0.0" text="File Selected:" textAlignment="CENTER" wrappingWidth="368.8667907714844">
+                                <font>
+                                    <Font size="15.0" />
+                                </font>
+                            </Text>
+                            <TextField fx:id="username" layoutX="464.0" layoutY="168.0" prefHeight="27.0" prefWidth="216.0" promptText="username" />
+                            <Text fx:id="lsTitle" layoutX="484.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please login to share a book" textAlignment="CENTER" />
+                            <Button fx:id="lsButton" layoutX="534.0" layoutY="267.0" mnemonicParsing="false" onAction="#lsButtonPressed" prefHeight="30.0" prefWidth="75.0" text="Login">
+                                <font>
+                                    <Font size="15.0" />
+                                </font>
+                            </Button>
+                            <ToggleButton fx:id="loginToggle" layoutX="507.0" layoutY="98.0" mnemonicParsing="false" onAction="#loginToggledPressed" selected="true" text="LOGIN" />
+                            <ToggleButton fx:id="signupToggle" layoutX="567.0" layoutY="98.0" mnemonicParsing="false" onAction="#signupToggledPressed" text="SIGNUP" />
+                            <Text fx:id="lsTextAlert" fill="#f21a1a" layoutX="466.0" layoutY="144.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please login to share a book" textAlignment="CENTER" wrappingWidth="209.7874755859375" />
+                        <PasswordField fx:id="password" layoutX="465.0" layoutY="218.0" prefHeight="27.0" prefWidth="215.0" promptText="password" />
+                        <Text fx:id="loginText" fill="#f21a1a" layoutX="467.0" layoutY="258.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="209.7874755859375" />
+                        </children>
+                    </AnchorPane>
+                </content>
+            </Tab>
           <Tab closable="false" onSelectionChanged="#mySharedBooksTabSelected" text="My shared books">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">

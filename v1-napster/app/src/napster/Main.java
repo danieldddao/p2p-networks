@@ -30,7 +30,7 @@ public class Main extends Application {
         try {
             System.out.println("App is closing");
             // Clear registered books from the server
-            WebServer.unshareBooksFromServerWhenExiting(InetAddress.getLocalHost().getHostAddress());
+            WebServer.unshareBooksFromServerWhenExiting(AppController.getUsernameString());
 
             ServerSocketRunnable.closeServerSocket();
             System.exit(0);

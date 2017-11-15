@@ -20,11 +20,14 @@ public class ServerRunnable implements Runnable{
             // Receive book's file location from the client
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
             String message = (String) in.readObject();
+            System.out.println("message received " + message);
             if (!message.equals("checking if port available")) {
                 String bookLocation = message;
-                System.out.println("Location received from client is "+ bookLocation);
+                System.out.println("Location received from client is " + bookLocation);
 
-                if (bookLocation == null) {bookLocation = "";}
+                if (bookLocation == null) {
+                    bookLocation = "";
+                }
                 // Creating object to send file
                 File file = new File(bookLocation);
                 byte[] array = new byte[(int) file.length()];
@@ -53,6 +56,8 @@ public class ServerRunnable implements Runnable{
             in.close();
             socket.close();
 
+        } catch (StreamCorruptedException SCE) {
+            // connection from the server
         } catch (Exception e) {
             e.printStackTrace();
         }

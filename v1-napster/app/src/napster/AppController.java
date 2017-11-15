@@ -23,7 +23,7 @@ import napster.Runnable.ServerSocketRunnable;
 
 public class AppController {
 
-    private static int initialPort = 1111;
+    private static InetSocketAddress myAddress = null;
 
     private static boolean available(int port) {
         try (Socket ignored = new Socket(InetAddress.getLocalHost().getHostAddress(), port)) {
@@ -46,16 +46,18 @@ public class AppController {
 
     public static void loadSharedBookWhenAppStarts() {
         try {
+            int initialPort = 1111;
             System.out.println("loading shared books");
             while (!available(initialPort)) {
                 initialPort += 1;
             }
+            myAddress  = new InetSocketAddress(InetAddress.getLocalHost(), initialPort);
 
-            ServerSocket serverSocket = new ServerSocket(initialPort, 0, InetAddress.getLocalHost());
+            ServerSocket serverSocket = new ServerSocket(myAddress.getPort(), 0, myAddress.getAddress());
             Thread t = new Thread(new ServerSocketRunnable(serverSocket));
             t.start();
             System.out.println("Socket created on port # " + serverSocket.getLocalSocketAddress());
-            List<Book> bookList = Book.jsonToBookList(WebServer.findAllMySharedBooks(InetAddress.getLocalHost().getHostAddress(), initialPort));
+            List<Book> bookList = Book.jsonToBookList(WebServer.findAllMySharedBooks(usernameString));
             for (Book book: bookList) {
                 System.out.println("Loading book " + book.getTitle() + " by " + book.getAuthor());
                 File location = new File(book.getLocation());
@@ -217,36 +219,185 @@ public class AppController {
      * Share a book tab
      **/
 
-    @FXML
-    private Text chooseFileText;
+    /*
+     * Login/Signup session
+     */
+    @FXML private ToggleButton loginToggle;
 
-    @FXML
-    private Text alertText;
+    @FXML private ToggleButton signupToggle;
 
-    @FXML
-    private TextField titleTextField;
+    @FXML private TextField username;
 
-    @FXML
-    private TextField authorTextField;
+    @FXML private PasswordField password;
 
-    @FXML
-    private TextField isbnTextField;
+    @FXML private Button lsButton;
+
+    @FXML private Text lsTextAlert;
+
+    @FXML private Text lsTitle;
+
+    @FXML private Text loginText;
+
+    private static String usernameString = "";
+
+    public static String getUsernameString() {
+        return usernameString;
+    }
+
+    public void loginToggledPressed(ActionEvent event) {
+        signupToggle.setSelected(false);
+        lsButton.setText("Login");
+    }
+
+    public void signupToggledPressed(ActionEvent event) {
+        loginToggle.setSelected(false);
+        lsButton.setText("Signup");
+    }
+
+    public void lsButtonPressed(ActionEvent event) {
+        if (username.getText().isEmpty()) {
+            lsTextAlert.setText("Please enter username");
+        } else if (password.getText().isEmpty()) {
+            lsTextAlert.setText("Please enter password");
+        } else {
+            // create new account
+            if (lsButton.getText().equals("Signup")) {
+                boolean status = WebServer.createNewUser(username.getText(), password.getText());
+                if (status == true) {
+                    lsTextAlert.setText("Successfully created new account!");
+                    username.setText("");
+                    password.setText("");
+                } else {
+                    lsTextAlert.setText("Error! Can't create account! Please try again!");
+                }
+            }
+            // login to existing account
+            else if (lsButton.getText().equals("Login")) {
+                int response = WebServer.loginToServer(username.getText(), password.getText(), myAddress);
+                switch (response) {
+                    case 200:
+                        // successfully logged in, hide buttons, show logout button
+                        loginToggle.setVisible(false);
+                        signupToggle.setVisible(false);
+                        username.setVisible(false);
+                        password.setVisible(false);
+                        lsTitle.setVisible(false);
+                        lsButton.setText("Logout");
+                        usernameString = username.getText();
+                        loginText.setText("You're logged in as " + usernameString);
+                        lsTextAlert.setText("");
+
+                        titleTextField.setDisable(false);
+                        authorTextField.setDisable(false);
+                        isbnTextField.setDisable(false);
+                        addButton.setDisable(false);
+                        chooseAFileButton.setDisable(false);
+                        break;
+
+                    case 204:
+                        // username doesn't exist/password is not correct
+                        lsTextAlert.setText("Username doesn't exist/Password is not correct");
+                        break;
+
+                    case 208:
+                        // username already logged in
+                        lsTextAlert.setText("User with this username, " + username.getText() + ", already logged in");
+                        break;
+
+                    default:
+                        // username already logged in
+                        lsTextAlert.setText("User with this username, " + username.getText() + ", already logged in");
+                        break;
+                }
+            }
+            // Log out
+            else {
+                boolean status = WebServer.logoutFromServer(usernameString);
+                if (status) {
+                    loginToggle.setVisible(true);
+                    loginToggle.setSelected(true);
+                    signupToggle.setVisible(true);
+                    signupToggle.setSelected(false);
+                    username.setVisible(true);
+                    username.setText("");
+                    password.setVisible(true);
+                    password.setText("");
+                    lsButton.setText("Login");
+                    lsTextAlert.setText("");
+                    loginText.setText("");
+                    lsTitle.setVisible(true);
+                    usernameString = "";
+
+                    titleTextField.setDisable(true);
+                    authorTextField.setDisable(true);
+                    isbnTextField.setDisable(true);
+                    addButton.setDisable(true);
+                    chooseAFileButton.setDisable(true);
+                } else {
+
+                }
+            }
+        }
+    }
+
+    /*
+     * Share a new book session
+     */
+    @FXML private Text chooseFileText;
+
+    @FXML private Text alertText;
+
+    @FXML private TextField titleTextField;
+
+    @FXML private TextField authorTextField;
+
+    @FXML private TextField isbnTextField;
+
+    @FXML private Button chooseAFileButton;
+
+    @FXML private Button addButton;
 
     private File selectedFile;
 
     public void shareABookTabSelected(Event event) {
+
         alertText.setText("");
+        chooseFileText.setText("");
+        lsTextAlert.setText("");
+
+        if (usernameString.isEmpty() || usernameString.equals("")) {
+            titleTextField.setDisable(true);
+            authorTextField.setDisable(true);
+            isbnTextField.setDisable(true);
+            addButton.setDisable(true);
+            chooseAFileButton.setDisable(true);
+            loginText.setText("");
+        } else {
+            titleTextField.setDisable(false);
+            authorTextField.setDisable(false);
+            isbnTextField.setDisable(false);
+            addButton.setDisable(false);
+            chooseAFileButton.setDisable(false);
+
+            loginToggle.setVisible(false);
+            signupToggle.setVisible(false);
+            username.setVisible(false);
+            password.setVisible(false);
+            lsButton.setText("Logout");
+            loginText.setText("You're logged in as " + usernameString);
+            lsTextAlert.setText("");
+        }
     }
 
     public void chooseFileButtonSelected(ActionEvent event) {
         FileChooser fc = new FileChooser();
-        selectedFile = fc.showOpenDialog(null);
-
-        if (selectedFile != null) {
-            chooseFileText.setText("File selected: " + selectedFile);
-//            System.out.println("selected file: " + selectedFile.toString());
-        } else {
-            alertText.setText("No file selected");
+        if (!usernameString.isEmpty() && !usernameString.equals("")) {
+            selectedFile = fc.showOpenDialog(null);
+            if (selectedFile != null) {
+                chooseFileText.setText("File selected: " + selectedFile);
+            } else {
+                alertText.setText("No file selected");
+            }
         }
     }
 
@@ -265,20 +416,14 @@ public class AppController {
             } else {
 //                System.out.println("Creating ServerSocket");
                 // Create a socket
-//                ServerSocket serverSocket = new ServerSocket(initialPort);
-                Book newBook = new Book(0, InetAddress.getLocalHost().getHostAddress(), initialPort, titleTextField.getText(), authorTextField.getText(), isbnTextField.getText(), selectedFile.toString(), true);
+                Book newBook = new Book(0, usernameString, myAddress.getAddress().getHostAddress(), myAddress.getPort(), titleTextField.getText(), authorTextField.getText(), isbnTextField.getText(), selectedFile.toString(), true);
 
                 // Add new book information to the server
-                int status = WebServer.addNewBook(newBook.getUser_ip(), newBook.getPort(),
+                int status = WebServer.addNewBook(usernameString, newBook.getUser_ip(), newBook.getPort(),
                         newBook.getTitle(), newBook.getIsbn(), newBook.getAuthor(), newBook.getLocation());
                 if (status == 201) {
                     System.out.println("New book successfully added to server");
                     alertText.setText("New Book '" + titleTextField.getText() + "' successfully shared");
-
-//                    initialPort++;
-//                    System.out.println("ServerSocket created: " + serverSocket.getLocalSocketAddress());
-//                    Thread t = new Thread(new ServerRunnable(serverSocket, selectedFile.toString()));
-//                    t.start();
                 } else if (status == 500) {
                     System.out.println("Book already added");
                     alertText.setText("Book already shared");
@@ -297,45 +442,6 @@ public class AppController {
             e.printStackTrace();
         }
     }
-
-//        try {
-//            int bytesRead;
-//            int current = 0;
-//
-//            ServerSocket serverSocket = null;
-//            serverSocket = new ServerSocket(1234);
-//
-//            Socket clientSocket = null;
-//            clientSocket = serverSocket.accept();
-//            System.out.println("accepted");
-//            InputStream in = clientSocket.getInputStream();
-//
-//            // Writing the file to disk
-//            // Instantiating a new output stream object
-//            OutputStream output = new FileOutputStream(testFile);
-//
-//            byte[] buffer = new byte[1024];
-//            while ((bytesRead = in.read(buffer)) != -1) {
-//                output.write(buffer, 0, bytesRead);
-//                System.out.println("writing " + bytesRead);
-//            }
-//            // Closing the FileOutputStream handle
-//            output.close();
-//            serverSocket.close();
-//            clientSocket.close();
-//            System.out.println("Done");
-//        } catch (Exception e) {
-//
-//        }
-
-
-//        FileInputStream fileInputStream = null;
-//        BufferedInputStream bufferedInputStream = null;
-
-//        OutputStream outputStream = null;
-//        ServerSocket serverSocket = null;
-//        Socket socket = null;
-
 
 
     /**
@@ -440,7 +546,7 @@ public class AppController {
             ObservableList<Book> list = FXCollections.observableArrayList();
 
             // load books from the server
-            List<Book> bookList = Book.jsonToBookList(WebServer.findAllMySharedBooks(InetAddress.getLocalHost().getHostAddress(), initialPort));
+            List<Book> bookList = Book.jsonToBookList(WebServer.findAllMySharedBooks(usernameString));
             System.out.println(bookList);
 
             // Add books to my shared books tab

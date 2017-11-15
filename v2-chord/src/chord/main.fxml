@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -53,7 +54,7 @@
                                         <Font size="15.0" />
                                     </font>
                                 </Button>
-                                <Button layoutX="269.0" layoutY="228.0" mnemonicParsing="false" onAction="#chooseFileButtonSelected" prefHeight="27.0" prefWidth="164.0" text="Choose a file" />
+                                <Button layoutX="269.0" layoutY="228.0" mnemonicParsing="false" onAction="#chooseFileButtonSelected" prefHeight="27.0" prefWidth="164.0" text="Choose book's location" />
                                 <Text fx:id="alertText" fill="RED" fontSmoothingType="LCD" layoutX="171.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="383.1080322265625">
                                     <font>
                                         <Font size="17.0" />

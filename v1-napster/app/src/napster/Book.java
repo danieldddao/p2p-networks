@@ -8,6 +8,7 @@ import java.util.List;
 
 public class Book {
     private int id;
+    private String username;
     private String user_ip;
     private int port;
     private String title;
@@ -16,8 +17,9 @@ public class Book {
     private String location;
     private Boolean isShared;
 
-    public Book(int id, String user_ip, int port, String title, String author, String isbn, String location, Boolean isShared) {
+    public Book(int id, String username, String user_ip, int port, String title, String author, String isbn, String location, Boolean isShared) {
         this.id = id;
+        this.username = username;
         this.user_ip = user_ip;
         this.port = port;
         this.title = title;
@@ -33,6 +35,14 @@ public class Book {
 
     public void setId(int ip) {
         this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getUser_ip() {
@@ -94,6 +104,7 @@ public class Book {
             for (int i = 0; i < jsonarray.length(); i++) {
                 JSONObject jsonobject = jsonarray.getJSONObject(i);
                 int id = jsonobject.getInt("id");
+                String username = jsonobject.getString("username");
                 String user_ip = jsonobject.getString("user_ip");
                 int port = Integer.parseInt(jsonobject.getString("port_number"));
                 String title = jsonobject.getString("title");
@@ -102,7 +113,7 @@ public class Book {
                 String location = jsonobject.getString("location");
                 Boolean isShared = jsonobject.getBoolean("isShared");
 
-                Book newBook = new Book(id, user_ip, port, title, author, isbn, location, isShared);
+                Book newBook = new Book(id, username, user_ip, port, title, author, isbn, location, isShared);
                 returnList.add(newBook);
             }
             return returnList;
