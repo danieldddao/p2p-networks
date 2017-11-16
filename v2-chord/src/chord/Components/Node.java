@@ -3,6 +3,7 @@ package chord.Components;
 import chord.Runnable.FixFingers;
 import chord.Runnable.Listener;
 import chord.Runnable.Stabilize;
+import sun.plugin2.message.Message;
 
 import java.io.Serializable;
 import java.net.InetSocketAddress;
@@ -162,8 +163,11 @@ public class Node implements Serializable {
             if (status == false) {return false;}
 
             // Transferring books to me
+            // Contact my successor to transfer some books to me
+            List<Book> myBookList = transferBooksToMe();
+            this.setBookList(myBookList);
 
-
+            // Start the threads for this node
             startThreads();
 
             objArray[0] = MessageType.PRINT_YOUR_FINGER_TABLE;
@@ -526,89 +530,6 @@ public class Node implements Serializable {
 
 
     /**
-     * Share a book with its information with the network including:
-     * Assign it an id
-     * Assign it to a node
-     * @param title
-     * @param author
-     * @param isbn
-     * @param location
-     * @return True if successfully shared the book. Otherwise, False
-     */
-    public boolean shareABook(String title, String author, String isbn, String location) {
-        try {
-            String bookString = title + author + isbn;
-            long id = Utils.hashAddress(bookString);
-
-            while(checkIfBookIdExists(id) == MessageType.ALREADY_EXIST) {
-                System.out.println("ID " + id + "already exists, generating new ID...");
-                bookString += ".";
-                id = Utils.hashAddress(bookString);
-            }
-            System.out.println(nodeName + " - SHARE.NEW.BOOK - new book: " + title + " (" + location + ") : id=" + id);
-            Book newBook = new Book(id, this.address, title, author, isbn, location, true);
-
-            // send book to the appropriate node who is responsible for it
-
-
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-
-    /**
-     * Check if a given id already belongs to a book shared by a user
-     * @param id
-     * @return True if it belongs to a book. Otherwise, False.
-     */
-    public MessageType checkIfBookIdExists(long id) {
-        try {
-            MessageType response = MessageType.NOT_EXIST;
-
-            // Check my nodeID
-            if (id == this.getNodeId()) {
-                System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: ID belongs to me");
-                // Check if id belongs to some books assigned to me
-                for (Book b : bookList) {
-                    if (b.getId() == id) {
-                        System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: ID belongs to a book " + b.getTitle());
-                        return MessageType.ALREADY_EXIST;
-                    }
-                }
-            // Check my finger table
-            } else {
-                FingerTable fingerTable = this.getFingerTable();
-                int iThFinger = fingerTable.findIthFingerOf(id); // Find the finger that stores information of the node ID
-                if (iThFinger == 0) {
-                    System.out.println(this.getNodeName() + " - CHECK.IF.ID.EXISTS: ID " + id + " is too large");
-                    response = MessageType.ALREADY_EXIST;
-                } else {
-                    System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: Found BOOK ID in the finger # " + iThFinger);
-                    fingerTable.printFingerTable();
-
-                    // Ask i-th entry node to check book id
-                    Node contact = fingerTable.getEntryNode(iThFinger);
-                    System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: Contacting node #" + contact.getNodeId() + " (" + contact.getAddress().getAddress().getHostAddress() + ":" + contact.getAddress().getPort() + ")...");
-                    Object[] objArray = new Object[2];
-                    objArray[0] = MessageType.DOES_BOOK_ID_EXIST;
-                    objArray[1] = id;
-                    response = (MessageType) Utils.sendMessage(contact.getAddress(), objArray);
-                }
-            }
-
-            System.out.println(this.getNodeName() + " - CHECK.IF.ID.EXISTS: Response=" + response);
-            return response;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return MessageType.ALREADY_EXIST;
-        }
-    }
-
-
-    /**
      * Check if given id already belongs to a node/user in the network
      * @param id
      * @return True if it belongs to a node/user. Otherwise, False
@@ -661,6 +582,160 @@ public class Node implements Serializable {
             return MessageType.ALREADY_EXIST;
         }
     }
+
+
+    /**
+     * Share a book with its information with the network including:
+     * Assign it an id
+     * Assign it to a node
+     * @param title
+     * @param author
+     * @param isbn
+     * @param location
+     * @return True if successfully shared the book. Otherwise, False
+     */
+    public boolean shareABook(String title, String author, String isbn, String location) {
+        try {
+            String bookString = title + author + isbn;
+            long id = Utils.hashAddress(bookString);
+
+            while(checkIfBookIdExists(id) == MessageType.ALREADY_EXIST) {
+                System.out.println("ID " + id + "already exists, generating new ID...");
+                bookString += ".";
+                id = Utils.hashAddress(bookString);
+            }
+            System.out.println(nodeName + " - SHARE.NEW.BOOK - new book: " + title + " (" + location + ") : id=" + id);
+            Book newBook = new Book(id, this.address, title, author, isbn, location, true);
+
+            // Find the node responsible for this book
+            System.out.println(nodeName + " - SHARE.NEW.BOOK - find book's successor: id=" + id);
+            InetSocketAddress contact = findBookSuccessor(id);
+            if (contact == null) { return false; }
+
+            // send book to the appropriate node responsible for it
+            if (this.address == contact) {
+                System.out.println(nodeName + " - SHARE.NEW.BOOK - This book belongs to me: id=" + id);
+                this.bookList.add(newBook);
+                return true;
+            } else {
+                Object[] objArray = new Object[2];
+                objArray[0] = MessageType.THIS_BOOK_BELONGS_TO_YOU;
+                objArray[1] = newBook;
+                MessageType response = (MessageType) Utils.sendMessage(contact, objArray);
+                if (response == MessageType.GOT_IT) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    /**
+     * Find the successor of the book. In other words, find the node/user responsible for this book
+     * @param id
+     * @return address of the node/user responsible for this book
+     */
+    public InetSocketAddress findBookSuccessor(long id) {
+        try {
+            // Check my nodeID
+            if (this.getPredecessor().getNodeId() < id && id <= this.getNodeId()) {
+                System.out.println(this.getNodeName() + " - FIND.BOOK.SUCCESSOR: Book belongs to me");
+                return this.address;
+            // Check my finger table
+            } else {
+                FingerTable fingerTable = this.getFingerTable();
+                int iThFinger = fingerTable.findIthFingerOf(id); // Find the finger that stores information of the Book ID
+                if (iThFinger == 0) {
+                    System.out.println(this.getNodeName() + " - FIND.BOOK.SUCCESSOR: ID " + id + " is too large");
+                    return null;
+                } else {
+                    System.out.println(this.getNodeName() + " - FIND.BOOK.SUCCESSOR:: Found BOOK ID in the finger # " + iThFinger);
+                    fingerTable.printFingerTable();
+
+                    // Ask i-th entry node to check book id
+                    Node contact = fingerTable.getEntryNode(iThFinger);
+                    System.out.println(this.getNodeName() + " - FIND.BOOK.SUCCESSOR: Contacting node #" + contact.getNodeId() + " (" + contact.getAddress().getAddress().getHostAddress() + ":" + contact.getAddress().getPort() + ")...");
+                    Object[] objArray = new Object[2];
+                    objArray[0] = MessageType.FIND_BOOK_SUCCESSOR;
+                    objArray[1] = id;
+                    return (InetSocketAddress) Utils.sendMessage(contact.getAddress(), objArray);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    /**
+     * Check if a given id already belongs to a book shared by a user
+     * @param id
+     * @return True if it belongs to a book. Otherwise, False.
+     */
+    public MessageType checkIfBookIdExists(long id) {
+        try {
+            MessageType response = MessageType.NOT_EXIST;
+
+            // Check my nodeID
+            if (id == this.getNodeId()) {
+                System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: ID belongs to me");
+                // Check if id belongs to some books assigned to me
+                for (Book b : bookList) {
+                    if (b.getId() == id) {
+                        System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: ID belongs to a book " + b.getTitle());
+                        return MessageType.ALREADY_EXIST;
+                    }
+                }
+            // Check my finger table
+            } else {
+                FingerTable fingerTable = this.getFingerTable();
+                int iThFinger = fingerTable.findIthFingerOf(id); // Find the finger that stores information of Book node ID
+                if (iThFinger == 0) {
+                    System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: ID " + id + " is too large");
+                    response = MessageType.ALREADY_EXIST;
+                } else {
+                    System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: Found BOOK ID in the finger # " + iThFinger);
+                    fingerTable.printFingerTable();
+
+                    // Ask i-th entry node to check book id
+                    Node contact = fingerTable.getEntryNode(iThFinger);
+                    System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: Contacting node #" + contact.getNodeId() + " (" + contact.getAddress().getAddress().getHostAddress() + ":" + contact.getAddress().getPort() + ")...");
+                    Object[] objArray = new Object[2];
+                    objArray[0] = MessageType.DOES_BOOK_ID_EXIST;
+                    objArray[1] = id;
+                    response = (MessageType) Utils.sendMessage(contact.getAddress(), objArray);
+                }
+            }
+
+            System.out.println(this.getNodeName() + " - CHECK.IF.ID.EXISTS: Response=" + response);
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return MessageType.ALREADY_EXIST;
+        }
+    }
+
+
+    public List<Book> transferBooksToMe() {
+        try {
+            System.out.println(this.getNodeName() + " - TRANSFER.BOOKS.TO.ME:" + this.nodeId);
+            Object[] objArray = new Object[2];
+            objArray[0] = MessageType.TRANSFER_YOUR_BOOKS_TO_ME;
+            objArray[1] = this.nodeId;
+            return (List<Book>) Utils.sendMessage(this.getSuccessor().getAddress(), objArray);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList();
+        }
+    }
+
 
 
     /**
@@ -732,6 +807,14 @@ public class Node implements Serializable {
 
     public Listener getListener() {
         return listener;
+    }
+
+    public List<Book> getBookList() {
+        return bookList;
+    }
+
+    public void setBookList(List<Book> bookList) {
+        this.bookList = bookList;
     }
 }
 

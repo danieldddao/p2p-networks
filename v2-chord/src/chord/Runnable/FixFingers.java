@@ -27,10 +27,15 @@ public class FixFingers implements Runnable {
             System.out.println("FixFingers running");
             while (isRunning) {
                 int i = random.nextInt(Node.getM()-1) + 2; // Get a random i-th finger
-                System.out.println(myNode.getNodeName() + " - FIXFINGERS - refreshing finger entry # " + i);
+
                 // Find successor of i-th start position
+                Node entryNode = myNode.getFingerTable().getEntryNode(i);
                 Node n = myNode.findSuccessorOf(myNode.getFingerTable().getRange(i).getKey());
-                myNode.getFingerTable().updateEntryNode(i, n);
+                if (entryNode.getNodeId() != n.getNodeId()) {
+                    System.out.println(myNode.getNodeName() + " - FIXFINGERS - updating finger entry # " + i + " , new entry: " + n.getNodeName());
+                    myNode.getFingerTable().updateEntryNode(i, n);
+                }
+
                 Thread.sleep(periodTime);
             }
             System.out.println("FixFingers closing");

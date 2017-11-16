@@ -1,13 +1,12 @@
 package chord.Runnable;
 
-import chord.Components.FingerTable;
-import chord.Components.MessageType;
-import chord.Components.Node;
-import chord.Components.Utils;
+import chord.Components.*;
 
 import java.io.*;
 
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Thread that receives the message from the node and sends response message appropriately
@@ -110,15 +109,6 @@ public class Server implements Runnable{
                     break;
 
 
-                // Check if book id belongs to a book in the network
-                case DOES_BOOK_ID_EXIST:
-                    id = (long) messageArray[1];
-                    response = MessageType.NOT_EXIST;
-                    System.out.println(myNode.getNodeName() + " - SERVER: Checking if BOOK ID exists: " + id);
-                    response = myNode.checkIfBookIdExists(id);
-                    break;
-
-
                 // New node is joining the network, find its successor
                 // Response is the successor node
                 case FIND_SUCCESSOR:
@@ -198,6 +188,49 @@ public class Server implements Runnable{
                 case PRINT_YOUR_FINGER_TABLE:
                     myNode.getFingerTable().printFingerTable();
                     response = MessageType.OK;
+                    break;
+
+
+                // Check if book id belongs to a book in the network
+                case DOES_BOOK_ID_EXIST:
+                    id = (long) messageArray[1];
+                    response = MessageType.NOT_EXIST;
+                    System.out.println(myNode.getNodeName() + " - SERVER: Checking if BOOK ID exists: " + id);
+                    response = myNode.checkIfBookIdExists(id);
+                    break;
+
+
+                // Find node responsible for this book
+                case FIND_BOOK_SUCCESSOR:
+                    id = (long) messageArray[1];
+                    response = null;
+                    System.out.println(myNode.getNodeName() + " - SERVER: Find BOOK's successor: " + id);
+                    response = myNode.findBookSuccessor(id);
+                    break;
+
+
+                // This book is assigned to me
+                case THIS_BOOK_BELONGS_TO_YOU:
+                    Book book = (Book) messageArray[1];
+                    myNode.getBookList().add(book);
+                    response = MessageType.GOT_IT;
+                    break;
+
+
+                case TRANSFER_YOUR_BOOKS_TO_ME:
+                    id = (long) messageArray[1];
+                    List<Book> myNewBookList = new ArrayList();
+                    List<Book> returnBookList = new ArrayList();
+
+                    for (Book b : myNode.getBookList()) {
+                        if (b.getId() <= id) {
+                            returnBookList.add(b);
+                        } else {
+                            myNewBookList.add(b);
+                        }
+                    }
+                    myNode.setBookList(myNewBookList);
+                    response = returnBookList;
                     break;
             }
             return response;

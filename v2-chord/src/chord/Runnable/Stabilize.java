@@ -4,6 +4,10 @@ import chord.Components.MessageType;
 import chord.Components.Node;
 import chord.Components.Utils;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+
 /**
  * This thread will periodically verify my immediate successor
  * and tell the successor about me.
@@ -27,6 +31,30 @@ public class Stabilize implements Runnable {
             System.out.println("Stabilize running");
             Object[] objArray = new Object[1];
             while (isRunning) {
+
+                /*
+                 * Check if my successor is still alive
+                 */
+                Socket socket = new Socket();
+                Node mySuc = myNode.getSuccessor();
+                System.out.println("Connecting to " + mySuc.getAddress().getAddress().getHostAddress() + ":" + myNode.getSuccessor().getAddress().getPort());
+                socket.connect(mySuc.getAddress(), 1000);
+
+//                // Send message to server to check port availability
+//                objArray[0] = MessageType.CHECKING_IF_PORT_IS_AVAILABLE;
+//                ObjectOutputStream objectOutputStream = new ObjectOutputStream(ignored.getOutputStream());
+//                objectOutputStream.writeObject(objArray);
+//                objectOutputStream.flush();
+//
+//                // Receive response message
+//                ObjectInputStream objectInputStream = new ObjectInputStream(ignored.getInputStream());
+//                objectInputStream.readObject();
+//
+//                objectInputStream.close();
+//                objectOutputStream.close();
+//                ignored.close();
+
+
                 objArray[0] = MessageType.GET_YOUR_PREDECESSOR;
                 Node pre = (Node) Utils.sendMessage(myNode.getSuccessor().getAddress(), objArray);
 
