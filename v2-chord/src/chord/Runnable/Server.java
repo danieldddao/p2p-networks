@@ -213,10 +213,12 @@ public class Server implements Runnable{
                 case THIS_BOOK_BELONGS_TO_YOU:
                     Book book = (Book) messageArray[1];
                     myNode.getBookList().add(book);
+                    System.out.println(myNode.getNodeName() + " - SERVER: New Book belongs to me: " + book.getId() + ", " + book.getTitle());
                     response = MessageType.GOT_IT;
                     break;
 
 
+                // Transfer some of my books to my predecessor
                 case TRANSFER_YOUR_BOOKS_TO_ME:
                     id = (long) messageArray[1];
                     List<Book> myNewBookList = new ArrayList();
@@ -230,8 +232,27 @@ public class Server implements Runnable{
                         }
                     }
                     myNode.setBookList(myNewBookList);
+                    System.out.println(myNode.getNodeName() + " - SERVER: Transfer books - my new book list: " + myNewBookList);
                     response = returnBookList;
                     break;
+
+
+                // new books are assigned to me
+                case YOU_HAVE_NEW_BOOKS:
+                    List<Book> books = (List<Book>) messageArray[1];
+                    for (Book b : books) {
+                        myNode.getBookList().add(b);
+                    }
+                    response = MessageType.GOT_IT;
+                    break;
+
+
+                case ARE_YOU_STILL_ALIVE:
+                    System.out.println(myNode.getNodeName() + " - SERVER: I'm still alive.");
+                    response = myNode.getBookList();
+                    break;
+
+
             }
             return response;
         } catch (Exception e){

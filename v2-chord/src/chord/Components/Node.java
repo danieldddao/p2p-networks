@@ -20,6 +20,7 @@ public class Node implements Serializable {
     private Node successor = null;
     private FingerTable fingerTable = null;
     private List<Book> bookList = null;
+    private List<Book> mySucBookList = null;
 
     private String addressString = "";
     private long nodeId = -1;
@@ -42,6 +43,7 @@ public class Node implements Serializable {
 
             // Initialize list of books
             bookList = new ArrayList();
+            mySucBookList = new ArrayList();
 
             // initialize threads
             listener = new Listener(this);
@@ -815,6 +817,14 @@ public class Node implements Serializable {
 
     public void setBookList(List<Book> bookList) {
         this.bookList = bookList;
+    }
+
+    public List<Book> getMySucBookList() {
+        return mySucBookList;
+    }
+
+    public void setMySucBookList(List<Book> mySucBookList) {
+        this.mySucBookList = mySucBookList;
     }
 }
 
