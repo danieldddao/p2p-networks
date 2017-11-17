@@ -12,13 +12,13 @@ public class Utils {
 
     /**
      * Hash the give address string using consistent hashing with Linear congruential generator
-     * @param address
+     * @param hashterm
      * @return m-bit ID key used for nodeId whose value is not larger than the size of the Chord ring
      * @throws Exception
      */
-    public static long hashAddress(String address) throws Exception {
+    public static long hashFunction(String hashterm) throws Exception {
         long hashValue = 0;
-        long generator = address.hashCode();
+        long generator = hashterm.hashCode();
         while (true) {
             generator = 2862933555777941757L * generator + 1;
             long next = (long) ((hashValue + 1) / (((double) ((int) (generator >>> 33) + 1)) / (0x1.0p31)));

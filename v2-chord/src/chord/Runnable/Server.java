@@ -44,39 +44,6 @@ public class Server implements Runnable{
                 objectOutputStream.writeObject(response);
                 objectOutputStream.flush();
 
-//                System.out.println("Server running");
-//                System.out.println("Accepted connection : " + socket);
-//
-//                String bookLocation = message;
-//                System.out.println("Location received from socket is "+ bookLocation);
-//
-//                if (bookLocation == null) {bookLocation = "";}
-//                // Creating object to send file
-//                File file = new File(bookLocation);
-//                byte[] array = new byte[(int) file.length()];
-//                FileInputStream fileInputStream = new FileInputStream(file);
-//                BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
-//                bufferedInputStream.read(array, 0, array.length); // copied file into byteArray
-//
-//                // Sending file size through socket
-//                ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-//                out.writeObject("" + array.length);
-//                out.flush();
-//
-//                // Sending file through socket
-//                OutputStream outputStream = socket.getOutputStream();
-//                System.out.println("Sending " + bookLocation + "( size: " + array.length + " bytes)");
-//                outputStream.write(array, 0, array.length);            //copying byteArray to socket
-//                outputStream.flush();                                        //flushing socket
-//                System.out.println("Done.");                                //file has been sent
-//
-//                fileInputStream.close();
-//                bufferedInputStream.close();
-//                out.close();
-//                outputStream.close();
-
-//                printStream.close();
-
                 // Wait 50 millisecs to before closing streams
                 Thread.sleep(50);
                 if (objectOutputStream != null) {objectOutputStream.close();}
@@ -268,9 +235,36 @@ public class Server implements Runnable{
 
                 // a user wants to download book
                 case DOWNLOAD_BOOK:
-                    String bookLoc = (String) messageArray[1];
+                String bookLocation = (String) messageArray[1];
+                System.out.println(myNode.getNodeName() + " - SERVER - DOWNLOAD BOOK - Location received from socket: " + bookLocation);
+                if (bookLocation == null) {bookLocation = "";}
 
-                    break;
+                // Creating object to send file
+                File bookFile = new File(bookLocation);
+                byte[] array = new byte[(int) bookFile.length()];
+                FileInputStream fileInputStream = new FileInputStream(bookFile);
+                BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+                bufferedInputStream.read(array, 0, array.length); // copied file into byteArray
+
+                // Sending file size through socket
+                ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+                out.writeObject(array.length);
+                out.flush();
+
+                // Sending file through socket
+                OutputStream outputStream = socket.getOutputStream();
+                System.out.println("Sending " + bookLocation + "( size: " + array.length + " bytes)");
+                outputStream.write(array, 0, array.length);            //copying byteArray to socket
+                outputStream.flush();                                        //flushing socket
+                System.out.println("Done.");                                //file has been sent
+
+                fileInputStream.close();
+                bufferedInputStream.close();
+                out.close();
+                outputStream.close();
+
+                response = MessageType.FINISHED_SENDING_BOOK;
+                break;
             }
             return response;
         } catch (Exception e){

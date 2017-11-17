@@ -78,7 +78,7 @@ public class Node implements Serializable {
      */
     private void generateIdAndName(String addressString) {
         try {
-            long hashValue = Utils.hashAddress(addressString);
+            long hashValue = Utils.hashFunction(addressString);
             nodeId = hashValue;
             nodeName = "N" + nodeId;
             System.out.println("nodeId: " + nodeId);
@@ -599,12 +599,12 @@ public class Node implements Serializable {
     public boolean shareABook(String title, String author, String isbn, String location) {
         try {
             String bookString = title + author + isbn;
-            long id = Utils.hashAddress(bookString);
+            long id = Utils.hashFunction(bookString);
 
             while(checkIfBookIdExists(id) == MessageType.ALREADY_EXIST) {
                 System.out.println("ID " + id + "already exists, generating new ID...");
                 bookString += ".";
-                id = Utils.hashAddress(bookString);
+                id = Utils.hashFunction(bookString);
             }
             System.out.println(nodeName + " - SHARE.NEW.BOOK - new book: " + title + " (" + location + ") : id=" + id);
             Book newBook = new Book(id, this.address, title, author, isbn, location, true);
@@ -743,12 +743,17 @@ public class Node implements Serializable {
         List<Book> returnBooks = new ArrayList();
         try {
 
+            long bookId = Utils.hashFunction(searchTerm);
+            // Locate book id in the network
+
             return returnBooks;
         } catch (Exception e) {
             e.printStackTrace();
             return returnBooks;
         }
     }
+
+
     /**
      * Stop all threads that have while loop
      */

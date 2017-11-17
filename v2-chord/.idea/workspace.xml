@@ -61,7 +61,7 @@
       <file leaf-file-name="Book.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/chord/Components/Book.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
+            <state relative-caret-position="68">
               <caret line="29" column="26" lean-forward="false" selection-start-line="29" selection-start-column="26" selection-end-line="29" selection-end-column="26" />
               <folding>
                 <element signature="e#773#774#0" expanded="true" />
@@ -71,11 +71,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Node.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Node.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/chord/Components/Node.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="437">
-              <caret line="733" column="32" lean-forward="false" selection-start-line="733" selection-start-column="0" selection-end-line="734" selection-end-column="0" />
+            <state relative-caret-position="403">
+              <caret line="744" column="0" lean-forward="false" selection-start-line="744" selection-start-column="0" selection-end-line="744" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -83,11 +83,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Controller.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Controller.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/chord/Controller.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="636">
-              <caret line="201" column="17" lean-forward="true" selection-start-line="201" selection-start-column="17" selection-end-line="201" selection-end-column="17" />
+            <state relative-caret-position="-162">
+              <caret line="189" column="0" lean-forward="true" selection-start-line="189" selection-start-column="0" selection-end-line="189" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -96,8 +96,8 @@
       <file leaf-file-name="Server.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/chord/Runnable/Server.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2587">
-              <caret line="71" column="2" lean-forward="true" selection-start-line="71" selection-start-column="2" selection-end-line="71" selection-end-column="2" />
+            <state relative-caret-position="291">
+              <caret line="247" column="0" lean-forward="true" selection-start-line="247" selection-start-column="0" selection-end-line="247" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -105,21 +105,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MessageType.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/chord/Components/MessageType.java">
+      <file leaf-file-name="DownloadClient.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/chord/Runnable/DownloadClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="27" column="17" lean-forward="true" selection-start-line="27" selection-start-column="17" selection-end-line="27" selection-end-column="17" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FixFingers.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/chord/Runnable/FixFingers.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="32" column="18" lean-forward="false" selection-start-line="32" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+            <state relative-caret-position="394">
+              <caret line="79" column="13" lean-forward="true" selection-start-line="79" selection-start-column="13" selection-end-line="79" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -128,8 +118,8 @@
       <file leaf-file-name="Utils.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/chord/Components/Utils.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="54" column="29" lean-forward="false" selection-start-line="54" selection-start-column="12" selection-end-line="54" selection-end-column="29" />
+            <state relative-caret-position="180">
+              <caret line="18" column="35" lean-forward="false" selection-start-line="18" selection-start-column="23" selection-end-line="18" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -201,7 +191,6 @@
         <option value="$PROJECT_DIR$/test/TestJoinChord.java" />
         <option value="$PROJECT_DIR$/src/test/TestJoinChord.java" />
         <option value="$PROJECT_DIR$/src/chord/Components/FingerTable.java" />
-        <option value="$PROJECT_DIR$/src/chord/Components/Utils.java" />
         <option value="$PROJECT_DIR$/src/test/TestJoiningChord.java" />
         <option value="$PROJECT_DIR$/src/chord/Components/Book.java" />
         <option value="$PROJECT_DIR$/../../../../iOS Development/Project/MovieTime/MovieTime/Base.lproj/Main.storyboard" />
@@ -209,10 +198,12 @@
         <option value="$PROJECT_DIR$/src/chord/Runnable/FixFingers.java" />
         <option value="$PROJECT_DIR$/src/chord/Runnable/PingSuccessor.java" />
         <option value="$PROJECT_DIR$/src/chord/Runnable/Stabilize.java" />
-        <option value="$PROJECT_DIR$/src/chord/Components/Node.java" />
         <option value="$PROJECT_DIR$/src/chord/Components/MessageType.java" />
         <option value="$PROJECT_DIR$/src/chord/Runnable/Server.java" />
         <option value="$PROJECT_DIR$/src/chord/Controller.java" />
+        <option value="$PROJECT_DIR$/src/chord/Runnable/DownloadClient.java" />
+        <option value="$PROJECT_DIR$/src/chord/Components/Utils.java" />
+        <option value="$PROJECT_DIR$/src/chord/Components/Node.java" />
       </list>
     </option>
   </component>
@@ -510,12 +501,12 @@
       <workItem from="1510699856580" duration="3521000" />
       <workItem from="1510717290280" duration="15086000" />
       <workItem from="1510884401597" duration="624000" />
-      <workItem from="1510890899516" duration="3079000" />
+      <workItem from="1510890899516" duration="7455000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="238193000" />
+    <option name="totallyTimeSpent" value="242569000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1280" height="778" extended-state="0" />
@@ -853,34 +844,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/chord/Components/Book.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="29" column="26" lean-forward="false" selection-start-line="29" selection-start-column="26" selection-end-line="29" selection-end-column="26" />
-          <folding>
-            <element signature="e#773#774#0" expanded="true" />
-            <element signature="e#801#802#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/chord/Runnable/PingSuccessor.java" />
-    <entry file="file://$PROJECT_DIR$/src/chord/Runnable/FixFingers.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="32" column="18" lean-forward="false" selection-start-line="32" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/chord/Runnable/DownloadClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="28" column="0" lean-forward="true" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/chord/Runnable/Stabilize.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="608">
@@ -889,47 +853,74 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/chord/Runnable/FixFingers.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="32" column="18" lean-forward="false" selection-start-line="32" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/chord/Components/MessageType.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="27" column="17" lean-forward="true" selection-start-line="27" selection-start-column="17" selection-end-line="27" selection-end-column="17" />
+        <state relative-caret-position="420">
+          <caret line="28" column="25" lean-forward="false" selection-start-line="28" selection-start-column="25" selection-end-line="28" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/chord/Runnable/DownloadClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="394">
+          <caret line="79" column="13" lean-forward="true" selection-start-line="79" selection-start-column="13" selection-end-line="79" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/chord/Components/Utils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="54" column="29" lean-forward="false" selection-start-line="54" selection-start-column="12" selection-end-line="54" selection-end-column="29" />
+        <state relative-caret-position="180">
+          <caret line="18" column="35" lean-forward="false" selection-start-line="18" selection-start-column="23" selection-end-line="18" selection-end-column="35" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/chord/Components/Node.java">
+    <entry file="file://$PROJECT_DIR$/src/chord/Runnable/Server.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="733" column="32" lean-forward="false" selection-start-line="733" selection-start-column="0" selection-end-line="734" selection-end-column="0" />
+        <state relative-caret-position="291">
+          <caret line="247" column="0" lean-forward="true" selection-start-line="247" selection-start-column="0" selection-end-line="247" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/chord/Runnable/Server.java">
+    <entry file="file://$PROJECT_DIR$/src/chord/Components/Book.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2587">
-          <caret line="71" column="2" lean-forward="true" selection-start-line="71" selection-start-column="2" selection-end-line="71" selection-end-column="2" />
+        <state relative-caret-position="68">
+          <caret line="29" column="26" lean-forward="false" selection-start-line="29" selection-start-column="26" selection-end-line="29" selection-end-column="26" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#773#774#0" expanded="true" />
+            <element signature="e#801#802#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/chord/Controller.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="636">
-          <caret line="201" column="17" lean-forward="true" selection-start-line="201" selection-start-column="17" selection-end-line="201" selection-end-column="17" />
+        <state relative-caret-position="-162">
+          <caret line="189" column="0" lean-forward="true" selection-start-line="189" selection-start-column="0" selection-end-line="189" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/chord/Components/Node.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="403">
+          <caret line="744" column="0" lean-forward="false" selection-start-line="744" selection-start-column="0" selection-end-line="744" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

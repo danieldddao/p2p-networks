@@ -156,6 +156,7 @@ public class Controller {
 
         public BookCell() {
             super();
+            downloadButton.setDisable(false);
             borderPane.setTop(downloadButton);
             borderPane.setCenter(new Label(""));
             borderPane.setBottom(progressBorderPane);
@@ -190,9 +191,11 @@ public class Controller {
                             Thread t = new Thread(new DownloadClient(socket, currentBook, dir, progressBar, checkBox));
                             t.start();
                             System.out.println("Downloading " + currentBook.getTitle() + " from loc: " + currentBook.getLocation());
-
                         } else {
-                            searchAlertText.setText("Book is no longer available to download!");
+                            searchAlertText.setText("Book is no longer available to download from this user!");
+
+                            // Make the download button disabled
+                            downloadButton.setDisable(true);
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();

@@ -1,5 +1,6 @@
 package chord.Runnable;
 
+import chord.Components.MessageType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ProgressBar;
 import chord.Components.Book;
@@ -28,8 +29,11 @@ public class DownloadClient implements Runnable{
             System.out.println("DownloadClient running");
 
             // Send Book's file location to the owner
+            Object[] msgArray = new Object[2];
+            msgArray[0] = MessageType.DOWNLOAD_BOOK;
+            msgArray[1] = currentBook.getLocation();
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-            out.writeObject(currentBook.getLocation());
+            out.writeObject(msgArray);
             out.flush();
 
             // Setup file path
@@ -44,8 +48,7 @@ public class DownloadClient implements Runnable{
 
             // receive file size
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-            String fileSizeMsg = (String) in.readObject();
-            int fileSize = Integer.parseInt(fileSizeMsg);
+            int fileSize = (Integer) in.readObject();
             System.out.println("Book's file size " + fileSize);
             byte [] byteArray  = new byte [ fileSize + 1];
 
@@ -69,8 +72,12 @@ public class DownloadClient implements Runnable{
             bufferedOutputStream.write(byteArray, 0 , current);							//writing byteArray to file
             bufferedOutputStream.flush();												//flushing buffers
 
-            checkBox.setVisible(true);
-            System.out.println("File " + filePath + " downloaded ( size: " + current + " bytes read)");
+            // Receive the message from the server
+            MessageType response = (MessageType) in.readObject();
+            if (response == MessageType.FINISHED_SENDING_BOOK) {
+                checkBox.setVisible(true);
+                System.out.println("File " + filePath + " downloaded ( size: " + current + " bytes read)");
+            }
 
             out.close();
             in.close();
