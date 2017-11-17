@@ -739,7 +739,16 @@ public class Node implements Serializable {
     }
 
 
+    public List<Book> searchBook(String searchTerm) {
+        List<Book> returnBooks = new ArrayList();
+        try {
 
+            return returnBooks;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return returnBooks;
+        }
+    }
     /**
      * Stop all threads that have while loop
      */

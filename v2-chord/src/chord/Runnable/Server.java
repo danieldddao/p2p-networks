@@ -253,6 +253,24 @@ public class Server implements Runnable{
                     break;
 
 
+                // check if book location is still available
+                case IS_BOOK_AVAILABLE:
+                    String loc = (String) messageArray[1];
+                    System.out.println(myNode.getNodeName() + " - SERVER: Check if book location is still available");
+                    File file = new File(loc);
+                    if (file.exists()) {
+                        response = MessageType.BOOK_IS_AVAILABLE;
+                    } else {
+                        response = MessageType.BOOK_NOT_AVAILABLE;
+                    }
+                    break;
+
+
+                // a user wants to download book
+                case DOWNLOAD_BOOK:
+                    String bookLoc = (String) messageArray[1];
+
+                    break;
             }
             return response;
         } catch (Exception e){

@@ -4,19 +4,25 @@ import chord.Components.Book;
 import chord.Components.MessageType;
 import chord.Components.Node;
 
+import chord.Components.Utils;
+import chord.Runnable.DownloadClient;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.text.Text;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
 import java.io.*;
 import java.net.*;
+import java.util.List;
 
 public class Controller {
 
@@ -137,8 +143,106 @@ public class Controller {
         bookListView.setItems(list);
     }
 
-    public void searchBook(ActionEvent event) {
+    class BookCell extends ListCell<Book> {
+        HBox hbox = new HBox();
+        Label label = new Label("(empty)");
+        Pane pane = new Pane();
+        Button downloadButton = new Button("Download");
+        BorderPane borderPane = new BorderPane();
+        CheckBox checkBox = new CheckBox();
+        BorderPane progressBorderPane = new BorderPane();
+        ProgressBar progressBar = new ProgressBar(0);
+        Book currentBook;
 
+        public BookCell() {
+            super();
+            borderPane.setTop(downloadButton);
+            borderPane.setCenter(new Label(""));
+            borderPane.setBottom(progressBorderPane);
+
+            progressBorderPane.setLeft(progressBar);
+            progressBorderPane.setCenter(new Label(" "));
+            progressBorderPane.setRight(checkBox);
+
+            hbox.getChildren().addAll(label, pane, borderPane);
+            HBox.setHgrow(pane, Priority.ALWAYS);
+
+            // Download Button is pressed
+            downloadButton.setOnAction(e -> {
+                // Choose directory
+                DirectoryChooser dc = new DirectoryChooser();
+                File dir = dc.showDialog(null);
+                if (dir != null) {
+                    try {
+                        System.out.println("directory selected: " + dir);
+                        progressBar.setProgress(0);
+
+                        // Ask book owner if book is still available
+                        Object[] objArray = new Object[2];
+                        objArray[0] = MessageType.IS_BOOK_AVAILABLE;
+                        objArray[1] = currentBook.getLocation();
+                        MessageType response = (MessageType) Utils.sendMessage(currentBook.getOwnerAddress(), objArray);
+                        if (response == MessageType.BOOK_IS_AVAILABLE) {
+                            //creating connection to owner's socket
+                            Socket socket = new Socket(currentBook.getOwnerAddress().getAddress(), currentBook.getOwnerAddress().getPort());
+                            System.out.println("Connecting to book owner: " + currentBook.getOwnerAddress().getAddress().getHostAddress() + ":" + currentBook.getOwnerAddress().getPort());
+
+                            Thread t = new Thread(new DownloadClient(socket, currentBook, dir, progressBar, checkBox));
+                            t.start();
+                            System.out.println("Downloading " + currentBook.getTitle() + " from loc: " + currentBook.getLocation());
+
+                        } else {
+                            searchAlertText.setText("Book is no longer available to download!");
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                } else {
+                    searchAlertText.setText("Please choose a directory to download");
+                }
+            });
+        }
+
+        @Override
+        protected void updateItem(Book newBook, boolean empty) {
+            super.updateItem(newBook, empty);
+            setText(null);  // No text in label of super class
+            if (empty) {
+                currentBook = null;
+                setGraphic(null);
+            } else {
+                currentBook = newBook;
+                if (currentBook.getIsbn().isEmpty()) {
+                    label.setText(currentBook.getTitle() + " by " + currentBook.getAuthor());
+                } else {
+                    label.setText(currentBook.getTitle() + " by " + currentBook.getAuthor() + " (isbn:" + currentBook.getIsbn() + ")");
+                }
+                checkBox.setSelected(true);
+                checkBox.setDisable(true);
+                checkBox.setVisible(false);
+                checkBox.setText("Done");
+                setGraphic(hbox);
+            }
+        }
+    }
+
+    public void searchBook(ActionEvent event) {
+        try {
+            searchAlertText.setText("");
+            List<Book> searchBookResult = myNode.searchBook(searchTextField.getText());
+            if (searchBookResult.isEmpty()) {
+                searchAlertText.setText("No Book found!");
+            } else {
+                ObservableList<Book> list = FXCollections.observableArrayList();
+                for (Book book: searchBookResult) {
+                    list.add(book);
+                }
+                bookListView.setItems(list);
+                bookListView.setCellFactory(param -> new BookCell());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
