@@ -3,6 +3,7 @@ package chord.Components;
 import chord.Runnable.FixFingers;
 import chord.Runnable.Listener;
 import chord.Runnable.Stabilize;
+import javafx.util.Pair;
 import sun.plugin2.message.Message;
 
 import java.io.Serializable;
@@ -725,6 +726,10 @@ public class Node implements Serializable {
     }
 
 
+    /**
+     * Tell my successor to give me the list of books, which are assigned to him.
+     * @return list of books that are assigned to my successor
+     */
     public List<Book> transferBooksToMe() {
         try {
             System.out.println(this.getNodeName() + " - TRANSFER.BOOKS.TO.ME:" + this.nodeId);
@@ -742,10 +747,14 @@ public class Node implements Serializable {
     public List<Book> searchBook(String searchTerm) {
         List<Book> returnBooks = new ArrayList();
         try {
-
-            long bookId = Utils.hashFunction(searchTerm);
-            // Locate book id in the network
-
+            String searchString = searchTerm;
+            for (int i=0; i < Node.getM(); i++) {
+                long bookId = Utils.hashFunction(searchString);
+                // Locate book id in the network
+                List<Book> results = findBookById(new Pair(bookId, searchTerm));
+                returnBooks.addAll(results);
+                searchString += ".";
+            }
             return returnBooks;
         } catch (Exception e) {
             e.printStackTrace();
@@ -753,6 +762,45 @@ public class Node implements Serializable {
         }
     }
 
+
+    public List<Book> findBookById(Pair<Long, String> searchBook) {
+        List<Book> returnBooks = new ArrayList();
+        try {
+            long bookId = searchBook.getKey();
+            String searchTerm = searchBook.getValue();
+            System.out.println(this.getNodeName() + " - FIND.BOOK.BY.ID:" + bookId + ", term: " + searchTerm);
+
+            // Find if I hold this book
+            if (bookId > this.getPredecessor().getNodeId() && bookId <= this.getNodeId()) {
+                for (Book book : this.getBookList()) {
+                    if (book.getTitle().contains(searchTerm)) {
+                        returnBooks.add(book);
+                    }
+                }
+            // Check finger table to find the node who holds this book
+            } else {
+                FingerTable fingerTable = this.getFingerTable();
+                int iThFinger = fingerTable.findIthFingerOf(bookId); // Find the finger that stores information of the Book ID
+                if (iThFinger != 0) {
+                    System.out.println(this.getNodeName() + " - FIND.BOOK.BY.ID: Found book in the finger #" + iThFinger);
+                    fingerTable.printFingerTable();
+
+                    // Ask i-th entry node to check book id
+                    Node contact = fingerTable.getEntryNode(iThFinger);
+                    System.out.println(this.getNodeName() + " - FIND.BOOK.SUCCESSOR: Contacting node #" + contact.getNodeId() + " (" + contact.getAddress().getAddress().getHostAddress() + ":" + contact.getAddress().getPort() + ")...");
+                    Object[] objArray = new Object[2];
+                    objArray[0] = MessageType.FIND_BOOK;
+                    objArray[1] = searchBook;
+                    List<Book> results = (List<Book>) Utils.sendMessage(contact.getAddress(), objArray);
+                    returnBooks.addAll(results);
+                }
+            }
+            return returnBooks;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return returnBooks;
+        }
+    }
 
     /**
      * Stop all threads that have while loop
@@ -762,7 +810,6 @@ public class Node implements Serializable {
         stabilize.closeStabilize();
         fixFingers.closeFixFingers();
     }
-
 
 
     /*****************************

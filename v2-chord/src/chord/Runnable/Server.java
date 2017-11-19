@@ -1,6 +1,7 @@
 package chord.Runnable;
 
 import chord.Components.*;
+import javafx.util.Pair;
 
 import java.io.*;
 
@@ -211,6 +212,14 @@ public class Server implements Runnable{
                         myNode.getBookList().add(b);
                     }
                     response = MessageType.GOT_IT;
+                    break;
+
+
+                // Find a book in the network
+                case FIND_BOOK:
+                    Pair<Long, String> searchBook = (Pair<Long, String>) messageArray[1];
+                    List<Book> results = myNode.findBookById(searchBook);
+                    response = results;
                     break;
 
 

@@ -88,6 +88,7 @@ public class Controller {
             return null;
         }
     }
+
     /**
      * Find available port, create server socket, and initialize Chord node
      */
@@ -237,9 +238,7 @@ public class Controller {
                 searchAlertText.setText("No Book found!");
             } else {
                 ObservableList<Book> list = FXCollections.observableArrayList();
-                for (Book book: searchBookResult) {
-                    list.add(book);
-                }
+                list.addAll(searchBookResult);
                 bookListView.setItems(list);
                 bookListView.setCellFactory(param -> new BookCell());
             }
@@ -247,7 +246,6 @@ public class Controller {
             e.printStackTrace();
         }
     }
-
 
 
     /**
@@ -322,7 +320,7 @@ public class Controller {
     private ListView<Book> mySharedBooksListView;
 
     public void mySharedBooksTabSelected(Event event) {
-
+        // Load books in the local database
     }
 
 }
