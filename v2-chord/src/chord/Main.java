@@ -44,19 +44,30 @@ public class Main extends Application {
         primaryStage.setScene(scene);
     }
 
-    private void createNetworkButtonClicked(ActionEvent event, Stage primaryStage, Label alertLabel) {
+    private void createNetworkButtonClicked(ActionEvent event, Stage primaryStage, TextField createNetworkField, Label alertLabel) {
         try {
-
-            // Create new Chord network
-            showLoadingScene(primaryStage, "Creating Network...");
-
-            boolean status = Controller.getMyNode().createNewNetwork();
-            if (status) {
-                // Show the main window scene
-                showMainScene(primaryStage);
+            int networkSize = Integer.parseInt(createNetworkField.getText());
+            if (networkSize < 2) {
+                alertLabel.setText("m must be > 1");
             } else {
-                alertLabel.setText("Unable to create new network! Please try again!");
+                // Create new Chord network
+                showLoadingScene(primaryStage, "Creating Network...");
+
+                Node.setM(networkSize);
+
+                // Create a server socket
+                Controller.createSocketWhenAppStarts();
+
+                boolean status = Controller.getMyNode().createNewNetwork();
+                if (status) {
+                    // Show the main window scene
+                    showMainScene(primaryStage);
+                } else {
+                    alertLabel.setText("Unable to create new network! Please try again!");
+                }
             }
+        } catch (IllegalArgumentException ex) {
+            alertLabel.setText("Please enter correct size!");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -64,6 +75,9 @@ public class Main extends Application {
 
     private void joinNetworkButtonClicked(ActionEvent event, Stage primaryStage, TextField ipTextField, Label alertLabel) {
         try {
+            // Create a server socket
+            Controller.createSocketWhenAppStarts();
+
             // Check if given address exists
             InetSocketAddress address = Utils.checkAddressExist(ipTextField.getText());
 
@@ -100,10 +114,11 @@ public class Main extends Application {
 
         // Pane to create new network
         BorderPane createNetworkPane = new BorderPane();
-        Button createNetworkBtn = new Button("Create new network");
-        createNetworkBtn.setOnAction(e-> createNetworkButtonClicked(e, primaryStage, alertLabel));
-        createNetworkPane.setTop(new Label("    Create new Chord network:\n "));
-        createNetworkPane.setLeft(new Label(""));
+        TextField createNetworkField = new TextField();
+        Button createNetworkBtn = new Button("Create network");
+        createNetworkBtn.setOnAction(e-> createNetworkButtonClicked(e, primaryStage, createNetworkField, alertLabel));
+        createNetworkPane.setTop(new Label("    Enter size of the network (2^m): \n    m= "));
+        createNetworkPane.setLeft(createNetworkField);
         createNetworkPane.setRight(createNetworkBtn);
 
         // Pane to join an existing network
@@ -129,9 +144,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
-        // Create a server socket
-        Controller.createSocketWhenAppStarts();
 
         // Scene to create or join existing network
         Scene menuScene = networkMenuScene(primaryStage);

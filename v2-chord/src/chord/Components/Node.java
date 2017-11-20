@@ -4,7 +4,6 @@ import chord.Runnable.FixFingers;
 import chord.Runnable.Listener;
 import chord.Runnable.Stabilize;
 import javafx.util.Pair;
-import sun.plugin2.message.Message;
 
 import java.io.Serializable;
 import java.net.InetSocketAddress;
@@ -112,7 +111,7 @@ public class Node implements Serializable {
      */
     public boolean createNewNetwork() {
         try {
-            System.out.println("Creating new network with 1 node (ID=" + nodeId + ") ...");
+            System.out.println("Creating new network with 1 node (ID=" + nodeId + ") , network's size= " + getChordRingSize() + "...");
 
             this.successor = this;
             this.predecessor = this;

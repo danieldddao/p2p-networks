@@ -2,12 +2,13 @@ package chord.Runnable;
 
 import chord.Components.Node;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
  * This thread will periodically refresh finger table entries.
  */
-public class FixFingers implements Runnable {
+public class FixFingers implements Runnable, Serializable {
     private final int periodTime = 100;
     private Node myNode = null;
     private Random random = null;

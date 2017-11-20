@@ -7,6 +7,7 @@ import chord.Components.Utils;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.Socket;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
  * This thread will periodically verify my immediate successor
  * and tell the successor about me.
  */
-public class Stabilize implements Runnable {
+public class Stabilize implements Runnable, Serializable {
 
     private final int periodTime = 100;
     private Node myNode = null;
