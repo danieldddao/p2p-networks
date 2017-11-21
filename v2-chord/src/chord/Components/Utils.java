@@ -40,7 +40,7 @@ public class Utils {
     public static Object sendMessage(InetSocketAddress address, Object[] messageArray) {
         try {
             // Send message to the server via server's address
-            System.out.println("Sending message " + messageArray);
+//            System.out.println("Sending message " + messageArray);
             Socket socket = new Socket(address.getAddress(), address.getPort());
 
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
@@ -126,14 +126,14 @@ public class Utils {
      */
     public static boolean isIdBetweenUpperEq(long id, long n, long np) {
         try {
-            System.out.println(" - IS.ID.BETWEENUpperEq id=" + id + " , n=" + n + " , np=" + np);
+//            System.out.println(" - IS.ID.BETWEENUpperEq id=" + id + " , n=" + n + " , np=" + np);
             boolean res;
             if (n < np) {
                 res =  id > n && id <= np;
             } else {
                 res =  id < n && id <= np || id > n && id >= np;
             }
-            System.out.println(res);
+//            System.out.println(res);
             return res;
         } catch (Exception e) {
             e.printStackTrace();
@@ -151,14 +151,14 @@ public class Utils {
      */
     public static boolean isIdBetweenLowerEq(long id, long n, long np) {
         try {
-            System.out.println(" - IS.ID.BETWEENLowerEq id=" + id + " , n=" + n + " , np=" + np);
+//            System.out.println(" - IS.ID.BETWEENLowerEq id=" + id + " , n=" + n + " , np=" + np);
             boolean res;
             if (n < np) {
                 res =  id >= n && id < np;
             } else {
                 res =  id <= n && id < np || id >= n && id > np;
             }
-            System.out.println(res);
+//            System.out.println(res);
             return res;
         } catch (Exception e) {
             e.printStackTrace();
@@ -176,14 +176,14 @@ public class Utils {
      */
     public static boolean isIdBetweenEq(long id, long n, long np) {
         try {
-            System.out.println(" - IS.ID.BETWEENEq id=" + id + " , n=" + n + " , np=" + np);
+//            System.out.println(" - IS.ID.BETWEENEq id=" + id + " , n=" + n + " , np=" + np);
             boolean res;
             if (n < np) {
                 res =  id >= n && id <= np;
             } else {
                 res =  id <= n && id <= np || id >= n && id >= np;
             }
-            System.out.println(res);
+//            System.out.println(res);
             return res;
         } catch (Exception e) {
             e.printStackTrace();
@@ -201,14 +201,14 @@ public class Utils {
      */
     public static boolean isIdBetweenNotEq(long id, long n, long np) {
         try {
-            System.out.println(" - IS.ID.BETWEENNotEq id=" + id + " , n=" + n + " , np=" + np);
+//            System.out.println(" - IS.ID.BETWEENNotEq id=" + id + " , n=" + n + " , np=" + np);
             boolean res;
             if (n < np) {
                 res =  id > n && id < np;
             } else {
                 res =  id < n && id < np || id > n && id > np;
             }
-            System.out.println(res);
+//            System.out.println(res);
             return res;
         } catch (Exception e) {
             e.printStackTrace();

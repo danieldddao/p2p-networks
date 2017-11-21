@@ -33,7 +33,7 @@ public class Listener implements Runnable, Serializable {
 
             while (isRunning) {
                 Socket server = serverSocket.accept();
-                System.out.println("Connection accepted from " + server.getInetAddress().getHostAddress() + ":" + server.getLocalPort());
+//                System.out.println("Connection accepted from " + server.getInetAddress().getHostAddress() + ":" + server.getLocalPort());
                 Thread t = new Thread(new Server(myNode, server));
                 t.start();
             }

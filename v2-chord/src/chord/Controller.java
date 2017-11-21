@@ -16,6 +16,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -111,6 +112,7 @@ public class Controller {
     @FXML
     private Label addressLabel;
 
+    private SQLiteDB db;
     /**
      * Initialize stuff when main starts
      */
@@ -118,6 +120,27 @@ public class Controller {
         try {
             InetSocketAddress address = Controller.myNode.getAddress();
             addressLabel.setText("My address: " + address.getAddress().getHostAddress() + ":" + address.getPort());
+
+            // Load books from local database
+            db = new SQLiteDB();
+            for (Book book : db.getAllBooks()) {
+                File file = new File(book.getLocation());
+                if (file.exists()) {
+                    // Share each book with the network
+                    boolean status = getMyNode().shareABook(book.getTitle(), book.getAuthor(), book.getIsbn(), book.getLocation());
+                    if (status) {
+                        book.setIsShared(true);
+                        db.updateBookShareStatus(book);
+                    } else {
+                        book.setIsShared(false);
+                        db.updateBookShareStatus(book);
+                    }
+                } else {
+                    book.setIsShared(false);
+                    db.updateBookShareStatus(book);
+                }
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -301,6 +324,9 @@ public class Controller {
                 boolean status = Controller.getMyNode().shareABook(titleTextField.getText(), authorTextField.getText(), isbnTextField.getText(), selectedFile.toString());
                 if (status) {
                     alertText.setText("New Book '" + titleTextField.getText() + "' successfully shared");
+
+                    // Add book to the database
+
                 } else {
                     alertText.setText("Can't share book! Please try again!");
                 }
@@ -319,8 +345,115 @@ public class Controller {
     @FXML
     private ListView<Book> mySharedBooksListView;
 
+    class SharedBookCell extends ListCell<Book> {
+        HBox hbox = new HBox();
+        Label titleLabel = new Label("");
+        Label authorLabel = new Label("");
+        Label isbnLabel = new Label("");
+        Label locationLabel = new Label("");
+        Label bookIDLabel = new Label("");
+        Pane pane = new Pane();
+        BorderPane titleAuthorBorderPane = new BorderPane();
+        BorderPane borderPane = new BorderPane();
+        BorderPane statusBorderPane = new BorderPane();
+        Button updateLocButton = new Button("Update File's Location");
+        CheckBox shareStatus = new CheckBox();
+
+        Book currentBook;
+
+        public SharedBookCell() {
+            super();
+            titleAuthorBorderPane.setTop(titleLabel);
+            titleAuthorBorderPane.setLeft(authorLabel);
+            titleAuthorBorderPane.setBottom(isbnLabel);
+
+            borderPane.setTop(bookIDLabel);
+            borderPane.setLeft(locationLabel);
+            borderPane.setBottom(statusBorderPane);
+
+            statusBorderPane.setTop(shareStatus);
+            statusBorderPane.setLeft(updateLocButton);
+
+            hbox.getChildren().addAll(titleAuthorBorderPane, pane, borderPane);
+            HBox.setHgrow(pane, Priority.ALWAYS);
+
+            // Update Location Button is pressed
+            updateLocButton.setOnAction(e -> {
+                FileChooser fc = new FileChooser();
+                selectedFile = fc.showOpenDialog(null);
+
+                if (selectedFile != null) {
+                    String newLoc = selectedFile.toString();
+
+                    // share book with the network
+                    boolean status = getMyNode().shareABook(currentBook.getTitle(), currentBook.getAuthor(), currentBook.getIsbn(), newLoc);
+
+                    if (status == true) {
+                        //update new location with the database
+                        currentBook.setIsShared(true);
+                        status = db.updateBookLocation(currentBook, newLoc);
+                        if (status == true) {
+                            refreshMySharedBooksTab();
+                        }
+                    }
+                }
+            });
+        }
+
+        @Override
+        protected void updateItem(Book newBook, boolean empty) {
+            super.updateItem(newBook, empty);
+            setText(null);  // No text in label of super class
+            if (empty) {
+                currentBook = null;
+                setGraphic(null);
+            } else {
+                currentBook = newBook;
+                titleLabel.setText("Book title: " + currentBook.getTitle());
+                authorLabel.setText("Author: " + currentBook.getAuthor());
+                isbnLabel.setText("ISBN: " + currentBook.getIsbn());
+                locationLabel.setText("Location:" + currentBook.getLocation());
+                bookIDLabel.setText("Book ID= : " + currentBook.getId());
+                setGraphic(hbox);
+
+                // check if file exists
+                File file = new File(currentBook.getLocation());
+                if (!file.exists()) { // if file doesn't exist, show option to update location
+                    updateLocButton.setVisible(true);
+                    shareStatus.setSelected(false);
+                    shareStatus.setText("File doesn't exist! Please Update file!");
+                    shareStatus.setTextFill(Color.web("red"));
+                } else {
+                    updateLocButton.setVisible(false);
+                    shareStatus.setSelected(true);
+                    shareStatus.setText("Successfully shared!");
+                    shareStatus.setTextFill(Color.web("blue"));
+                }
+            }
+        }
+    }
+
     public void mySharedBooksTabSelected(Event event) {
-        // Load books in the local database
+        refreshMySharedBooksTab();
+    }
+
+    private void refreshMySharedBooksTab() {
+        try {
+            System.out.println("Refreshing My Shared Books tab");
+            // Load books in the local database
+            ObservableList<Book> list = FXCollections.observableArrayList();
+
+            // load books from the local database
+            List<Book> bookList = db.getAllBooks();
+            System.out.println(bookList);
+
+            list.addAll(bookList);
+            mySharedBooksListView.setItems(list);
+            mySharedBooksListView.setCellFactory(param -> new SharedBookCell());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -115,10 +115,11 @@ public class Main extends Application {
         // Pane to create new network
         BorderPane createNetworkPane = new BorderPane();
         TextField createNetworkField = new TextField();
-        Button createNetworkBtn = new Button("Create network");
+        Button createNetworkBtn = new Button("Create");
         createNetworkBtn.setOnAction(e-> createNetworkButtonClicked(e, primaryStage, createNetworkField, alertLabel));
-        createNetworkPane.setTop(new Label("    Enter size of the network (2^m): \n    m= "));
+        createNetworkPane.setTop(new Label("    Enter size of the network (2^m): \n    m="));
         createNetworkPane.setLeft(createNetworkField);
+        createNetworkPane.setCenter( new Label(" "));
         createNetworkPane.setRight(createNetworkBtn);
 
         // Pane to join an existing network
@@ -147,7 +148,7 @@ public class Main extends Application {
 
         // Scene to create or join existing network
         Scene menuScene = networkMenuScene(primaryStage);
-        primaryStage.setTitle("Create or Join a Chord network");
+        primaryStage.setTitle("Create or Join a decentralized network");
         primaryStage.setScene(menuScene);
         primaryStage.show();
     }

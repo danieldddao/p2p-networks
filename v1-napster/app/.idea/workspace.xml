@@ -54,8 +54,8 @@
       <file leaf-file-name="AppController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/napster/AppController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="329">
-              <caret line="531" column="13" lean-forward="true" selection-start-line="531" selection-start-column="13" selection-end-line="531" selection-end-column="13" />
+            <state relative-caret-position="354">
+              <caret line="555" column="11" lean-forward="false" selection-start-line="555" selection-start-column="11" selection-end-line="555" selection-end-column="11" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -66,7 +66,7 @@
       <file leaf-file-name="WebServer.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/napster/WebServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="516">
+            <state relative-caret-position="4935">
               <caret line="347" column="5" lean-forward="false" selection-start-line="347" selection-start-column="5" selection-end-line="347" selection-end-column="5" />
               <folding />
             </state>
@@ -122,6 +122,7 @@
       <find>q04-7L-bS6</find>
       <find>h4N-fx-g4N</find>
       <find>FIle</find>
+      <find>refreshMySharedBooksTab</find>
     </findStrings>
   </component>
   <component name="GradleLocalSettings">
@@ -181,6 +182,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
       <pane id="Scratches" />
       <pane id="ProjectPane">
@@ -212,7 +214,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -381,11 +382,12 @@
       <workItem from="1510175568609" duration="565000" />
       <workItem from="1510343605224" duration="23835000" />
       <workItem from="1510890995625" duration="1957000" />
+      <workItem from="1511193854347" duration="726000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="116980000" />
+    <option name="totallyTimeSpent" value="117706000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1280" height="778" extended-state="0" />
@@ -445,9 +447,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="23" column="13" lean-forward="true" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -482,9 +481,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="23" column="13" lean-forward="true" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -521,9 +517,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="23" column="13" lean-forward="true" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -570,9 +563,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="315">
           <caret line="23" column="13" lean-forward="true" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -748,13 +738,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../../../iOS Development/Project/MovieTime/MovieTime/Base.lproj/Main.storyboard">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="373">
-          <caret line="1415" column="61" lean-forward="true" selection-start-line="1415" selection-start-column="61" selection-end-line="1415" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../../../iOS Development/Project/MovieTime/MovieTime/Base.lproj/Main.storyboard" />
     <entry file="file://$PROJECT_DIR$/src/napster/app.fxml">
       <provider editor-type-id="JavaFX-Scene-Builder">
         <state />
@@ -770,9 +754,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="315">
           <caret line="23" column="13" lean-forward="false" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -807,7 +788,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/napster/WebServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="516">
+        <state relative-caret-position="4935">
           <caret line="347" column="5" lean-forward="false" selection-start-line="347" selection-start-column="5" selection-end-line="347" selection-end-column="5" />
           <folding />
         </state>
@@ -815,8 +796,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/napster/AppController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="329">
-          <caret line="531" column="13" lean-forward="true" selection-start-line="531" selection-start-column="13" selection-end-line="531" selection-end-column="13" />
+        <state relative-caret-position="354">
+          <caret line="555" column="11" lean-forward="false" selection-start-line="555" selection-start-column="11" selection-end-line="555" selection-end-column="11" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

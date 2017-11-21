@@ -365,7 +365,7 @@ public class Node implements Serializable {
             if (ID < 0 || ID > chordRingSize) { return null; }
 
             if (this.nodeId == ID) {
-                System.out.println(nodeName + ": FINDING SUCCESSOR OF " + ID + ", which is me, is my successor, " + this.successor.getNodeName());
+//                System.out.println(nodeName + ": FINDING SUCCESSOR OF " + ID + ", which is me, is my successor, " + this.successor.getNodeName());
                 return this.successor;
             }
 
@@ -376,7 +376,7 @@ public class Node implements Serializable {
             // Find successor of predecessor of ID
             // Successor of ID = successor of predecessor of ID
             if (predecessor != null) {
-                System.out.println(nodeName + ": FINDING SUCCESSOR OF " + ID + " - FOUND ID's PRE " + predecessor.getNodeName());
+//                System.out.println(nodeName + ": FINDING SUCCESSOR OF " + ID + " - FOUND ID's PRE " + predecessor.getNodeName());
 
                 if (predecessor.getNodeId() == this.nodeId) {
                     successor = this.successor;
@@ -387,7 +387,7 @@ public class Node implements Serializable {
                 }
             }
 
-            System.out.println(nodeName + ": FIND SUCCESSOR OF " + ID + " - FOUND " + successor.getNodeName());
+//            System.out.println(nodeName + ": FIND SUCCESSOR OF " + ID + " - FOUND " + successor.getNodeName());
             return successor;
         } catch (Exception e) {
             e.printStackTrace();
@@ -405,9 +405,9 @@ public class Node implements Serializable {
         try {
             if (ID < 0 || ID > chordRingSize) { return null; }
 
-            System.out.println(nodeName + ": FINDING PREDECESSOR OF " + ID + "...");
+//            System.out.println(nodeName + ": FINDING PREDECESSOR OF " + ID + "...");
             if (this.nodeId == ID) {
-                System.out.println(nodeName + ": FINDING PREDECESSOR OF " + ID + ", which is me, is my predecessor, " + this.predecessor.getNodeName());
+//                System.out.println(nodeName + ": FINDING PREDECESSOR OF " + ID + ", which is me, is my predecessor, " + this.predecessor.getNodeName());
                 return this.predecessor;
             }
 
@@ -417,13 +417,13 @@ public class Node implements Serializable {
             // ID is not between n and n's successor
             if (n.getSuccessor() != null) {
                 while( !Utils.isIdBetweenUpperEq(ID, n.getNodeId(), n.getSuccessor().getNodeId()) ) {
-                    System.out.println(nodeName + ": FINDING PREDECESSOR OF id=" + ID + ", n.getNodeId()=" + n.getNodeId() + ", n.getSuccessor().getNodeId()=" + n.getSuccessor().getNodeId());
+//                    System.out.println(nodeName + ": FINDING PREDECESSOR OF id=" + ID + ", n.getNodeId()=" + n.getNodeId() + ", n.getSuccessor().getNodeId()=" + n.getSuccessor().getNodeId());
                     if (n == null) {
-                        System.out.println(nodeName + ": FIND PREDECESSOR: Node is null, can't find ID's predecessor");
+//                        System.out.println(nodeName + ": FIND PREDECESSOR: Node is null, can't find ID's predecessor");
                         return null;
                     }
                     if (n.getNodeId() == n.getSuccessor().getNodeId()) {
-                        System.out.println(nodeName + ": FINDING PREDECESSOR OF id=" + ID + ", n is the successor of itself");
+//                        System.out.println(nodeName + ": FINDING PREDECESSOR OF id=" + ID + ", n is the successor of itself");
                         break;
                     }
 //                    if (this.fingerTable.findIthFingerOf(ID) >= this.fingerTable.getTransitionFinger()) {
@@ -445,7 +445,7 @@ public class Node implements Serializable {
                     }
                 }
             }
-            System.out.println(nodeName + ": FIND PREDECESSOR: FOUND ID=" + ID + " 's predecessor: " + n.getNodeName());
+//            System.out.println(nodeName + ": FIND PREDECESSOR: FOUND ID=" + ID + " 's predecessor: " + n.getNodeName());
             return n;
         } catch (Exception e) {
             e.printStackTrace();
@@ -461,20 +461,20 @@ public class Node implements Serializable {
     public Node closestPrecedingFingerOf(long ID) {
         try {
             if (ID < 0 || ID > chordRingSize) { return null; }
-            System.out.println(nodeName + "- FINDING CLOSEST.PRECEDING.FINGER.OF " + ID);
+//            System.out.println(nodeName + "- FINDING CLOSEST.PRECEDING.FINGER.OF " + ID);
 //            this.fingerTable.printFingerTable();
             for (int i = Node.getM(); i > 1; i--) {
                 Node entryNode = fingerTable.getEntryNode(i);
-                System.out.println(nodeName + "- CLOSEST.PRECEDING.FINGER.OF " + ID + ", i-th finger=" + i + " , entryNode=" + entryNode.getNodeName());
+//                System.out.println(nodeName + "- CLOSEST.PRECEDING.FINGER.OF " + ID + ", i-th finger=" + i + " , entryNode=" + entryNode.getNodeName());
                 if (entryNode != null) {
                     if (Utils.isIdBetweenNotEq(entryNode.getNodeId(), this.nodeId, ID)) {
                         Node returnNode = fingerTable.getEntryNode(i);
-                        System.out.println(nodeName + "- CLOSEST.PRECEDING.FINGER.OF " + ID + " is " + returnNode.getNodeName() + ", " + returnNode.getAddress().getAddress().getHostAddress() + ":" + returnNode.getAddress().getPort());
+//                        System.out.println(nodeName + "- CLOSEST.PRECEDING.FINGER.OF " + ID + " is " + returnNode.getNodeName() + ", " + returnNode.getAddress().getAddress().getHostAddress() + ":" + returnNode.getAddress().getPort());
                         return returnNode;
                     }
                 }
             }
-            System.out.println(nodeName + "- CLOSEST.PRECEDING.FINGER.OF " + ID + " is " + nodeName + ", " + address.getAddress().getHostAddress() + ":" + address.getPort());
+//            System.out.println(nodeName + "- CLOSEST.PRECEDING.FINGER.OF " + ID + " is " + nodeName + ", " + address.getAddress().getHostAddress() + ":" + address.getPort());
             return  this;
         } catch (Exception e) {
             e.printStackTrace();
@@ -662,11 +662,16 @@ public class Node implements Serializable {
 
                     // Ask i-th entry node to check book id
                     Node contact = fingerTable.getEntryNode(iThFinger);
-                    System.out.println(this.getNodeName() + " - FIND.BOOK.SUCCESSOR: Contacting node #" + contact.getNodeId() + " (" + contact.getAddress().getAddress().getHostAddress() + ":" + contact.getAddress().getPort() + ")...");
-                    Object[] objArray = new Object[2];
-                    objArray[0] = MessageType.FIND_BOOK_SUCCESSOR;
-                    objArray[1] = id;
-                    return (InetSocketAddress) Utils.sendMessage(contact.getAddress(), objArray);
+                    if (contact.getNodeId() == this.getNodeId()) {
+                        // I'm book's successor
+                        return this.getAddress();
+                    } else {
+                        System.out.println(this.getNodeName() + " - FIND.BOOK.SUCCESSOR: Contacting node #" + contact.getNodeId() + " (" + contact.getAddress().getAddress().getHostAddress() + ":" + contact.getAddress().getPort() + ")...");
+                        Object[] objArray = new Object[2];
+                        objArray[0] = MessageType.FIND_BOOK_SUCCESSOR;
+                        objArray[1] = id;
+                        return (InetSocketAddress) Utils.sendMessage(contact.getAddress(), objArray);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -708,14 +713,23 @@ public class Node implements Serializable {
 
                     // Ask i-th entry node to check book id
                     Node contact = fingerTable.getEntryNode(iThFinger);
-                    System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: Contacting node #" + contact.getNodeId() + " (" + contact.getAddress().getAddress().getHostAddress() + ":" + contact.getAddress().getPort() + ")...");
-                    Object[] objArray = new Object[2];
-                    objArray[0] = MessageType.DOES_BOOK_ID_EXIST;
-                    objArray[1] = id;
-                    response = (MessageType) Utils.sendMessage(contact.getAddress(), objArray);
+                    if (contact.getNodeId() == this.getNodeId()) {
+                        // Check if id belongs to some books assigned to me
+                        for (Book b : bookList) {
+                            if (b.getId() == id) {
+                                System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: ID belongs to a book " + b.getTitle());
+                                return MessageType.ALREADY_EXIST;
+                            }
+                        }
+                    } else {
+                        System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: Contacting node #" + contact.getNodeId() + " (" + contact.getAddress().getAddress().getHostAddress() + ":" + contact.getAddress().getPort() + ")...");
+                        Object[] objArray = new Object[2];
+                        objArray[0] = MessageType.DOES_BOOK_ID_EXIST;
+                        objArray[1] = id;
+                        response = (MessageType) Utils.sendMessage(contact.getAddress(), objArray);
+                    }
                 }
             }
-
             System.out.println(this.getNodeName() + " - CHECK.IF.ID.EXISTS: Response=" + response);
             return response;
         } catch (Exception e) {

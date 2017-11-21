@@ -1,8 +1,9 @@
 package chord.Components;
 
+import java.io.Serializable;
 import java.net.InetSocketAddress;
 
-public class Book {
+public class Book implements Serializable {
     private long id;
     private String name;
     private InetSocketAddress ownerAddress;

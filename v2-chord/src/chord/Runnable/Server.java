@@ -31,14 +31,14 @@ public class Server implements Runnable{
             // Receive message from the client
             ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
             Object[] messageArray = (Object[]) objectInputStream.readObject();
-            System.out.println(myNode.getNodeName() + "-SERVER: Message received: "+ messageArray[0]);
+//            System.out.println(myNode.getNodeName() + "-SERVER: Message received: "+ messageArray[0]);
             if (messageArray.length >= 2) {
-                System.out.println("SERVER: Object received: " + messageArray[1]);
+//                System.out.println("SERVER: Object received: " + messageArray[1]);
             }
 
             if (messageArray[0] != null) {
                 Object response = processMessageRequest(messageArray);
-                System.out.println(myNode.getNodeName() + "-SERVER: Response message: " + response + "\n");
+//                System.out.println(myNode.getNodeName() + "-SERVER: Response message: " + response + "\n");
 
                 // Send response to the client
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
@@ -60,7 +60,7 @@ public class Server implements Runnable{
     private Object processMessageRequest(Object[] messageArray) {
         Object response = null;
         try {
-            System.out.println(myNode.getNodeName() + " - SERVER: Processing message array: " + messageArray);
+//            System.out.println(myNode.getNodeName() + " - SERVER: Processing message array: " + messageArray);
             MessageType message = (MessageType) messageArray[0];
             if (message == MessageType.CHECKING_IF_PORT_IS_AVAILABLE) {
                 return MessageType.OK;
@@ -81,9 +81,9 @@ public class Server implements Runnable{
                 // Response is the successor node
                 case FIND_SUCCESSOR:
                     id = (long) messageArray[1];
-                    System.out.println(myNode.getNodeName() + " - SERVER: A node wants to find successor of id=" + id);
+//                    System.out.println(myNode.getNodeName() + " - SERVER: A node wants to find successor of id=" + id);
                     Node successor = myNode.findSuccessorOf(id);
-                    System.out.println(myNode.getNodeName() + " - SERVER: Found new node's successor: " + successor.getNodeName() + ", address:" + successor.getAddress().getAddress().getHostAddress() + ":" + successor.getAddress().getPort());
+//                    System.out.println(myNode.getNodeName() + " - SERVER: Found new node's successor: " + successor.getNodeName() + ", address:" + successor.getAddress().getAddress().getHostAddress() + ":" + successor.getAddress().getPort());
                     response = successor;
                     break;
 
@@ -92,27 +92,27 @@ public class Server implements Runnable{
                 // Response is a node
                 case CLOSEST_PRECEDING_FINGER:
                     id = (long) messageArray[1];
-                    System.out.println(myNode.getNodeName() + "-SERVER: A node wants to find closest finger preceding id=" + id);
+//                    System.out.println(myNode.getNodeName() + "-SERVER: A node wants to find closest finger preceding id=" + id);
                     Node closestFinger = myNode.closestPrecedingFingerOf(id);
-                    System.out.println(myNode.getNodeName() + "-SERVER: Found closest finger preceding id: " + closestFinger.getNodeName() + ", address:" + closestFinger.getAddress().getAddress().getHostAddress() + ":" + closestFinger.getAddress().getPort());
+//                    System.out.println(myNode.getNodeName() + "-SERVER: Found closest finger preceding id: " + closestFinger.getNodeName() + ", address:" + closestFinger.getAddress().getAddress().getHostAddress() + ":" + closestFinger.getAddress().getPort());
                     response = closestFinger;
                     break;
 
 
 //                // Response is a my successor Node
                 case GET_YOUR_SUCCESSOR:
-                    System.out.println(myNode.getNodeName() + "-SERVER: A node wants to get my successor " + myNode.getNodeName());
+//                    System.out.println(myNode.getNodeName() + "-SERVER: A node wants to get my successor " + myNode.getNodeName());
                     response = myNode.getSuccessor();
-                    System.out.println(myNode.getNodeName() + "-SERVER: Return my successor: " + myNode.getSuccessor().getNodeName() + ", address:" + myNode.getSuccessor().getAddress().getAddress().getHostAddress() + ":" + myNode.getSuccessor().getAddress().getPort());
+//                    System.out.println(myNode.getNodeName() + "-SERVER: Return my successor: " + myNode.getSuccessor().getNodeName() + ", address:" + myNode.getSuccessor().getAddress().getAddress().getHostAddress() + ":" + myNode.getSuccessor().getAddress().getPort());
                     break;
 
 
                 // Return my predecessor
                 // Response is my predecessor a Node
                 case GET_YOUR_PREDECESSOR:
-                    System.out.println(myNode.getNodeName() + "-SERVER: A node wants to find predecessor of me " + myNode.getNodeName());
+//                    System.out.println(myNode.getNodeName() + "-SERVER: A node wants to find predecessor of me " + myNode.getNodeName());
                     response = myNode.getPredecessor();
-                    System.out.println(myNode.getNodeName() + "-SERVER: Return my predecessor: " + myNode.getPredecessor().getNodeName() + ", address:" + myNode.getPredecessor().getAddress().getAddress().getHostAddress() + ":" + myNode.getPredecessor().getAddress().getPort());
+//                    System.out.println(myNode.getNodeName() + "-SERVER: Return my predecessor: " + myNode.getPredecessor().getNodeName() + ", address:" + myNode.getPredecessor().getAddress().getAddress().getHostAddress() + ":" + myNode.getPredecessor().getAddress().getPort());
                     break;
 
 
@@ -224,7 +224,7 @@ public class Server implements Runnable{
 
 
                 case ARE_YOU_STILL_ALIVE:
-                    System.out.println(myNode.getNodeName() + " - SERVER: I'm still alive.");
+//                    System.out.println(myNode.getNodeName() + " - SERVER: I'm still alive.");
                     response = myNode.getBookList();
                     break;
 
