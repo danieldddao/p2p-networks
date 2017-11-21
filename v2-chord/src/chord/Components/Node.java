@@ -65,8 +65,15 @@ public class Node implements Serializable {
             // Initialize a finger table
             fingerTable = new FingerTable(this);
 
+            // Initialize list of books
+            bookList = new ArrayList();
+            mySucBookList = new ArrayList();
+
             // initialize threads
             listener = new Listener(this);
+            stabilize = new Stabilize(this);
+            fixFingers = new FixFingers(this);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -594,11 +601,11 @@ public class Node implements Serializable {
      * @param author
      * @param isbn
      * @param location
-     * @return True if successfully shared the book. Otherwise, False
+     * @return Book that is successfully shared. Otherwise, null
      */
-    public boolean shareABook(String title, String author, String isbn, String location) {
+    public Book shareABook(String title, String author, String isbn, String location) {
         try {
-            String bookString = title + author + isbn;
+            String bookString = title;
             long id = Utils.hashFunction(bookString);
 
             while(checkIfBookIdExists(id) == MessageType.ALREADY_EXIST) {
@@ -609,31 +616,32 @@ public class Node implements Serializable {
             System.out.println(nodeName + " - SHARE.NEW.BOOK - new book: " + title + " (" + location + ") : id=" + id);
             Book newBook = new Book(id, this.address, title, author, isbn, location, true);
 
-            // Find the node responsible for this book
-            System.out.println(nodeName + " - SHARE.NEW.BOOK - find book's successor: id=" + id);
-            InetSocketAddress contact = findBookSuccessor(id);
-            if (contact == null) { return false; }
-
-            // send book to the appropriate node responsible for it
-            if (this.address == contact) {
-                System.out.println(nodeName + " - SHARE.NEW.BOOK - This book belongs to me: id=" + id);
+            if (newBook.getId() == this.getNodeId()) {
+                // This book is assigned to me
+                System.out.println(nodeName + " - SHARE.NEW.BOOK - This book belongs to me: book id=" + id);
                 this.bookList.add(newBook);
-                return true;
+                return newBook;
             } else {
+                // Find the node responsible for this book
+                System.out.println(nodeName + " - SHARE.NEW.BOOK - find book's successor: book id=" + id);
+                InetSocketAddress contact = findBookSuccessor(id);
+                if (contact == null) { return null; }
+
+                // send book to the appropriate node responsible for it
                 Object[] objArray = new Object[2];
                 objArray[0] = MessageType.THIS_BOOK_BELONGS_TO_YOU;
                 objArray[1] = newBook;
                 MessageType response = (MessageType) Utils.sendMessage(contact, objArray);
                 if (response == MessageType.GOT_IT) {
-                    return true;
+                    return newBook;
                 } else {
-                    return false;
+                    return null;
                 }
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 
@@ -696,7 +704,7 @@ public class Node implements Serializable {
                 // Check if id belongs to some books assigned to me
                 for (Book b : bookList) {
                     if (b.getId() == id) {
-                        System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: ID belongs to a book " + b.getTitle());
+                        System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: Book ID belongs to a book " + b.getTitle());
                         return MessageType.ALREADY_EXIST;
                     }
                 }
@@ -708,12 +716,12 @@ public class Node implements Serializable {
                     System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: ID " + id + " is too large");
                     response = MessageType.ALREADY_EXIST;
                 } else {
-                    System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: Found BOOK ID in the finger # " + iThFinger);
+                    System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: Found BOOK ID=" + id + " in the finger # " + iThFinger);
                     fingerTable.printFingerTable();
 
                     // Ask i-th entry node to check book id
                     Node contact = fingerTable.getEntryNode(iThFinger);
-                    if (contact.getNodeId() == this.getNodeId()) {
+                    if ( (contact.getNodeId() == this.getNodeId()) || (contact.getNodeId() < id && id <= this.getNodeId()) ) {
                         // Check if id belongs to some books assigned to me
                         for (Book b : bookList) {
                             if (b.getId() == id) {
@@ -745,7 +753,7 @@ public class Node implements Serializable {
      */
     public List<Book> transferBooksToMe() {
         try {
-            System.out.println(this.getNodeName() + " - TRANSFER.BOOKS.TO.ME:" + this.nodeId);
+            System.out.println(this.getNodeName() + " - TRANSFER.BOOKS.TO.ME: " + this.nodeId);
             Object[] objArray = new Object[2];
             objArray[0] = MessageType.TRANSFER_YOUR_BOOKS_TO_ME;
             objArray[1] = this.nodeId;
@@ -761,13 +769,10 @@ public class Node implements Serializable {
         List<Book> returnBooks = new ArrayList();
         try {
             String searchString = searchTerm;
-            for (int i=0; i < Node.getM(); i++) {
-                long bookId = Utils.hashFunction(searchString);
-                // Locate book id in the network
-                List<Book> results = findBookById(new Pair(bookId, searchTerm));
-                returnBooks.addAll(results);
-                searchString += ".";
-            }
+            long bookId = Utils.hashFunction(searchString);
+            // Locate book id in the network
+            List<Book> results = findBookById(new Pair(bookId, searchTerm));
+            returnBooks.addAll(results);
             return returnBooks;
         } catch (Exception e) {
             e.printStackTrace();
@@ -798,14 +803,23 @@ public class Node implements Serializable {
                     System.out.println(this.getNodeName() + " - FIND.BOOK.BY.ID: Found book in the finger #" + iThFinger);
                     fingerTable.printFingerTable();
 
-                    // Ask i-th entry node to check book id
                     Node contact = fingerTable.getEntryNode(iThFinger);
-                    System.out.println(this.getNodeName() + " - FIND.BOOK.SUCCESSOR: Contacting node #" + contact.getNodeId() + " (" + contact.getAddress().getAddress().getHostAddress() + ":" + contact.getAddress().getPort() + ")...");
-                    Object[] objArray = new Object[2];
-                    objArray[0] = MessageType.FIND_BOOK;
-                    objArray[1] = searchBook;
-                    List<Book> results = (List<Book>) Utils.sendMessage(contact.getAddress(), objArray);
-                    returnBooks.addAll(results);
+                    // If I'm responsible for this book id
+                    if (contact.getNodeId() == this.getNodeId()) {
+                        for (Book book : this.getBookList()) {
+                            if (book.getTitle().contains(searchTerm)) {
+                                returnBooks.add(book);
+                            }
+                        }
+                    } else {
+                        // Ask i-th entry node to check book id
+                        System.out.println(this.getNodeName() + " - FIND.BOOK.SUCCESSOR: Contacting node #" + contact.getNodeId() + " (" + contact.getAddress().getAddress().getHostAddress() + ":" + contact.getAddress().getPort() + ")...");
+                        Object[] objArray = new Object[2];
+                        objArray[0] = MessageType.FIND_BOOK;
+                        objArray[1] = searchBook;
+                        List<Book> results = (List<Book>) Utils.sendMessage(contact.getAddress(), objArray);
+                        returnBooks.addAll(results);
+                    }
                 }
             }
             return returnBooks;

@@ -39,7 +39,7 @@ public class Stabilize implements Runnable, Serializable {
                 Node mySuc = myNode.getSuccessor();
                 try {
                     if (mySuc.getNodeId() != this.myNode.getNodeId()) {
-                        System.out.println("Connecting to " + mySuc.getAddress().getAddress().getHostAddress() + ":" + myNode.getSuccessor().getAddress().getPort());
+//                        System.out.println("Connecting to " + mySuc.getAddress().getAddress().getHostAddress() + ":" + myNode.getSuccessor().getAddress().getPort());
                         socket.connect(mySuc.getAddress(), 1000);
 
                         /*
@@ -86,7 +86,13 @@ public class Stabilize implements Runnable, Serializable {
                         }
                     }
                 } catch (Exception e) {
-                    // My successor is no longer available
+                    /*
+                     * My successor is no longer available
+                     */
+                    System.out.println("My successor is no longer available!");
+                    // Remove all my successor's shared books
+
+
                     // Find my new successor
                     List<Book> myOldSucBookList = myNode.getMySucBookList();
                     System.out.println(myNode.getNodeName() + " - My successor left the network! Find my new successor");

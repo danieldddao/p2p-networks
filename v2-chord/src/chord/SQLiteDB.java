@@ -22,15 +22,17 @@ public class SQLiteDB {
 //            System.out.println("Opened database successfully");
 
             Statement stmt = c.createStatement();
-            String sql = "CREATE TABLE IF NOT EXISTS BOOK " +
-                    "(USER_IP TEXT PRIMARY KEY NOT NULL," +
-                    "PORT INT PRIMARY KEY    NOT NULL," +
-                    "BOOK_ID      LONG     DEFAULT -1)," +
+            String sql = "CREATE TABLE IF NOT EXISTS BOOK (" +
+                    "USER_IP     TEXT        NOT NULL," +
+                    "PORT        INT         NOT NULL," +
+                    "BOOK_ID     LONG        DEFAULT -1," +
                     "TITLE       TEXT        NOT NULL, " +
                     "AUTHOR      TEXT        NOT NULL, " +
                     "ISBN        TEXT, " +
-                    "LOCATION    TEXT PRIMARY KEY NOT NULL," +
-                    "SHARED      INTEGER     DEFAULT 0)";
+                    "LOCATION    TEXT        NOT NULL," +
+                    "SHARED      INTEGER     DEFAULT 0," +
+                    "PRIMARY KEY (USER_IP, PORT, LOCATION)" +
+                    ");";
             stmt.executeUpdate(sql);
             stmt.close();
             c.close();
@@ -92,12 +94,16 @@ public class SQLiteDB {
                 String location = rs.getString("LOCATION");
                 int sharedValue = rs.getInt("SHARED");
 
+                long bookId = -1;
                 Boolean isShared = false;
-                if (sharedValue > 0) { isShared = true;}
+                if (sharedValue > 0) {
+                    isShared = true;
+                    bookId = rs.getLong("BOOK_ID");
+                }
 
                 InetAddress address = InetAddress.getByName(user_ip);
                 InetSocketAddress socketAddress = new InetSocketAddress(address, port);
-                Book newBook = new Book(-1, socketAddress, title, author, isbn, location, isShared);
+                Book newBook = new Book(bookId, socketAddress, title, author, isbn, location, isShared);
                 bookList.add(newBook);
             }
 
@@ -122,11 +128,11 @@ public class SQLiteDB {
             int shared = 0;
             if (book.getIsShared()) { shared = 1; }
             Statement stmt = c.createStatement();
-            String sql = "UPDATE BOOK SET SHARED ='" + shared +
+            String sql = "UPDATE BOOK SET SHARED='" + shared +
                             "', BOOK_ID='" + book.getId() +
                             "' WHERE USER_IP='" + book.getOwnerAddress().getAddress().getHostAddress() +
-                            "', PORT='" + book.getOwnerAddress().getPort() +
-                            "', LOCATION='" + book.getLocation() + "';";
+                            "' AND PORT='" + book.getOwnerAddress().getPort() +
+                            "' AND LOCATION='" + book.getLocation() + "';";
             stmt.executeUpdate(sql);
 
             stmt.close();
@@ -146,7 +152,7 @@ public class SQLiteDB {
 //            System.out.println("Opened database successfully");
 
             Statement stmt = c.createStatement();
-            String sql = "UPDATE BOOK SET SHARED ='0';";
+            String sql = "UPDATE BOOK SET SHARED='0';";
             stmt.executeUpdate(sql);
 
             stmt.close();
@@ -173,8 +179,8 @@ public class SQLiteDB {
                             "', BOOK_ID='" + book.getId() +
                             "', SHARED='" + shared +
                             "' WHERE USER_IP='" + book.getOwnerAddress().getAddress().getHostAddress() +
-                            "', PORT='" + book.getOwnerAddress().getPort() +
-                            "', LOCATION='" + book.getLocation() + "';";
+                            "' AND PORT='" + book.getOwnerAddress().getPort() +
+                            "' AND LOCATION='" + book.getLocation() + "';";
             int status = stmt.executeUpdate(sql);
 
             stmt.close();

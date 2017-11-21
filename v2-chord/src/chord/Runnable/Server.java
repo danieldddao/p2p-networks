@@ -193,7 +193,7 @@ public class Server implements Runnable{
                     List<Book> returnBookList = new ArrayList();
 
                     for (Book b : myNode.getBookList()) {
-                        if (b.getId() <= id) {
+                        if (myNode.getNodeId() < b.getId() && b.getId() <= id) {
                             returnBookList.add(b);
                         } else {
                             myNewBookList.add(b);
@@ -201,6 +201,7 @@ public class Server implements Runnable{
                     }
                     myNode.setBookList(myNewBookList);
                     System.out.println(myNode.getNodeName() + " - SERVER: Transfer books - my new book list: " + myNewBookList);
+                    System.out.println(myNode.getNodeName() + " - SERVER: Transfer books - return book list: " + returnBookList + " " + returnBookList.size());
                     response = returnBookList;
                     break;
 

@@ -46,7 +46,10 @@ public class Main extends Application {
 
     private void createNetworkButtonClicked(ActionEvent event, Stage primaryStage, TextField createNetworkField, Label alertLabel) {
         try {
-            int networkSize = Integer.parseInt(createNetworkField.getText());
+            int networkSize = 7;
+            if (!createNetworkField.getText().isEmpty()) {
+                networkSize = Integer.parseInt(createNetworkField.getText());
+            }
             if (networkSize < 2) {
                 alertLabel.setText("m must be > 1");
             } else {
@@ -115,6 +118,7 @@ public class Main extends Application {
         // Pane to create new network
         BorderPane createNetworkPane = new BorderPane();
         TextField createNetworkField = new TextField();
+        createNetworkField.setPromptText("default m = 7");
         Button createNetworkBtn = new Button("Create");
         createNetworkBtn.setOnAction(e-> createNetworkButtonClicked(e, primaryStage, createNetworkField, alertLabel));
         createNetworkPane.setTop(new Label("    Enter size of the network (2^m): \n    m="));

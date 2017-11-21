@@ -35,6 +35,7 @@ public class Controller {
 
     public static void stopLoopThreads() {
         myNode.stopLoopThreads();
+        db.unshareAllBooks();
     }
 
     /**
@@ -80,8 +81,7 @@ public class Controller {
 
     private static InetAddress getLocalHost() {
         try {
-            InetAddress address = InetAddress.getByName("127.0.0.1");
-            return address;
+            return InetAddress.getByName("127.0.0.1");
 //            return InetAddress.getLocalHost();
 
         } catch (Exception e) {
@@ -112,7 +112,7 @@ public class Controller {
     @FXML
     private Label addressLabel;
 
-    private SQLiteDB db;
+    private static SQLiteDB db;
     /**
      * Initialize stuff when main starts
      */
@@ -127,8 +127,8 @@ public class Controller {
                 File file = new File(book.getLocation());
                 if (file.exists()) {
                     // Share each book with the network
-                    boolean status = getMyNode().shareABook(book.getTitle(), book.getAuthor(), book.getIsbn(), book.getLocation());
-                    if (status) {
+                    Book newBook = getMyNode().shareABook(book.getTitle(), book.getAuthor(), book.getIsbn(), book.getLocation());
+                    if (newBook != null) {
                         book.setIsShared(true);
                         db.updateBookShareStatus(book);
                     } else {
@@ -256,14 +256,19 @@ public class Controller {
     public void searchBook(ActionEvent event) {
         try {
             searchAlertText.setText("");
-            List<Book> searchBookResult = myNode.searchBook(searchTextField.getText());
-            if (searchBookResult.isEmpty()) {
+            String searchTerm = searchTextField.getText();
+            if (searchTerm.isEmpty()) {
                 searchAlertText.setText("No Book found!");
             } else {
-                ObservableList<Book> list = FXCollections.observableArrayList();
-                list.addAll(searchBookResult);
-                bookListView.setItems(list);
-                bookListView.setCellFactory(param -> new BookCell());
+                List<Book> searchBookResult = myNode.searchBook(searchTerm);
+                if (searchBookResult.isEmpty()) {
+                    searchAlertText.setText("No Book found!");
+                } else {
+                    ObservableList<Book> list = FXCollections.observableArrayList();
+                    list.addAll(searchBookResult);
+                    bookListView.setItems(list);
+                    bookListView.setCellFactory(param -> new BookCell());
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -321,12 +326,11 @@ public class Controller {
                 alertText.setText("Selected file doesn't exist");
             } else {
                 // Share a new book with the network
-                boolean status = Controller.getMyNode().shareABook(titleTextField.getText(), authorTextField.getText(), isbnTextField.getText(), selectedFile.toString());
-                if (status) {
-                    alertText.setText("New Book '" + titleTextField.getText() + "' successfully shared");
-
+                Book newBook = Controller.getMyNode().shareABook(titleTextField.getText(), authorTextField.getText(), isbnTextField.getText(), selectedFile.toString());
+                if (newBook != null) {
                     // Add book to the database
-
+                    db.addNewBook(newBook);
+                    alertText.setText("New Book '" + titleTextField.getText() + "' successfully shared");
                 } else {
                     alertText.setText("Can't share book! Please try again!");
                 }
@@ -386,12 +390,12 @@ public class Controller {
                     String newLoc = selectedFile.toString();
 
                     // share book with the network
-                    boolean status = getMyNode().shareABook(currentBook.getTitle(), currentBook.getAuthor(), currentBook.getIsbn(), newLoc);
+                    Book newBook = getMyNode().shareABook(currentBook.getTitle(), currentBook.getAuthor(), currentBook.getIsbn(), newLoc);
 
-                    if (status == true) {
+                    if (newBook != null) {
                         //update new location with the database
                         currentBook.setIsShared(true);
-                        status = db.updateBookLocation(currentBook, newLoc);
+                        boolean status = db.updateBookLocation(currentBook, newLoc);
                         if (status == true) {
                             refreshMySharedBooksTab();
                         }

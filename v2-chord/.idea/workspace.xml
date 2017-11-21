@@ -58,70 +58,25 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Book.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/chord/Components/Book.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="5" column="41" lean-forward="false" selection-start-line="5" selection-start-column="41" selection-end-line="5" selection-end-column="41" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Controller.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/chord/Controller.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6345">
-              <caret line="452" column="0" lean-forward="true" selection-start-line="452" selection-start-column="0" selection-end-line="452" selection-end-column="0" />
+            <state relative-caret-position="237">
+              <caret line="262" column="74" lean-forward="false" selection-start-line="262" selection-start-column="74" selection-end-line="262" selection-end-column="74" />
               <folding>
-                <element signature="e#16094#16095#0" expanded="true" />
-                <element signature="e#16135#16136#0" expanded="true" />
+                <element signature="e#16365#16366#0" expanded="true" />
+                <element signature="e#16406#16407#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SQLiteDB.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/chord/SQLiteDB.java">
+      <file leaf-file-name="TestSearchBooks.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/TestSearchBooks.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="48">
-              <caret line="173" column="50" lean-forward="false" selection-start-line="173" selection-start-column="50" selection-end-line="173" selection-end-column="50" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <marker date="1511223489962" expanded="true" signature="661:692" ph="CREATE TABLE... IF" />
-                <marker date="1511223489962" expanded="true" signature="661:869" ph="CREATE TABLE... IF" />
-                <marker date="1511223489962" expanded="true" signature="661:1153" ph="CREATE TABLE... IF" />
-                <marker date="1511223489962" expanded="true" signature="1687:2266" ph="INSERT INTO BOOK... " />
-                <marker date="1511223489962" expanded="true" signature="3069:3087" ph="SELECT * FRO... BOOK" />
-                <marker date="1511223489962" expanded="true" signature="4702:4727" ph="UPDATE BOOK " />
-                <marker date="1511223489962" expanded="true" signature="4702:4779" ph="UPDATE BOOK " />
-                <marker date="1511223489962" expanded="true" signature="4702:4844" ph="UPDATE BOOK " />
-                <marker date="1511223489962" expanded="true" signature="4702:4846" ph="UPDATE BOOK " />
-                <marker date="1511223489962" expanded="true" signature="4702:4904" ph="UPDATE BOOK " />
-                <marker date="1511223489962" expanded="true" signature="4702:4979" ph="UPDATE BOOK " />
-                <marker date="1511223489962" expanded="true" signature="4702:5051" ph="UPDATE BOOK " />
-                <marker date="1511223489962" expanded="true" signature="4702:5052" ph="UPDATE BOOK " />
-                <marker date="1511223489962" expanded="true" signature="5680:5707" ph="UPDATE BOOK " />
-                <marker date="1511223489962" expanded="true" signature="6443:6469" ph="UPDATE BOOK " />
-                <marker date="1511223489962" expanded="true" signature="6443:6486" ph="UPDATE BOOK " />
-                <marker date="1511223489962" expanded="true" signature="6443:6743" ph="UPDATE BOOK " />
-                <marker date="1511223489962" expanded="true" signature="6443:6780" ph="UPDATE BOOK " />
-                <marker date="1511223489962" expanded="true" signature="6443:6851" ph="UPDATE BOOK " />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Node.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/chord/Components/Node.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="179">
-              <caret line="710" column="112" lean-forward="false" selection-start-line="710" selection-start-column="112" selection-end-line="710" selection-end-column="112" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="285">
+              <caret line="65" column="44" lean-forward="false" selection-start-line="65" selection-start-column="44" selection-end-line="65" selection-end-column="44" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -129,18 +84,18 @@
       <file leaf-file-name="Stabilize.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/chord/Runnable/Stabilize.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-47">
-              <caret line="36" column="0" lean-forward="true" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
+            <state relative-caret-position="253">
+              <caret line="93" column="0" lean-forward="true" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Server.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/chord/Runnable/Server.java">
+      <file leaf-file-name="Node.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/chord/Components/Node.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1017">
-              <caret line="227" column="29" lean-forward="false" selection-start-line="227" selection-start-column="29" selection-end-line="227" selection-end-column="29" />
+            <state relative-caret-position="-115">
+              <caret line="773" column="76" lean-forward="true" selection-start-line="773" selection-start-column="76" selection-end-line="773" selection-end-column="76" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -148,12 +103,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FixFingers.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/chord/Runnable/FixFingers.java">
+      <file leaf-file-name="Server.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/chord/Runnable/Server.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-141">
-              <caret line="10" column="57" lean-forward="false" selection-start-line="10" selection-start-column="57" selection-end-line="10" selection-end-column="57" />
-              <folding />
+            <state relative-caret-position="219">
+              <caret line="195" column="62" lean-forward="false" selection-start-line="195" selection-start-column="62" selection-end-line="195" selection-end-column="62" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -161,7 +118,7 @@
       <file leaf-file-name="DownloadClient.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/chord/Runnable/DownloadClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
+            <state relative-caret-position="33">
               <caret line="10" column="46" lean-forward="true" selection-start-line="10" selection-start-column="46" selection-end-line="10" selection-end-column="46" />
               <folding />
             </state>
@@ -196,9 +153,11 @@
       <find>Ofb-oL-IWt</find>
       <find>Qpl-aH-UWy</find>
       <find>8uu-r8-9SP</find>
-      <find>Connecting</find>
       <find>exists</find>
       <find>File</find>
+      <find>TRANSFER.B</find>
+      <find>Connecting to</find>
+      <find>Connecting</find>
     </findStrings>
     <replaceStrings>
       <replace>client</replace>
@@ -234,7 +193,6 @@
         <option value="$PROJECT_DIR$/test/TestJoinChord.java" />
         <option value="$PROJECT_DIR$/src/test/TestJoinChord.java" />
         <option value="$PROJECT_DIR$/src/chord/Components/FingerTable.java" />
-        <option value="$PROJECT_DIR$/src/test/TestJoiningChord.java" />
         <option value="$PROJECT_DIR$/../../../../iOS Development/Project/MovieTime/MovieTime/Base.lproj/Main.storyboard" />
         <option value="$PROJECT_DIR$/src/chord/main.fxml" />
         <option value="$PROJECT_DIR$/src/chord/Runnable/PingSuccessor.java" />
@@ -242,14 +200,18 @@
         <option value="$PROJECT_DIR$/src/chord/Components/MessageType.java" />
         <option value="$PROJECT_DIR$/src/chord/Runnable/FixFingers.java" />
         <option value="$PROJECT_DIR$/src/chord/Runnable/Listener.java" />
-        <option value="$PROJECT_DIR$/src/chord/Runnable/Server.java" />
         <option value="$PROJECT_DIR$/src/chord/Components/Utils.java" />
-        <option value="$PROJECT_DIR$/src/chord/Components/Node.java" />
         <option value="$PROJECT_DIR$/src/chord/Components/Book.java" />
-        <option value="$PROJECT_DIR$/src/chord/Runnable/Stabilize.java" />
         <option value="$PROJECT_DIR$/src/chord/Main.java" />
-        <option value="$PROJECT_DIR$/src/chord/Controller.java" />
         <option value="$PROJECT_DIR$/src/chord/SQLiteDB.java" />
+        <option value="$PROJECT_DIR$/src/chord/Controller.java" />
+        <option value="$PROJECT_DIR$/src/test/TestBase.java" />
+        <option value="$PROJECT_DIR$/src/test/TestSharingBooks.java" />
+        <option value="$PROJECT_DIR$/src/test/TestJoiningChord.java" />
+        <option value="$PROJECT_DIR$/src/chord/Runnable/Server.java" />
+        <option value="$PROJECT_DIR$/src/test/TestSearchBooks.java" />
+        <option value="$PROJECT_DIR$/src/chord/Components/Node.java" />
+        <option value="$PROJECT_DIR$/src/chord/Runnable/Stabilize.java" />
       </list>
     </option>
   </component>
@@ -315,6 +277,12 @@
               <item name="chord" type="462c0819:PsiDirectoryNode" />
               <item name="Runnable" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="v2-chord" type="b2602c69:ProjectViewProjectNode" />
+              <item name="v2-chord" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -343,18 +311,19 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src" />
-      <recent name="$PROJECT_DIR$" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="chord.Runnable" />
-      <recent name="chord" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/test" />
       <recent name="$PROJECT_DIR$/src/chord" />
       <recent name="$PROJECT_DIR$/src/lib" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="test" />
+      <recent name="chord.Runnable" />
+      <recent name="chord" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -369,7 +338,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Application.TestSearchBooks">
     <configuration name="Main" type="Application" factoryName="Application">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -399,6 +368,44 @@
         </pattern>
       </extension>
       <option name="MAIN_CLASS_NAME" value="test.TestJoiningChord" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="v2-chord" />
+      <envs />
+    </configuration>
+    <configuration name="TestSearchBooks" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="test.TestSearchBooks" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="v2-chord" />
+      <envs />
+    </configuration>
+    <configuration name="TestSharingBooks" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="test.TestSharingBooks" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -504,10 +511,18 @@
       <Host>localhost</Host>
       <Port>5050</Port>
     </configuration>
-    <list size="2">
+    <list size="4">
       <item index="0" class="java.lang.String" itemvalue="Application.Main" />
       <item index="1" class="java.lang.String" itemvalue="Application.TestJoiningChord" />
+      <item index="2" class="java.lang.String" itemvalue="Application.TestSharingBooks" />
+      <item index="3" class="java.lang.String" itemvalue="Application.TestSearchBooks" />
     </list>
+    <recent_temporary>
+      <list size="2">
+        <item index="0" class="java.lang.String" itemvalue="Application.TestSearchBooks" />
+        <item index="1" class="java.lang.String" itemvalue="Application.TestSharingBooks" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SbtLocalSettings">
     <option name="externalProjectsViewState">
@@ -547,12 +562,12 @@
       <workItem from="1510699856580" duration="3521000" />
       <workItem from="1510717290280" duration="15086000" />
       <workItem from="1510884401597" duration="624000" />
-      <workItem from="1510890899516" duration="24737000" />
+      <workItem from="1510890899516" duration="40040000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="259851000" />
+    <option name="totallyTimeSpent" value="275154000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1280" height="778" extended-state="0" />
@@ -566,7 +581,7 @@
       <window_info id="DB Execution Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22627737" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31240875" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -655,30 +670,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/chord/Components/FingerTable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1455">
-          <caret line="100" column="12" lean-forward="false" selection-start-line="100" selection-start-column="12" selection-end-line="100" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/chord/Runnable/Server.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2115">
-          <caret line="148" column="26" lean-forward="true" selection-start-line="148" selection-start-column="26" selection-end-line="148" selection-end-column="26" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/chord/Components/Utils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="41" column="18" lean-forward="false" selection-start-line="41" selection-start-column="18" selection-end-line="41" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/chord/Components/Node.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2535">
@@ -718,8 +709,8 @@
         <state relative-caret-position="1110">
           <caret line="88" column="0" lean-forward="false" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
           <folding>
-            <element signature="e#16094#16095#0" expanded="true" />
-            <element signature="e#16135#16136#0" expanded="true" />
+            <element signature="e#16365#16366#0" expanded="true" />
+            <element signature="e#16406#16407#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -739,8 +730,8 @@
         <state relative-caret-position="975">
           <caret line="76" column="0" lean-forward="false" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
           <folding>
-            <element signature="e#16094#16095#0" expanded="true" />
-            <element signature="e#16135#16136#0" expanded="true" />
+            <element signature="e#16365#16366#0" expanded="true" />
+            <element signature="e#16406#16407#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -767,8 +758,8 @@
         <state relative-caret-position="1110">
           <caret line="76" column="0" lean-forward="true" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
           <folding>
-            <element signature="e#16094#16095#0" expanded="true" />
-            <element signature="e#16135#16136#0" expanded="true" />
+            <element signature="e#16365#16366#0" expanded="true" />
+            <element signature="e#16406#16407#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -802,8 +793,8 @@
         <state relative-caret-position="60">
           <caret line="4" column="0" lean-forward="true" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
           <folding>
-            <element signature="e#16094#16095#0" expanded="true" />
-            <element signature="e#16135#16136#0" expanded="true" />
+            <element signature="e#16365#16366#0" expanded="true" />
+            <element signature="e#16406#16407#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -907,26 +898,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/TestJoiningChord.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="21" column="23" lean-forward="false" selection-start-line="21" selection-start-column="23" selection-end-line="21" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/chord/Components/FingerTable.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-607">
           <caret line="10" column="45" lean-forward="false" selection-start-line="10" selection-start-column="29" selection-end-line="10" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/chord/Runnable/DownloadClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="10" column="46" lean-forward="true" selection-start-line="10" selection-start-column="46" selection-end-line="10" selection-end-column="46" />
           <folding />
         </state>
       </provider>
@@ -947,13 +922,107 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/chord/Runnable/Server.java">
+    <entry file="file://$PROJECT_DIR$/src/chord/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1017">
-          <caret line="227" column="29" lean-forward="false" selection-start-line="227" selection-start-column="29" selection-end-line="227" selection-end-column="29" />
+        <state relative-caret-position="81">
+          <caret line="50" column="77" lean-forward="false" selection-start-line="50" selection-start-column="77" selection-end-line="50" selection-end-column="77" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/chord/SQLiteDB.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="131" column="31" lean-forward="false" selection-start-line="131" selection-start-column="31" selection-end-line="131" selection-end-column="31" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <marker date="1511228786492" expanded="true" signature="661:692" ph="CREATE TABLE... IF" />
+            <marker date="1511228786492" expanded="true" signature="661:869" ph="CREATE TABLE... IF" />
+            <marker date="1511228786492" expanded="true" signature="661:1236" ph="CREATE TABLE... IF" />
+            <marker date="1511228786492" expanded="true" signature="661:1240" ph="CREATE TABLE... IF" />
+            <marker date="1511228786492" expanded="true" signature="1771:2350" ph="INSERT INTO BOOK... " />
+            <marker date="1511228786492" expanded="true" signature="3153:3171" ph="SELECT * FRO... BOOK" />
+            <marker date="1511228786492" expanded="true" signature="4913:4936" ph="UPDATE BOOK " />
+            <marker date="1511228786492" expanded="true" signature="4913:4989" ph="UPDATE BOOK " />
+            <marker date="1511228786492" expanded="true" signature="4913:5054" ph="UPDATE BOOK " />
+            <marker date="1511228786492" expanded="true" signature="4913:5056" ph="UPDATE BOOK " />
+            <marker date="1511228786492" expanded="true" signature="4913:5114" ph="UPDATE BOOK " />
+            <marker date="1511228786492" expanded="true" signature="4913:5192" ph="UPDATE BOOK " />
+            <marker date="1511228786492" expanded="true" signature="4913:5267" ph="UPDATE BOOK " />
+            <marker date="1511228786492" expanded="true" signature="4913:5268" ph="UPDATE BOOK " />
+            <marker date="1511228786492" expanded="true" signature="5896:5921" ph="UPDATE BOOK " />
+            <marker date="1511228786492" expanded="true" signature="5896:5922" ph="UPDATE BOOK " />
+            <marker date="1511228786492" expanded="true" signature="6658:6684" ph="UPDATE BOOK " />
+            <marker date="1511228786492" expanded="true" signature="6658:6701" ph="UPDATE BOOK " />
+            <marker date="1511228786492" expanded="true" signature="6658:6961" ph="UPDATE BOOK " />
+            <marker date="1511228786492" expanded="true" signature="6658:6998" ph="UPDATE BOOK " />
+            <marker date="1511228786492" expanded="true" signature="6658:7072" ph="UPDATE BOOK " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/chord/Runnable/DownloadClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="33">
+          <caret line="10" column="46" lean-forward="true" selection-start-line="10" selection-start-column="46" selection-end-line="10" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/TestBase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="319">
+          <caret line="25" column="1" lean-forward="true" selection-start-line="25" selection-start-column="1" selection-end-line="25" selection-end-column="1" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/TestJoiningChord.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="250">
+          <caret line="37" column="83" lean-forward="true" selection-start-line="31" selection-start-column="8" selection-end-line="37" selection-end-column="83" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/TestSharingBooks.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="214">
+          <caret line="43" column="0" lean-forward="true" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/chord/Components/Book.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="62">
+          <caret line="5" column="41" lean-forward="false" selection-start-line="5" selection-start-column="41" selection-end-line="5" selection-end-column="41" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/chord/Controller.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="237">
+          <caret line="262" column="74" lean-forward="false" selection-start-line="262" selection-start-column="74" selection-end-line="262" selection-end-column="74" />
+          <folding>
+            <element signature="e#16365#16366#0" expanded="true" />
+            <element signature="e#16406#16407#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/TestSearchBooks.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="65" column="44" lean-forward="false" selection-start-line="65" selection-start-column="44" selection-end-line="65" selection-end-column="44" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -965,80 +1034,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/chord/Runnable/Stabilize.java">
+    <entry file="file://$PROJECT_DIR$/src/chord/Runnable/Server.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-47">
-          <caret line="36" column="0" lean-forward="true" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/chord/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="87" column="0" lean-forward="true" selection-start-line="87" selection-start-column="0" selection-end-line="87" selection-end-column="0" />
+        <state relative-caret-position="219">
+          <caret line="195" column="62" lean-forward="false" selection-start-line="195" selection-start-column="62" selection-end-line="195" selection-end-column="62" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/chord/Runnable/Stabilize.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="93" column="0" lean-forward="true" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/chord/Components/Node.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="179">
-          <caret line="710" column="112" lean-forward="false" selection-start-line="710" selection-start-column="112" selection-end-line="710" selection-end-column="112" />
+        <state relative-caret-position="-115">
+          <caret line="773" column="76" lean-forward="true" selection-start-line="773" selection-start-column="76" selection-end-line="773" selection-end-column="76" />
           <folding>
             <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/chord/Components/Book.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="41" lean-forward="false" selection-start-line="5" selection-start-column="41" selection-end-line="5" selection-end-column="41" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/chord/Controller.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6345">
-          <caret line="452" column="0" lean-forward="true" selection-start-line="452" selection-start-column="0" selection-end-line="452" selection-end-column="0" />
-          <folding>
-            <element signature="e#16094#16095#0" expanded="true" />
-            <element signature="e#16135#16136#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/chord/SQLiteDB.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="48">
-          <caret line="173" column="50" lean-forward="false" selection-start-line="173" selection-start-column="50" selection-end-line="173" selection-end-column="50" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <marker date="1511223489962" expanded="true" signature="661:692" ph="CREATE TABLE... IF" />
-            <marker date="1511223489962" expanded="true" signature="661:869" ph="CREATE TABLE... IF" />
-            <marker date="1511223489962" expanded="true" signature="661:1153" ph="CREATE TABLE... IF" />
-            <marker date="1511223489962" expanded="true" signature="1687:2266" ph="INSERT INTO BOOK... " />
-            <marker date="1511223489962" expanded="true" signature="3069:3087" ph="SELECT * FRO... BOOK" />
-            <marker date="1511223489962" expanded="true" signature="4702:4727" ph="UPDATE BOOK " />
-            <marker date="1511223489962" expanded="true" signature="4702:4779" ph="UPDATE BOOK " />
-            <marker date="1511223489962" expanded="true" signature="4702:4844" ph="UPDATE BOOK " />
-            <marker date="1511223489962" expanded="true" signature="4702:4846" ph="UPDATE BOOK " />
-            <marker date="1511223489962" expanded="true" signature="4702:4904" ph="UPDATE BOOK " />
-            <marker date="1511223489962" expanded="true" signature="4702:4979" ph="UPDATE BOOK " />
-            <marker date="1511223489962" expanded="true" signature="4702:5051" ph="UPDATE BOOK " />
-            <marker date="1511223489962" expanded="true" signature="4702:5052" ph="UPDATE BOOK " />
-            <marker date="1511223489962" expanded="true" signature="5680:5707" ph="UPDATE BOOK " />
-            <marker date="1511223489962" expanded="true" signature="6443:6469" ph="UPDATE BOOK " />
-            <marker date="1511223489962" expanded="true" signature="6443:6486" ph="UPDATE BOOK " />
-            <marker date="1511223489962" expanded="true" signature="6443:6743" ph="UPDATE BOOK " />
-            <marker date="1511223489962" expanded="true" signature="6443:6780" ph="UPDATE BOOK " />
-            <marker date="1511223489962" expanded="true" signature="6443:6851" ph="UPDATE BOOK " />
           </folding>
         </state>
       </provider>
