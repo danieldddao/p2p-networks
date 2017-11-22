@@ -19,8 +19,11 @@ public class Node implements Serializable {
     private Node predecessor = null;
     private Node successor = null;
     private FingerTable fingerTable = null;
+
     private List<Book> bookList = null;
     private List<Book> mySucBookList = null;
+    private List<Pair<Long, String>> mySharedBooks = null;
+    private List<Pair<Long, String>> mySucSharedBooks = null;
 
     private String addressString = "";
     private long nodeId = -1;
@@ -44,6 +47,8 @@ public class Node implements Serializable {
             // Initialize list of books
             bookList = new ArrayList();
             mySucBookList = new ArrayList();
+            mySharedBooks = new ArrayList();
+            mySucSharedBooks = new ArrayList();
 
             // initialize threads
             listener = new Listener(this);
@@ -68,6 +73,8 @@ public class Node implements Serializable {
             // Initialize list of books
             bookList = new ArrayList();
             mySucBookList = new ArrayList();
+            mySharedBooks = new ArrayList();
+            mySucSharedBooks = new ArrayList();
 
             // initialize threads
             listener = new Listener(this);
@@ -829,6 +836,52 @@ public class Node implements Serializable {
         }
     }
 
+
+    public void removeSharedBook(Pair<Long, String> book) {
+        try {
+            long bookId = book.getKey();
+            String bookTitle = book.getValue();
+            // Find book's successor
+            // This book is assigned to me
+            if ( bookId> this.getPredecessor().getNodeId() && bookId <= this.getNodeId()) {
+                for (Book b : this.getBookList()) {
+                    if (b.getId() == bookId && b.getTitle().equals(bookTitle)) {
+                        this.getBookList().remove(b);
+                    }
+                }
+            // Check finger table to find the node who holds this book
+            }  else {
+                // Contact book's successor to remove book
+                FingerTable fingerTable = this.getFingerTable();
+                int iThFinger = fingerTable.findIthFingerOf(bookId); // Find the finger that stores information of the Book ID
+                if (iThFinger != 0) {
+                    System.out.println(this.getNodeName() + " - FIND.BOOK.BY.ID: Found book in the finger #" + iThFinger);
+                    fingerTable.printFingerTable();
+
+                    Node contact = fingerTable.getEntryNode(iThFinger);
+                    // If I'm responsible for this book id
+                    if (contact.getNodeId() == this.getNodeId()) {
+                        for (Book b : this.getBookList()) {
+                            if (b.getId() == bookId && b.getTitle().equals(bookTitle)) {
+                                this.getBookList().remove(b);
+                            }
+                        }
+                    } else {
+                        // Ask i-th entry node to check book id
+                        System.out.println(this.getNodeName() + " - FIND.BOOK.SUCCESSOR: Contacting node #" + contact.getNodeId() + " (" + contact.getAddress().getAddress().getHostAddress() + ":" + contact.getAddress().getPort() + ")...");
+                        Object[] objArray = new Object[2];
+                        objArray[0] = MessageType.REMOVE_SHARED_BOOK;
+                        objArray[1] = book;
+                        MessageType result = (MessageType) Utils.sendMessage(contact.getAddress(), objArray);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     /**
      * Stop all threads that have while loop
      */
@@ -913,6 +966,22 @@ public class Node implements Serializable {
 
     public void setMySucBookList(List<Book> mySucBookList) {
         this.mySucBookList = mySucBookList;
+    }
+
+    public List<Pair<Long, String>> getMySharedBooks() {
+        return mySharedBooks;
+    }
+
+    public void setMySharedBooks(List<Pair<Long, String>> mySharedBooks) {
+        this.mySharedBooks = mySharedBooks;
+    }
+
+    public List<Pair<Long, String>> getMySucSharedBooks() {
+        return mySucSharedBooks;
+    }
+
+    public void setMySucSharedBooks(List<Pair<Long, String>> mySucSharedBooks) {
+        this.mySucSharedBooks = mySucSharedBooks;
     }
 }
 

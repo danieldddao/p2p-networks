@@ -20,6 +20,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.util.Pair;
 
 import java.io.*;
 import java.net.*;
@@ -330,6 +331,9 @@ public class Controller {
                 if (newBook != null) {
                     // Add book to the database
                     db.addNewBook(newBook);
+                    // Add new book to my shared book list
+                    Pair<Long, String> pair = new Pair(newBook.getId(), newBook.getTitle());
+                    getMyNode().getMySharedBooks().add(pair);
                     alertText.setText("New Book '" + titleTextField.getText() + "' successfully shared");
                 } else {
                     alertText.setText("Can't share book! Please try again!");

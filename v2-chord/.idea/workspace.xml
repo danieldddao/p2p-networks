@@ -61,12 +61,40 @@
       <file leaf-file-name="Controller.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/chord/Controller.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="237">
-              <caret line="262" column="74" lean-forward="false" selection-start-line="262" selection-start-column="74" selection-end-line="262" selection-end-column="74" />
+            <state relative-caret-position="167">
+              <caret line="72" column="33" lean-forward="false" selection-start-line="72" selection-start-column="17" selection-end-line="72" selection-end-column="33" />
               <folding>
-                <element signature="e#16365#16366#0" expanded="true" />
-                <element signature="e#16406#16407#0" expanded="true" />
+                <element signature="e#16604#16605#0" expanded="true" />
+                <element signature="e#16645#16646#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Node.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/chord/Components/Node.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="595">
+              <caret line="76" column="47" lean-forward="false" selection-start-line="76" selection-start-column="47" selection-end-line="76" selection-end-column="47" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#43048#43049#0" expanded="true" />
+                <element signature="e#43084#43085#0" expanded="true" />
+                <element signature="e#43160#43161#0" expanded="true" />
+                <element signature="e#43210#43211#0" expanded="true" />
+                <element signature="e#43271#43272#0" expanded="true" />
+                <element signature="e#43310#43311#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Stabilize.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/chord/Runnable/Stabilize.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-208">
+              <caret line="68" column="46" lean-forward="false" selection-start-line="68" selection-start-column="46" selection-end-line="68" selection-end-column="46" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -81,33 +109,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Stabilize.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/chord/Runnable/Stabilize.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="253">
-              <caret line="93" column="0" lean-forward="true" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Node.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/chord/Components/Node.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-115">
-              <caret line="773" column="76" lean-forward="true" selection-start-line="773" selection-start-column="76" selection-end-line="773" selection-end-column="76" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Server.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/chord/Runnable/Server.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="219">
-              <caret line="195" column="62" lean-forward="false" selection-start-line="195" selection-start-column="62" selection-end-line="195" selection-end-column="62" />
+            <state relative-caret-position="414">
+              <caret line="246" column="26" lean-forward="true" selection-start-line="246" selection-start-column="26" selection-end-line="246" selection-end-column="26" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -197,19 +203,19 @@
         <option value="$PROJECT_DIR$/src/chord/main.fxml" />
         <option value="$PROJECT_DIR$/src/chord/Runnable/PingSuccessor.java" />
         <option value="$PROJECT_DIR$/src/chord/Runnable/DownloadClient.java" />
-        <option value="$PROJECT_DIR$/src/chord/Components/MessageType.java" />
         <option value="$PROJECT_DIR$/src/chord/Runnable/FixFingers.java" />
         <option value="$PROJECT_DIR$/src/chord/Runnable/Listener.java" />
         <option value="$PROJECT_DIR$/src/chord/Components/Utils.java" />
         <option value="$PROJECT_DIR$/src/chord/Components/Book.java" />
         <option value="$PROJECT_DIR$/src/chord/Main.java" />
         <option value="$PROJECT_DIR$/src/chord/SQLiteDB.java" />
-        <option value="$PROJECT_DIR$/src/chord/Controller.java" />
         <option value="$PROJECT_DIR$/src/test/TestBase.java" />
         <option value="$PROJECT_DIR$/src/test/TestSharingBooks.java" />
         <option value="$PROJECT_DIR$/src/test/TestJoiningChord.java" />
-        <option value="$PROJECT_DIR$/src/chord/Runnable/Server.java" />
         <option value="$PROJECT_DIR$/src/test/TestSearchBooks.java" />
+        <option value="$PROJECT_DIR$/src/chord/Controller.java" />
+        <option value="$PROJECT_DIR$/src/chord/Components/MessageType.java" />
+        <option value="$PROJECT_DIR$/src/chord/Runnable/Server.java" />
         <option value="$PROJECT_DIR$/src/chord/Components/Node.java" />
         <option value="$PROJECT_DIR$/src/chord/Runnable/Stabilize.java" />
       </list>
@@ -562,12 +568,12 @@
       <workItem from="1510699856580" duration="3521000" />
       <workItem from="1510717290280" duration="15086000" />
       <workItem from="1510884401597" duration="624000" />
-      <workItem from="1510890899516" duration="40040000" />
+      <workItem from="1510890899516" duration="46799000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="275154000" />
+    <option name="totallyTimeSpent" value="281913000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1280" height="778" extended-state="0" />
@@ -661,7 +667,7 @@
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="6" />
+      <option name="time" value="7" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -676,6 +682,12 @@
           <caret line="175" column="0" lean-forward="true" selection-start-line="175" selection-start-column="0" selection-end-line="175" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#43048#43049#0" expanded="true" />
+            <element signature="e#43084#43085#0" expanded="true" />
+            <element signature="e#43160#43161#0" expanded="true" />
+            <element signature="e#43210#43211#0" expanded="true" />
+            <element signature="e#43271#43272#0" expanded="true" />
+            <element signature="e#43310#43311#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -709,8 +721,8 @@
         <state relative-caret-position="1110">
           <caret line="88" column="0" lean-forward="false" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
           <folding>
-            <element signature="e#16365#16366#0" expanded="true" />
-            <element signature="e#16406#16407#0" expanded="true" />
+            <element signature="e#16604#16605#0" expanded="true" />
+            <element signature="e#16645#16646#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -730,8 +742,8 @@
         <state relative-caret-position="975">
           <caret line="76" column="0" lean-forward="false" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
           <folding>
-            <element signature="e#16365#16366#0" expanded="true" />
-            <element signature="e#16406#16407#0" expanded="true" />
+            <element signature="e#16604#16605#0" expanded="true" />
+            <element signature="e#16645#16646#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -758,8 +770,8 @@
         <state relative-caret-position="1110">
           <caret line="76" column="0" lean-forward="true" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
           <folding>
-            <element signature="e#16365#16366#0" expanded="true" />
-            <element signature="e#16406#16407#0" expanded="true" />
+            <element signature="e#16604#16605#0" expanded="true" />
+            <element signature="e#16645#16646#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -793,8 +805,8 @@
         <state relative-caret-position="60">
           <caret line="4" column="0" lean-forward="true" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
           <folding>
-            <element signature="e#16365#16366#0" expanded="true" />
-            <element signature="e#16406#16407#0" expanded="true" />
+            <element signature="e#16604#16605#0" expanded="true" />
+            <element signature="e#16645#16646#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -879,14 +891,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/chord/Runnable/PingSuccessor.java" />
-    <entry file="file://$PROJECT_DIR$/src/chord/Components/MessageType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="24" column="14" lean-forward="false" selection-start-line="24" selection-start-column="14" selection-end-line="24" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/chord/main.fxml">
       <provider editor-type-id="JavaFX-Scene-Builder">
         <state />
@@ -1007,13 +1011,28 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/chord/Controller.java">
+    <entry file="file://$PROJECT_DIR$/src/chord/Runnable/FixFingers.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="262" column="74" lean-forward="false" selection-start-line="262" selection-start-column="74" selection-end-line="262" selection-end-column="74" />
+        <state relative-caret-position="-141">
+          <caret line="10" column="57" lean-forward="false" selection-start-line="10" selection-start-column="57" selection-end-line="10" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/chord/Components/MessageType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="31" column="22" lean-forward="false" selection-start-line="31" selection-start-column="22" selection-end-line="31" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/chord/Runnable/Server.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="246" column="26" lean-forward="true" selection-start-line="246" selection-start-column="26" selection-end-line="246" selection-end-column="26" />
           <folding>
-            <element signature="e#16365#16366#0" expanded="true" />
-            <element signature="e#16406#16407#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1026,39 +1045,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/chord/Runnable/FixFingers.java">
+    <entry file="file://$PROJECT_DIR$/src/chord/Controller.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-141">
-          <caret line="10" column="57" lean-forward="false" selection-start-line="10" selection-start-column="57" selection-end-line="10" selection-end-column="57" />
-          <folding />
+        <state relative-caret-position="167">
+          <caret line="72" column="33" lean-forward="false" selection-start-line="72" selection-start-column="17" selection-end-line="72" selection-end-column="33" />
+          <folding>
+            <element signature="e#16604#16605#0" expanded="true" />
+            <element signature="e#16645#16646#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/chord/Runnable/Server.java">
+    <entry file="file://$PROJECT_DIR$/src/chord/Components/Node.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="219">
-          <caret line="195" column="62" lean-forward="false" selection-start-line="195" selection-start-column="62" selection-end-line="195" selection-end-column="62" />
+        <state relative-caret-position="595">
+          <caret line="76" column="47" lean-forward="false" selection-start-line="76" selection-start-column="47" selection-end-line="76" selection-end-column="47" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#43048#43049#0" expanded="true" />
+            <element signature="e#43084#43085#0" expanded="true" />
+            <element signature="e#43160#43161#0" expanded="true" />
+            <element signature="e#43210#43211#0" expanded="true" />
+            <element signature="e#43271#43272#0" expanded="true" />
+            <element signature="e#43310#43311#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/chord/Runnable/Stabilize.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="93" column="0" lean-forward="true" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
+        <state relative-caret-position="-208">
+          <caret line="68" column="46" lean-forward="false" selection-start-line="68" selection-start-column="46" selection-end-line="68" selection-end-column="46" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/chord/Components/Node.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-115">
-          <caret line="773" column="76" lean-forward="true" selection-start-line="773" selection-start-column="76" selection-end-line="773" selection-end-column="76" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>

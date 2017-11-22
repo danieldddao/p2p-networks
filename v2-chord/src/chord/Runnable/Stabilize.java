@@ -4,11 +4,14 @@ import chord.Components.Book;
 import chord.Components.MessageType;
 import chord.Components.Node;
 import chord.Components.Utils;
+import javafx.util.Pair;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.net.ConnectException;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.List;
 
 /**
@@ -40,24 +43,41 @@ public class Stabilize implements Runnable, Serializable {
                 try {
                     if (mySuc.getNodeId() != this.myNode.getNodeId()) {
 //                        System.out.println("Connecting to " + mySuc.getAddress().getAddress().getHostAddress() + ":" + myNode.getSuccessor().getAddress().getPort());
-                        socket.connect(mySuc.getAddress(), 1000);
 
                         /*
                          * Check if my successor is still alive
                          */
+
                         // Send message to my successor to check if it's still alive
+                        socket.connect(mySuc.getAddress(), 1000);
                         objArray[0] = MessageType.ARE_YOU_STILL_ALIVE;
                         ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
                         objectOutputStream.writeObject(objArray);
                         objectOutputStream.flush();
-
                         // Wait 50 millisecs to receive the response
                         Thread.sleep(50);
-
-                        // Receive response message
+                        // Receive response suc's book list, which contains books assigned to my suc
                         ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
                         List<Book> response = (List<Book>) objectInputStream.readObject();
                         myNode.setMySucBookList(response);
+
+                        objectInputStream.close();
+                        objectOutputStream.close();
+                        socket.close();
+
+                        // Send message to get my successor's shared books
+                        socket = new Socket();
+                        socket.connect(mySuc.getAddress(), 1000);
+                        objArray[0] = MessageType.GIVE_YOUR_SHARED_BOOKS;
+                        objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+                        objectOutputStream.writeObject(objArray);
+                        objectOutputStream.flush();
+                        // Wait 50 millisecs to receive the response
+                        Thread.sleep(50);
+                        // Receive response suc's book list
+                        objectInputStream = new ObjectInputStream(socket.getInputStream());
+                        List<Pair<Long, String>> sharedBooks = (List<Pair<Long, String>>) objectInputStream.readObject();
+                        myNode.setMySucSharedBooks(sharedBooks);
 
                         objectInputStream.close();
                         objectOutputStream.close();
@@ -81,37 +101,42 @@ public class Stabilize implements Runnable, Serializable {
 
                         // Notify my new successor that I'm its new predecessor
                         if (pre.getNodeId() != myNode.getNodeId()) {
-                            System.out.println(myNode.getNodeName() + " - My successor has changed! Notify my new successor...");
+                            System.out.println(myNode.getNodeName() + " - STABILIZE - My successor has changed! Notify my new successor...");
                             myNode.notifyMyNewSuccessor(pre.getAddress());
                         }
                     }
-                } catch (Exception e) {
+                } catch (SocketTimeoutException | ConnectException e) {
                     /*
                      * My successor is no longer available
                      */
-                    System.out.println("My successor is no longer available!");
-                    // Remove all my successor's shared books
+                    System.out.println(myNode.getNodeName() + " - STABILIZE - My successor is no longer available: " + mySuc.getNodeName());
 
+                    // Remove all my successor's shared books
+                    for (Pair<Long, String> book : myNode.getMySucSharedBooks()) {
+                        myNode.removeSharedBook(book);
+                    }
 
                     // Find my new successor
                     List<Book> myOldSucBookList = myNode.getMySucBookList();
-                    System.out.println(myNode.getNodeName() + " - My successor left the network! Find my new successor");
+                    System.out.println(myNode.getNodeName() + " - STABILIZE - My successor left the network! Find my new successor");
                     Node newSuc = myNode.findSuccessorOf(myNode.getNodeId());
-                    System.out.println(myNode.getNodeName() + " - My successor left the network! Found my new successor: " + newSuc.getNodeName());
+                    System.out.println(myNode.getNodeName() + " - STABILIZE - My successor left the network! Found my new successor: " + newSuc.getNodeName());
                     myNode.setSuccessor(newSuc);
                     myNode.getFingerTable().updateEntryNode(1, newSuc);
 
                     // And transfer books from my old successor to my new successor
-                    System.out.println(myNode.getNodeName() + " - My successor left the network! Transferring old successor's books to new successor");
+                    System.out.println(myNode.getNodeName() + " - STABILIZE - My successor left the network! Transferring old successor's books to new successor");
                     objArray = new Object[2];
                     objArray[0] = MessageType.YOU_HAVE_NEW_BOOKS;
                     objArray[1] = myOldSucBookList;
                     MessageType response = (MessageType) Utils.sendMessage(myNode.getSuccessor().getAddress(), objArray);
                     if (response == MessageType.GOT_IT) {
-                        System.out.println(myNode.getNodeName() + " - Successfully transferred books to new successor");
+                        System.out.println(myNode.getNodeName() + " - STABILIZE - Successfully transferred books to new successor");
                     } else {
-                        System.out.println(myNode.getNodeName() + " - Failed to transfer books to new successor");
+                        System.out.println(myNode.getNodeName() + " - STABILIZE - Failed to transfer books to new successor");
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
                 Thread.sleep(periodTime);

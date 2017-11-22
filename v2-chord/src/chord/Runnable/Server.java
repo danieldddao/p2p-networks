@@ -224,9 +224,26 @@ public class Server implements Runnable{
                     break;
 
 
+                // My predecessor wants to check if I'm alive.
+                // Return my list of books that are assigned to me.
                 case ARE_YOU_STILL_ALIVE:
 //                    System.out.println(myNode.getNodeName() + " - SERVER: I'm still alive.");
                     response = myNode.getBookList();
+                    break;
+
+
+                // My predecessor want me to return my shared books.
+                // Return my the books that I've shared with the network.
+                case GIVE_YOUR_SHARED_BOOKS:
+                    response = myNode.getMySharedBooks();
+                    break;
+
+
+                // Remove the shared book containing book's id and book's title
+                case REMOVE_SHARED_BOOK:
+                    Pair<Long, String> sharedBook = (Pair<Long, String>) messageArray[1];
+                    myNode.removeSharedBook(sharedBook);
+                    response = MessageType.OK;
                     break;
 
 
