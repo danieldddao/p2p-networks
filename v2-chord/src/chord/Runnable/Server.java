@@ -41,13 +41,15 @@ public class Server implements Runnable{
 //                System.out.println(myNode.getNodeName() + "-SERVER: Response message: " + response + "\n");
 
                 // Send response to the client
-                ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-                objectOutputStream.writeObject(response);
-                objectOutputStream.flush();
+                if (messageArray[0] != MessageType.DOWNLOAD_BOOK) {
+                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+                    objectOutputStream.writeObject(response);
+                    objectOutputStream.flush();
 
-                // Wait 50 millisecs to before closing streams
-                Thread.sleep(50);
-                if (objectOutputStream != null) {objectOutputStream.close();}
+                    // Wait 50 millisecs to before closing streams
+                    Thread.sleep(50);
+                    if (objectOutputStream != null) {objectOutputStream.close();}
+                }
             }
 
             if (objectInputStream != null) {objectInputStream.close();}
@@ -193,7 +195,8 @@ public class Server implements Runnable{
                     List<Book> returnBookList = new ArrayList();
 
                     for (Book b : myNode.getBookList()) {
-                        if (myNode.getNodeId() < b.getId() && b.getId() <= id) {
+                        // If book id is less than or equal my predecessor
+                        if (Utils.isIdBetweenUpperEq(b.getId(), myNode.getNodeId(), id)) {
                             returnBookList.add(b);
                         } else {
                             myNewBookList.add(b);
@@ -290,7 +293,6 @@ public class Server implements Runnable{
                 out.close();
                 outputStream.close();
 
-                response = MessageType.FINISHED_SENDING_BOOK;
                 break;
             }
             return response;

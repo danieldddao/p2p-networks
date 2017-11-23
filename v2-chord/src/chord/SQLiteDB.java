@@ -72,7 +72,7 @@ public class SQLiteDB {
         }
     }
 
-    public List<Book> getAllBooks() {
+    public List<Book> getAllMyBooks(InetSocketAddress myaddress) {
         List<Book> bookList = new ArrayList();
 
         try {
@@ -82,12 +82,11 @@ public class SQLiteDB {
 //            System.out.println("Opened database successfully");
 
             Statement stmt = c.createStatement();
-            String sql = "SELECT * FROM BOOK;";
+            String sql = "SELECT * FROM BOOK WHERE USER_IP='" + myaddress.getAddress().getHostAddress() +
+                            "' AND PORT='" + myaddress.getPort() + "';";
             ResultSet rs = stmt.executeQuery( sql);
 
             while ( rs.next() ) {
-                String user_ip = rs.getString("USER_IP");
-                int port = rs.getInt("PORT");
                 String  title = rs.getString("TITLE");
                 String author  = rs.getString("AUTHOR");
                 String  isbn = rs.getString("ISBN");
@@ -100,10 +99,8 @@ public class SQLiteDB {
                     isShared = true;
                     bookId = rs.getLong("BOOK_ID");
                 }
-
-                InetAddress address = InetAddress.getByName(user_ip);
-                InetSocketAddress socketAddress = new InetSocketAddress(address, port);
-                Book newBook = new Book(bookId, socketAddress, title, author, isbn, location, isShared);
+                System.out.println("SQLDB bookId=" + bookId + " sharedValue=" + sharedValue + " ,isShared=" + isShared);
+                Book newBook = new Book(bookId, myaddress, title, author, isbn, location, isShared);
                 bookList.add(newBook);
             }
 
@@ -133,12 +130,13 @@ public class SQLiteDB {
                             "' WHERE USER_IP='" + book.getOwnerAddress().getAddress().getHostAddress() +
                             "' AND PORT='" + book.getOwnerAddress().getPort() +
                             "' AND LOCATION='" + book.getLocation() + "';";
-            stmt.executeUpdate(sql);
+            int status = stmt.executeUpdate(sql);
 
             stmt.close();
             c.commit();
             c.close();
-            System.out.println("Updated book's share status successfully");
+            System.out.println(sql);
+            System.out.println("Updated book's share status successfully (" + status + "): " + book.getId() + ", " + book.getTitle() + ", " + book.getLocation());
         } catch ( Exception e ) {
             e.printStackTrace();
         }

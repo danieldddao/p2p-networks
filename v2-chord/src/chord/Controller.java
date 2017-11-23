@@ -124,14 +124,15 @@ public class Controller {
 
             // Load books from local database
             db = new SQLiteDB();
-            for (Book book : db.getAllBooks()) {
+            for (Book book : db.getAllMyBooks(address)) {
                 File file = new File(book.getLocation());
                 if (file.exists()) {
                     // Share each book with the network
                     Book newBook = getMyNode().shareABook(book.getTitle(), book.getAuthor(), book.getIsbn(), book.getLocation());
                     if (newBook != null) {
                         book.setIsShared(true);
-                        db.updateBookShareStatus(book);
+                        db.updateBookShareStatus(newBook);
+                        System.out.println("Successfully re-shared book " + newBook.getId() + " " + newBook.getTitle() + " " + newBook.getLocation());
                     } else {
                         book.setIsShared(false);
                         db.updateBookShareStatus(book);
@@ -421,19 +422,20 @@ public class Controller {
                 authorLabel.setText("Author: " + currentBook.getAuthor());
                 isbnLabel.setText("ISBN: " + currentBook.getIsbn());
                 locationLabel.setText("Location:" + currentBook.getLocation());
-                bookIDLabel.setText("Book ID= : " + currentBook.getId());
+                bookIDLabel.setText("Book ID= : " + currentBook.getId() + ", Owner: " + currentBook.getOwnerAddress().getAddress().getHostAddress() + ":"  + currentBook.getOwnerAddress().getPort());
                 setGraphic(hbox);
 
                 // check if file exists
-                File file = new File(currentBook.getLocation());
-                if (!file.exists()) { // if file doesn't exist, show option to update location
+                if (!currentBook.getIsShared()) { // if file doesn't exist, show option to update location
                     updateLocButton.setVisible(true);
                     shareStatus.setSelected(false);
+                    shareStatus.setDisable(false);
                     shareStatus.setText("File doesn't exist! Please Update file!");
                     shareStatus.setTextFill(Color.web("red"));
                 } else {
                     updateLocButton.setVisible(false);
                     shareStatus.setSelected(true);
+                    shareStatus.setDisable(true);
                     shareStatus.setText("Successfully shared!");
                     shareStatus.setTextFill(Color.web("blue"));
                 }
@@ -452,8 +454,8 @@ public class Controller {
             ObservableList<Book> list = FXCollections.observableArrayList();
 
             // load books from the local database
-            List<Book> bookList = db.getAllBooks();
-            System.out.println(bookList);
+            List<Book> bookList = db.getAllMyBooks(getMyNode().getAddress());
+            System.out.println(bookList.size());
 
             list.addAll(bookList);
             mySharedBooksListView.setItems(list);

@@ -72,12 +72,8 @@ public class DownloadClient implements Runnable{
             bufferedOutputStream.write(byteArray, 0 , current);							//writing byteArray to file
             bufferedOutputStream.flush();												//flushing buffers
 
-            // Receive the message from the server
-            MessageType response = (MessageType) in.readObject();
-            if (response == MessageType.FINISHED_SENDING_BOOK) {
-                checkBox.setVisible(true);
-                System.out.println("File " + filePath + " downloaded ( size: " + current + " bytes read)");
-            }
+            checkBox.setVisible(true);
+            System.out.println("File " + filePath + " downloaded ( size: " + current + " bytes read)");
 
             out.close();
             in.close();

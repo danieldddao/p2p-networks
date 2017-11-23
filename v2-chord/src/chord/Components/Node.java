@@ -18,6 +18,7 @@ public class Node implements Serializable {
     private InetSocketAddress address = null;
     private Node predecessor = null;
     private Node successor = null;
+    private Node sucSuccessor = null;
     private FingerTable fingerTable = null;
 
     private List<Book> bookList = null;
@@ -182,6 +183,7 @@ public class Node implements Serializable {
             // Contact my successor to transfer some books to me
             List<Book> myBookList = transferBooksToMe();
             this.setBookList(myBookList);
+            System.out.println("My Book list: " + myBookList.size());
 
             // Start the threads for this node
             startThreads();
@@ -222,11 +224,22 @@ public class Node implements Serializable {
             System.out.println(nodeName + " - INIT.FINGER.TABLE - FOUND SUCCESSOR OF me and 1st finger: " + this.successor.getNodeName());
 
             /*
+             * Get my successor's successor
+             */
+            objArray[0] = MessageType.GET_YOUR_SUCCESSOR;
+            System.out.println(nodeName + " - INIT.FINGER.TABLE - GET SUC's SUC: asking successor " + this.getSuccessor().getAddress().getAddress().getHostAddress() + ":" + this.getSuccessor().getAddress().getPort() +
+                    " to get its successor");
+            this.sucSuccessor = (Node) Utils.sendMessage(contactAddress, objArray);
+            if (this.sucSuccessor == null) { return false; }
+            System.out.println(nodeName + " - INIT.FINGER.TABLE - Found successor of my successor: " + this.sucSuccessor.getNodeName());
+
+
+            /*
              * Get predecessor of my successor, it's now my predecessor
              */
             objArray[0] = MessageType.GET_YOUR_PREDECESSOR;
             System.out.println(nodeName + " - INIT.FINGER.TABLE - GET PRE: asking contact " + contactAddress.getAddress().getHostAddress() + ":" + contactAddress.getPort() +
-                                " to find get its successor");
+                                " to get its predecessor");
             this.predecessor = (Node) Utils.sendMessage(contactAddress, objArray);
             if (this.predecessor == null) { return false; }
             System.out.println(nodeName + " - INIT.FINGER.TABLE - FOUND PREDECESSOR OF me: " + this.predecessor.getNodeName());
@@ -926,6 +939,14 @@ public class Node implements Serializable {
 
     public void setSuccessor(Node successor) {
         this.successor = successor;
+    }
+
+    public Node getSucSuccessor() {
+        return sucSuccessor;
+    }
+
+    public void setSucSuccessor(Node sucSuccessor) {
+        this.sucSuccessor = sucSuccessor;
     }
 
     public long getNodeId() {

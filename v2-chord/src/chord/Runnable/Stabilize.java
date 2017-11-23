@@ -47,7 +47,6 @@ public class Stabilize implements Runnable, Serializable {
                         /*
                          * Check if my successor is still alive
                          */
-
                         // Send message to my successor to check if it's still alive
                         socket.connect(mySuc.getAddress(), 1000);
                         objArray[0] = MessageType.ARE_YOU_STILL_ALIVE;
@@ -65,24 +64,22 @@ public class Stabilize implements Runnable, Serializable {
                         objectOutputStream.close();
                         socket.close();
 
-                        // Send message to get my successor's shared books
-                        socket = new Socket();
-                        socket.connect(mySuc.getAddress(), 1000);
+                        /*
+                         * Get my successor's shared books
+                         */
                         objArray[0] = MessageType.GIVE_YOUR_SHARED_BOOKS;
-                        objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-                        objectOutputStream.writeObject(objArray);
-                        objectOutputStream.flush();
-                        // Wait 50 millisecs to receive the response
-                        Thread.sleep(50);
-                        // Receive response suc's book list
-                        objectInputStream = new ObjectInputStream(socket.getInputStream());
-                        List<Pair<Long, String>> sharedBooks = (List<Pair<Long, String>>) objectInputStream.readObject();
+                        List<Pair<Long, String>> sharedBooks = (List<Pair<Long, String>>) Utils.sendMessage(mySuc.getAddress(), objArray);
                         myNode.setMySucSharedBooks(sharedBooks);
 
-                        objectInputStream.close();
-                        objectOutputStream.close();
-                        socket.close();
-
+                        /*
+                         * Get my successor's successor
+                         */
+                        objArray[0] = MessageType.GET_YOUR_SUCCESSOR;
+                        Node sucSuc = (Node) Utils.sendMessage(mySuc.getAddress(), objArray);
+                        if (sucSuc != null) {
+//                            System.out.println(myNode.getNodeName() + " - STABILIZE - Found successor of my successor: " + sucSuc.getNodeName());
+                            this.myNode.setSucSuccessor(sucSuc);
+                        }
 
                         /*
                          * Check if my successor has changed
@@ -104,8 +101,10 @@ public class Stabilize implements Runnable, Serializable {
                             System.out.println(myNode.getNodeName() + " - STABILIZE - My successor has changed! Notify my new successor...");
                             myNode.notifyMyNewSuccessor(pre.getAddress());
                         }
+                    } else {
+                        this.myNode.setSucSuccessor(this.myNode);
                     }
-                } catch (SocketTimeoutException | ConnectException e) {
+                } catch (SocketTimeoutException | ConnectException | NullPointerException e) {
                     /*
                      * My successor is no longer available
                      */
@@ -119,7 +118,7 @@ public class Stabilize implements Runnable, Serializable {
                     // Find my new successor
                     List<Book> myOldSucBookList = myNode.getMySucBookList();
                     System.out.println(myNode.getNodeName() + " - STABILIZE - My successor left the network! Find my new successor");
-                    Node newSuc = myNode.findSuccessorOf(myNode.getNodeId());
+                    Node newSuc = myNode.getSucSuccessor();
                     System.out.println(myNode.getNodeName() + " - STABILIZE - My successor left the network! Found my new successor: " + newSuc.getNodeName());
                     myNode.setSuccessor(newSuc);
                     myNode.getFingerTable().updateEntryNode(1, newSuc);
