@@ -1,24 +1,15 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Peer to peer project to implement centralized network (Napster-like) and Decentralized network (Chord-like) for book sharing
 
-Things you may want to cover:
 
-* Ruby version
+Centralized network:
 
-* System dependencies
+* Central server is implemented using Ruby on Rails.
 
-* Configuration
+* Client App is implemented using Java with JavaFX for UI.
 
-* Database creation
 
-* Database initialization
+Decentralized network:
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* Implemented using Java with JavaFX for UI.
