@@ -2,7 +2,6 @@ package chord;
 
 import chord.Components.Book;
 
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.sql.Connection;
 import java.sql.DriverManager;

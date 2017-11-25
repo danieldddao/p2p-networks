@@ -785,6 +785,11 @@ public class Node implements Serializable {
     }
 
 
+    /**
+     * Search a book in the network by its title
+     * @param searchTerm
+     * @return search results
+     */
     public List<Book> searchBook(String searchTerm) {
         List<Book> returnBooks = new ArrayList();
         try {
@@ -801,6 +806,11 @@ public class Node implements Serializable {
     }
 
 
+    /**
+     * Find a book in the network by looking for the node who holds this book
+     * @param searchBook
+     * @return list of books
+     */
     public List<Book> findBookById(Pair<Long, String> searchBook) {
         List<Book> returnBooks = new ArrayList();
         try {
@@ -850,6 +860,10 @@ public class Node implements Serializable {
     }
 
 
+    /**
+     * Remove a shared book by telling the node who holds this book to remove it
+     * @param book
+     */
     public void removeSharedBook(Pair<Long, String> book) {
         try {
             long bookId = book.getKey();
@@ -1005,5 +1019,3 @@ public class Node implements Serializable {
         this.mySucSharedBooks = mySucSharedBooks;
     }
 }
-
-

@@ -10,9 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171004144640) do
+ActiveRecord::Schema.define(version: 20171112182926) do
+
+  create_table "active_users", force: :cascade do |t|
+    t.string "username"
+    t.string "user_ip"
+    t.string "port_number"
+    t.index ["username"], name: "index_active_users_on_username", unique: true
+  end
 
   create_table "books", force: :cascade do |t|
+    t.string "username"
     t.string "user_ip"
     t.string "port_number"
     t.string "title"
@@ -20,7 +28,13 @@ ActiveRecord::Schema.define(version: 20171004144640) do
     t.string "isbn"
     t.string "location"
     t.boolean "isShared", default: true
-    t.index ["user_ip", "port_number", "location"], name: "user_ip_and_port_and_location", unique: true
+    t.index ["username", "user_ip", "port_number", "location"], name: "username_user_ip_and_port_and_location", unique: true
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "username"
+    t.string "password_digest"
+    t.index ["username"], name: "index_users_on_username", unique: true
   end
 
 end

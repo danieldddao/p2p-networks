@@ -44,8 +44,10 @@ public class AppController {
         }
     }
 
-    public static void loadSharedBookWhenAppStarts() {
+    public static boolean loadSharedBookWhenAppStarts(String url) {
         try {
+            WebServer.setUrl("http://" + url);
+
             int initialPort = 1111;
             System.out.println("loading shared books");
             while (!available(initialPort)) {
@@ -53,11 +55,10 @@ public class AppController {
             }
             myAddress  = new InetSocketAddress(InetAddress.getLocalHost(), initialPort);
 
-            ServerSocket serverSocket = new ServerSocket(myAddress.getPort(), 0, myAddress.getAddress());
-            Thread t = new Thread(new ServerSocketRunnable(serverSocket));
-            t.start();
-            System.out.println("Socket created on port # " + serverSocket.getLocalSocketAddress());
-            List<Book> bookList = Book.jsonToBookList(WebServer.findAllMySharedBooks(usernameString));
+            String mySharedBooks = WebServer.findAllMySharedBooks(usernameString);
+            if (mySharedBooks == null) {return false;}
+            System.out.println("my shared books: " + mySharedBooks);
+            List<Book> bookList = Book.jsonToBookList(mySharedBooks);
             for (Book book: bookList) {
                 System.out.println("Loading book " + book.getTitle() + " by " + book.getAuthor());
                 File location = new File(book.getLocation());
@@ -69,8 +70,15 @@ public class AppController {
                     WebServer.updateBookSharingStatus(book, false);
                 }
             }
+
+            ServerSocket serverSocket = new ServerSocket(myAddress.getPort(), 0, myAddress.getAddress());
+            Thread t = new Thread(new ServerSocketRunnable(serverSocket));
+            t.start();
+            System.out.println("Socket created on port # " + serverSocket.getLocalSocketAddress());
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
     }
 

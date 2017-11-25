@@ -13,10 +13,12 @@ import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -26,8 +28,13 @@ public class WebServer {
     private static String url = "http://0.0.0.0:8000";
     private static String token = "";
 
-//    private static String userIp = "";
-//    private static List<Integer> portList = new ArrayList();
+    public static String getUrl() {
+        return url;
+    }
+
+    public static void setUrl(String url) {
+        WebServer.url = url;
+    }
 
     public static void getTokenFromWebServer() {
         try {
@@ -164,16 +171,18 @@ public class WebServer {
             System.out.println(result);
             return result.toString();
 
+        } catch (ClientProtocolException | IllegalArgumentException | HttpHostConnectException e) {
+            return null;
         } catch(Exception e) {
             e.printStackTrace();
-            return "[]";
+            return null;
         }
     }
 
 
     public static void unshareBooksFromServerWhenExiting(String username) {
         try {
-            if (!username.isEmpty() && !username.equals("")) {
+            if (!username.isEmpty()) {
                 System.out.println("Unsharing books");
                 HttpClient client = HttpClientBuilder.create().build();
                 HttpPost post = new HttpPost(url + "/books/unsharebook");

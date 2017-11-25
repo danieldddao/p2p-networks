@@ -18,6 +18,7 @@ Bundler.require(*Rails.groups)
 
 module P2pV1Napster
   class Application < Rails::Application
+    require 'socket'
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.1
 
@@ -27,5 +28,29 @@ module P2pV1Napster
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    config.after_initialize do
+      ActiveUser.all.destroy_all
+      Thread.new do
+
+        while true
+          puts "Checking ActiveUser table every 1 min"
+          for user in ActiveUser.all
+            puts "Checking user " + user.username
+            begin
+              s = TCPSocket.new(user.user_ip, user.port_number)
+              s.send("checking if port available", 0)
+              s.close
+            rescue  Errno::ETIMEDOUT, Errno::ECONNREFUSED
+              puts "remove from ActiveUser table: " + user.username
+              user.destroy
+            end
+          end
+          sleep 60
+        end
+
+      end
+
+    end
   end
 end
