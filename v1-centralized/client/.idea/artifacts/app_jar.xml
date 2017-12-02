@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="app:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/app_jar</output-path>
+    <root id="archive" name="app.jar">
+      <element id="module-output" name="app" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/src/lib/json-20170516.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/src/lib/httpcore-4.4.6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/src/lib/httpclient-4.5.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/src/lib/commons-logging-1.2.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
