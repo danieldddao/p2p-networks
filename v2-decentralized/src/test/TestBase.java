@@ -1,7 +1,7 @@
 package test;
 
-import chord.Components.Node;
-import chord.Controller;
+import decentralized.Components.Node;
+import decentralized.Controller;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;

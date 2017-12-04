@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/v2-chord.iml" filepath="$PROJECT_DIR$/v2-chord.iml" />
+      <module fileurl="file://$PROJECT_DIR$/v2-decentralized.iml" filepath="$PROJECT_DIR$/v2-decentralized.iml" />
     </modules>
   </component>
 </project>

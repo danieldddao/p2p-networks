@@ -1,12 +1,7 @@
 package test;
 
-import chord.Components.Node;
-import chord.Components.Utils;
-import chord.Controller;
-
-import java.io.Console;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
+import decentralized.Components.Node;
+import decentralized.Controller;
 
 public class TestJoiningChord {
 

@@ -1,11 +1,9 @@
 package test;
 
-import chord.Components.Book;
-import chord.Components.Node;
-import chord.Controller;
+import decentralized.Components.Book;
+import decentralized.Components.Node;
+import decentralized.Controller;
 
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.util.List;
 
 public class TestSearchBooks {
