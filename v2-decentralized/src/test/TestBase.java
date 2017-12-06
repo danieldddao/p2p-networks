@@ -1,7 +1,7 @@
 package test;
 
-import decentralized.Components.Node;
-import decentralized.Controller;
+import decentralizedP2P.Components.Node;
+import decentralizedP2P.Controller;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;

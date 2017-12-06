@@ -1,8 +1,8 @@
 package test;
 
-import decentralized.Components.Book;
-import decentralized.Components.Node;
-import decentralized.Controller;
+import decentralizedP2P.Components.Book;
+import decentralizedP2P.Components.Node;
+import decentralizedP2P.Controller;
 
 import java.util.List;
 

@@ -42,4 +42,8 @@ class UsersController < ApplicationController
     end
   end
 
+  def connect
+    puts "user wants to check if server is online"
+    render json: "", status: 200
+  end
 end
