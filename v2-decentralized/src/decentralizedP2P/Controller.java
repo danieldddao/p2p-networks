@@ -84,8 +84,8 @@ public class Controller {
 
     private static InetAddress getLocalHost() {
         try {
-            return InetAddress.getByName("127.0.0.1");
-//            return InetAddress.getLocalHost();
+//            return InetAddress.getByName("127.0.0.1");
+            return InetAddress.getLocalHost();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -122,11 +122,12 @@ public class Controller {
     public void initialize() {
         try {
             InetSocketAddress address = Controller.myNode.getAddress();
-            addressLabel.setText("My address: " + address.getAddress().getHostAddress() + ":" + address.getPort());
+            addressLabel.setText("My address: " + address.getAddress().getHostAddress() + ":" + address.getPort() + " - Node Id: " + Controller.myNode.getNodeId());
 
             // Load books from local database
             db = new SQLiteDB();
             for (Book book : db.getAllMyBooks(address)) {
+                System.out.println("Book from the db: " + book.getTitle() + ", " + book.getLocation());
                 File file = new File(book.getLocation());
                 if (file.exists()) {
                     // Share each book with the network
@@ -244,9 +245,9 @@ public class Controller {
             } else {
                 currentBook = newBook;
                 if (currentBook.getIsbn().isEmpty()) {
-                    label.setText(currentBook.getTitle() + " by " + currentBook.getAuthor());
+                    label.setText(currentBook.getTitle() + " by " + currentBook.getAuthor() + "\n Owner: " + currentBook.getOwnerAddress().getAddress().getHostAddress() + ":" + currentBook.getOwnerAddress().getPort());
                 } else {
-                    label.setText(currentBook.getTitle() + " by " + currentBook.getAuthor() + " (isbn:" + currentBook.getIsbn() + ")");
+                    label.setText(currentBook.getTitle() + " by " + currentBook.getAuthor() + " (isbn:" + currentBook.getIsbn() + ")" + "\n Owner: " + currentBook.getOwnerAddress().getAddress().getHostAddress() + ":" + currentBook.getOwnerAddress().getPort());
                 }
                 checkBox.setSelected(true);
                 checkBox.setDisable(true);
@@ -302,7 +303,11 @@ public class Controller {
     private File selectedFile;
 
     public void shareABookTabSelected(Event event) {
-        alertText.setText("");
+        alertText.setText("Enter Book Information");
+        titleTextField.setText("");
+        authorTextField.setText("");
+        isbnTextField.setText("");
+        chooseFileText.setText("");
     }
 
     public void chooseFileButtonSelected(ActionEvent event) {
@@ -338,6 +343,10 @@ public class Controller {
                     Pair<Long, String> pair = new Pair(newBook.getId(), newBook.getTitle());
                     getMyNode().getMySharedBooks().add(pair);
                     alertText.setText("New Book '" + titleTextField.getText() + "' successfully shared");
+                    titleTextField.setText("");
+                    authorTextField.setText("");
+                    isbnTextField.setText("");
+                    chooseFileText.setText("");
                 } else {
                     alertText.setText("Can't share book! Please try again!");
                 }

@@ -696,6 +696,10 @@ public class Node implements Serializable {
                     if (contact.getNodeId() == this.getNodeId()) {
                         // I'm book's successor
                         return this.getAddress();
+                    } else if (Utils.isIdBetweenUpperEq(id, contact.getNodeId(), this.getNodeId())) {
+                        // Book id is in interval (contact, me], so I should hold that book if it exists. Otherwise, it doesn't exist
+                        System.out.println(this.getNodeName() + " - FIND.BOOK.SUCCESSOR: Book Id belongs to me");
+                        return this.address;
                     } else {
                         System.out.println(this.getNodeName() + " - FIND.BOOK.SUCCESSOR: Contacting node #" + contact.getNodeId() + " (" + contact.getAddress().getAddress().getHostAddress() + ":" + contact.getAddress().getPort() + ")...");
                         Object[] objArray = new Object[2];
@@ -753,6 +757,9 @@ public class Node implements Serializable {
                                 return MessageType.ALREADY_EXIST;
                             }
                         }
+                    } else if (Utils.isIdBetweenUpperEq(id, contact.getNodeId(), this.getNodeId())) {
+                        // Book id is in interval (contact, me], so I should hold that book if it exists. Otherwise, it doesn't exist
+                        System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: Book Id should have belonged to me, no need to ask contact");
                     } else {
                         System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: Contacting node #" + contact.getNodeId() + " (" + contact.getAddress().getAddress().getHostAddress() + ":" + contact.getAddress().getPort() + ")...");
                         Object[] objArray = new Object[2];
@@ -801,7 +808,7 @@ public class Node implements Serializable {
             String searchString = searchTerm.replaceAll("[^A-Za-z0-9]", "").toLowerCase();
             long bookId = Utils.hashFunction(searchString);
             // Locate book id in the network
-            List<Book> results = findBookById(new Pair(bookId, searchTerm));
+            List<Book> results = findBookById(new Pair(bookId, searchString));
             returnBooks.addAll(results);
             return returnBooks;
         } catch (Exception e) {
@@ -820,13 +827,14 @@ public class Node implements Serializable {
         List<Book> returnBooks = new ArrayList();
         try {
             long bookId = searchBook.getKey();
-            String searchTerm = searchBook.getValue();
-            System.out.println(this.getNodeName() + " - FIND.BOOK.BY.ID:" + bookId + ", term: " + searchTerm);
+            String searchString = searchBook.getValue();
+            System.out.println(this.getNodeName() + " - FIND.BOOK.BY.ID:" + bookId + ", term: " + searchString);
 
             // Find if I hold this book
-            if (bookId > this.getPredecessor().getNodeId() && bookId <= this.getNodeId()) {
+            if (Utils.isIdBetweenUpperEq(bookId, this.getPredecessor().getNodeId(), this.getNodeId())) {
+                System.out.println("I'm holding this book: " + bookId + ", " + searchString);
                 for (Book book : this.getBookList()) {
-                    if (book.getId() == bookId && book.getTitle().contains(searchTerm)) {
+                    if (book.getId() == bookId && book.getTitle().replaceAll("[^A-Za-z0-9]", "").toLowerCase().equals(searchString)) {
                         returnBooks.add(book);
                     }
                 }
@@ -841,8 +849,9 @@ public class Node implements Serializable {
                     Node contact = fingerTable.getEntryNode(iThFinger);
                     // If I'm responsible for this book id
                     if (contact.getNodeId() == this.getNodeId()) {
+                        System.out.println("I'm holding this book: " + bookId + ", " + searchString);
                         for (Book book : this.getBookList()) {
-                            if (book.getId() == bookId && book.getTitle().contains(searchTerm)) {
+                            if (book.getId() == bookId && book.getTitle().replaceAll("[^A-Za-z0-9]", "").toLowerCase().equals(searchString)) {
                                 returnBooks.add(book);
                             }
                         }
@@ -872,12 +881,13 @@ public class Node implements Serializable {
     public void removeSharedBook(Pair<Long, String> book) {
         try {
             long bookId = book.getKey();
-            String bookTitle = book.getValue();
+            String bookTitleAddress = book.getValue();
             // Find book's successor
             // This book is assigned to me
             if ( bookId> this.getPredecessor().getNodeId() && bookId <= this.getNodeId()) {
                 for (Book b : this.getBookList()) {
-                    if (b.getId() == bookId && b.getTitle().equals(bookTitle)) {
+                    String titleAddress = b.getTitle() + b.getOwnerAddress().getAddress().getHostAddress() + ":" + b.getOwnerAddress().getPort();
+                    if (b.getId() == bookId && titleAddress.equals(bookTitleAddress)) {
                         this.getBookList().remove(b);
                     }
                 }
@@ -894,7 +904,8 @@ public class Node implements Serializable {
                     // If I'm responsible for this book id
                     if (contact.getNodeId() == this.getNodeId()) {
                         for (Book b : this.getBookList()) {
-                            if (b.getId() == bookId && b.getTitle().equals(bookTitle)) {
+                            String titleAddress = b.getTitle() + b.getOwnerAddress().getAddress().getHostAddress() + ":" + b.getOwnerAddress().getPort();
+                            if (b.getId() == bookId && titleAddress.equals(bookTitleAddress)) {
                                 this.getBookList().remove(b);
                             }
                         }

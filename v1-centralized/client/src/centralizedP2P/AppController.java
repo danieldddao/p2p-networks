@@ -47,7 +47,7 @@ public class AppController {
     public static boolean connectToServer(String url) {
         try {
             if (url.isEmpty()) {
-                WebServer.setUrl("http://p2p-centralized-server.herokuapp.com");
+                WebServer.setUrl("http://p2p-centralized-server.herokuapp.com");    // Default server
             } else {
                 WebServer.setUrl("http://" + url);
             }
@@ -147,22 +147,22 @@ public class AppController {
                         progressBar.setProgress(0);
 
                         //creating connection to owner's socket
-                        System.out.println("Connecting to port " + currentBook.getPort());
+                        System.out.println("Download book: " + currentBook.getTitle());
+                        System.out.println("Connecting to " + currentBook.getUser_ip() + ":" + currentBook.getPort());
                         Socket socket = new Socket(currentBook.getUser_ip(), currentBook.getPort());
                         System.out.println("Socket connected to " + currentBook.getUser_ip() + " port: " + currentBook.getPort());
 
                         Thread t = new Thread(new Client(socket, currentBook, dir, progressBar, checkBox));
                         t.start();
 
+                        System.out.println("Downloading " + currentBook.getTitle() + " from loc: " + currentBook.getLocation());
+
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
-
                 } else {
                     searchAlertText.setText("Please choose a directory to download");
                 }
-
-                System.out.println("Downloading " + currentBook.getTitle() + " from loc: " + currentBook.getLocation());
             });
         }
 
@@ -216,10 +216,11 @@ public class AppController {
             searchAlertText.setText("");
             String searchBookResult = WebServer.searchBook(searchTextField.getText());
 //            String searchBookResult = "[{\"id\":1,\"user_ip\":\"0.0.0.0/0.0.0.0\",\"port_number\":\"1111\",\"title\":\"EV\",\"isbn\":\"\",\"author\":\"dd\",\"location\":\"/Users/danieldao/Downloads/Evaluation form-3.docx\"},{\"id\":2,\"user_ip\":\"0.0.0.0/0.0.0.0\",\"port_number\":\"1112\",\"title\":\"jb\",\"isbn\":\"\",\"author\":\"dd\",\"location\":\"/Users/danieldao/Downloads/jb.ttc\"}]\n";
+            ObservableList<Book> list = FXCollections.observableArrayList();
             if (searchBookResult.equals("[]") || searchBookResult.isEmpty()) {
                 searchAlertText.setText("No Book found!");
+                bookListView.setItems(list);
             } else {
-                ObservableList<Book> list = FXCollections.observableArrayList();
                 for (Book book: Book.jsonToBookList(searchBookResult)) {
                     list.add(book);
                 }
@@ -326,6 +327,8 @@ public class AppController {
                                 WebServer.updateBookSharingStatus(book, false);
                             }
                         }
+
+                        alertText.setText("Enter Book Information");
                         break;
 
                     case 204:

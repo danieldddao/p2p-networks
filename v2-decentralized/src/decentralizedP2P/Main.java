@@ -24,7 +24,7 @@ public class Main extends Application {
 
     public void showMainScene(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
-        primaryStage.setTitle("Book Sharing - Chord network");
+        primaryStage.setTitle("Book Sharing - Decentralized P2P v1.0");
         primaryStage.setScene(new Scene(root, 700, 500));
     }
 
@@ -121,7 +121,7 @@ public class Main extends Application {
         createNetworkField.setPromptText("default m = 7");
         Button createNetworkBtn = new Button("Create");
         createNetworkBtn.setOnAction(e-> createNetworkButtonClicked(e, primaryStage, createNetworkField, alertLabel));
-        createNetworkPane.setTop(new Label("    Enter size of the network (2^m): \n    m="));
+        createNetworkPane.setTop(new Label("    Enter size of the network (2^m): \n    (Default: m=7) m="));
         createNetworkPane.setLeft(createNetworkField);
         createNetworkPane.setCenter( new Label(" "));
         createNetworkPane.setRight(createNetworkBtn);
@@ -152,7 +152,7 @@ public class Main extends Application {
 
         // Scene to create or join existing network
         Scene menuScene = networkMenuScene(primaryStage);
-        primaryStage.setTitle("Create or Join a decentralized network");
+        primaryStage.setTitle("Create or Join a decentralized P2P network - v1.0");
         primaryStage.setScene(menuScene);
         primaryStage.show();
     }

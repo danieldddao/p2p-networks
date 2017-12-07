@@ -35,6 +35,12 @@ public class FixFingers implements Runnable, Serializable {
                 if (entryNode.getNodeId() != n.getNodeId()) {
                     System.out.println(myNode.getNodeName() + " - FIXFINGERS - updating finger entry # " + i + " , new entry: " + n.getNodeName());
                     myNode.getFingerTable().updateEntryNode(i, n);
+
+                    // If my successor has changed
+                    if (i == 1 && n.getNodeId() != myNode.getSuccessor().getNodeId()) {
+                        System.out.println(myNode.getNodeName() + " - FIXFINGERS - my successor has changed from " + myNode.getSuccessor().getNodeName() + " to " + n.getNodeName());
+                        myNode.setSuccessor(n);
+                    }
                 }
 
                 Thread.sleep(periodTime);

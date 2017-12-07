@@ -112,7 +112,8 @@ public class Stabilize implements Runnable, Serializable {
 
                     // Remove all my successor's shared books
                     for (Pair<Long, String> book : myNode.getMySucSharedBooks()) {
-                        myNode.removeSharedBook(book);
+                        String tittleAddress = book.getValue() + myNode.getSuccessor().getAddress().getAddress().getHostAddress() + ":" + myNode.getSuccessor().getAddress().getPort();
+                        myNode.removeSharedBook(new Pair<Long, String>(book.getKey(), tittleAddress));
                     }
 
                     // Find my new successor

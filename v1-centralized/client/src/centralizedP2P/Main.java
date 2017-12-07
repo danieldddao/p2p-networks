@@ -69,7 +69,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         // Scene to join a central server
         Scene menuScene = networkMenuScene(primaryStage);
-        primaryStage.setTitle("Connect to server");
+        primaryStage.setTitle("Centralized-P2P - Connect to server");
         primaryStage.setScene(menuScene);
         primaryStage.show();
     }

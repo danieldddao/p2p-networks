@@ -47,7 +47,7 @@ bower.json
 #Mac
 *.DS_Store
 /.DS_Store
-/v1-centralized/app/out
-/v1-centralized/webserver/log
-/v1-centralized/webserver/tmp
+/v1-centralized/client/out
+/v1-centralized/server/log
+/v1-centralized/server/tmp
 /v2-decentralized/out
