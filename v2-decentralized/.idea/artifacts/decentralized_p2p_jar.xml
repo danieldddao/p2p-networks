@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="decentralized-p2p:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/decentralized_p2p_jar</output-path>
+    <root id="archive" name="decentralized-p2p.jar">
+      <element id="module-output" name="v2-decentralized" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/src/lib/sqlite-jdbc-3.20.0.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
