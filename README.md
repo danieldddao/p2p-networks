@@ -14,6 +14,8 @@ http://www.oracle.com/technetwork/java/javase/downloads/jre9-downloads-3848532.h
 If you want to run a server. You will also need to install Ruby. Server is written using Ruby on Rails
 https://www.ruby-lang.org/en/
 
+You might need to disable firewall since application might not able to receive TCP socket connection requests due to firewall blocking TCP socket connection requests.
+
 ### Running
 
 Directory jars contains jar files for running client applications
