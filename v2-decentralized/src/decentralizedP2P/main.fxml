@@ -47,7 +47,7 @@
                                 <Text layoutX="178.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Book's Title" />
                                 <TextField fx:id="authorTextField" layoutX="331.0" layoutY="135.0" prefHeight="27.0" prefWidth="216.0" />
                                 <Text layoutX="177.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Book's Author" />
-                                <Text layoutX="178.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Book's ISBN" />
+                                <Text layoutX="175.0" layoutY="189.0" lineSpacing="2.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Book's ISBN (Optional)" wrappingWidth="113.95703125" />
                                 <TextField fx:id="isbnTextField" layoutX="331.0" layoutY="176.0" prefHeight="27.0" prefWidth="215.0" />
                                 <Button layoutX="325.0" layoutY="364.0" mnemonicParsing="false" onAction="#shareNewBook" prefHeight="40.0" prefWidth="75.0" text="Share">
                                     <font>

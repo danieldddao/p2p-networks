@@ -85,7 +85,7 @@ public class Stabilize implements Runnable, Serializable {
                         }
 
                         /*
-                         * Check if my successor has changed
+                         * Stabilization protocol
                          */
                         objArray[0] = MessageType.GET_YOUR_PREDECESSOR;
                         Node pre = (Node) Utils.sendMessage(myNode.getSuccessor().getAddress(), objArray);

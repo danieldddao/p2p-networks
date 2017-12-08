@@ -14,15 +14,16 @@ http://www.oracle.com/technetwork/java/javase/downloads/jre9-downloads-3848532.h
 If you want to run a server. You will also need to install Ruby. Server is written using Ruby on Rails
 https://www.ruby-lang.org/en/
 
-You might need to disable firewall since application might not able to receive TCP socket connection requests due to firewall blocking TCP socket connection requests.
+You might need to disable firewall of local network since application might not able to receive TCP socket connection requests due to firewall blocking TCP socket connection requests.
 
 ### Running
 
-Directory jars contains jar files for running client applications
 
 ##### Centralized P2P:
 
 * **To create a server (Also make sure the local IP address is reachable):** 
+    
+    go to the directory of the server (.../p2p-networks/v1-centralized/server) and run:
     ```
     rails server -b IP -p PORT
     ```
@@ -37,7 +38,8 @@ Directory jars contains jar files for running client applications
 
     (There's a default server that you can use: http://p2p-centralized-server.herokuapp.com)
     ```
-    java -jar .../centralized-p2p.jar
+    Compile the client directory (.../p2p-networks/v1-centralized/client)
+    Main class contains the main method to run the application.
     ```
 
 ##### Decentralized P2P:
@@ -45,7 +47,8 @@ Directory jars contains jar files for running client applications
 * To run application:
 
     ```
-    java -jar .../centralized-p2p.jar
+    Compile the v2-decentralized directory (.../p2p-networks/v2-decentralized)
+    Main class contains the main method to run the application.
     ```
 
 ## Authors
