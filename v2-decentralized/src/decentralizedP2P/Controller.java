@@ -115,6 +115,7 @@ public class Controller {
     @FXML
     private Label addressLabel;
 
+    @FXML
     private static SQLiteDB db;
     /**
      * Initialize stuff when main starts
@@ -135,6 +136,11 @@ public class Controller {
                     if (newBook != null) {
                         book.setIsShared(true);
                         db.updateBookShareStatus(newBook);
+
+                        // Add new book to my shared book list
+                        Pair<Long, String> pair = new Pair(newBook.getId(), newBook.getTitle());
+                        Controller.getMyNode().getMySharedBooks().add(pair);
+
                         System.out.println("Successfully re-shared book " + newBook.getId() + " " + newBook.getTitle() + " " + newBook.getLocation());
                     } else {
                         book.setIsShared(false);
@@ -151,6 +157,24 @@ public class Controller {
         }
     }
 
+    public void printInfo(ActionEvent event) {
+        try {
+            System.out.println("\n\nMy successor: " + Controller.getMyNode().getSuccessor().getNodeName());
+            System.out.println("My predecessor: " + Controller.getMyNode().getPredecessor().getNodeName());
+            Controller.getMyNode().getFingerTable().printFingerTable();
+            System.out.println("My books: " + Controller.getMyNode().getMySharedBooks().size());
+            for (Pair p : Controller.getMyNode().getMySharedBooks()) {
+                System.out.println("My book: " + p.getKey() + ", " + p.getValue());
+            }
+
+            System.out.println("\nOthers' shared books: " + Controller.getMyNode().getBookList().size());
+            for (Book b : Controller.getMyNode().getBookList()) {
+                System.out.println("Book shared by others: " + b.getId() + ", " + b.getTitle() + ", " + b.getLocation() + ". " + b.getOwnerAddress().getAddress().getHostAddress() + ":" + b.getOwnerAddress().getPort());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
     /**
@@ -337,11 +361,14 @@ public class Controller {
                 // Share a new book with the network
                 Book newBook = Controller.getMyNode().shareABook(titleTextField.getText(), authorTextField.getText(), isbnTextField.getText(), selectedFile.toString());
                 if (newBook != null) {
+
                     // Add book to the database
                     db.addNewBook(newBook);
+
                     // Add new book to my shared book list
                     Pair<Long, String> pair = new Pair(newBook.getId(), newBook.getTitle());
                     getMyNode().getMySharedBooks().add(pair);
+
                     alertText.setText("New Book '" + titleTextField.getText() + "' successfully shared");
                     titleTextField.setText("");
                     authorTextField.setText("");
@@ -411,8 +438,15 @@ public class Controller {
                     if (newBook != null) {
                         //update new location with the database
                         currentBook.setIsShared(true);
-                        boolean status = db.updateBookLocation(currentBook, newLoc);
+                        boolean status = db.updateBookLocation(currentBook, newBook);
+
                         if (status == true) {
+
+                            System.out.println("Update Location - Successfully shared the book " + newBook.getId());
+                            // Add new book to my shared book list
+                            Pair<Long, String> pair = new Pair(newBook.getId(), newBook.getTitle());
+                            getMyNode().getMySharedBooks().add(pair);
+
                             refreshMySharedBooksTab();
                         }
                     }
@@ -449,6 +483,8 @@ public class Controller {
                     shareStatus.setDisable(true);
                     shareStatus.setText("Successfully shared!");
                     shareStatus.setTextFill(Color.web("blue"));
+
+
                 }
             }
         }

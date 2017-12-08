@@ -163,7 +163,7 @@ public class SQLiteDB {
         }
     }
 
-    public boolean updateBookLocation(Book book, String newLocation) {
+    public boolean updateBookLocation(Book book, Book newBook) {
         try {
             Class.forName("org.sqlite.JDBC");
             Connection c = DriverManager.getConnection("jdbc:sqlite:" + myDb);
@@ -174,8 +174,8 @@ public class SQLiteDB {
 
             int shared = 0;
             if (book.getIsShared()) { shared = 1; }
-            String sql = "UPDATE BOOK SET LOCATION='" + newLocation +
-                            "', BOOK_ID='" + book.getId() +
+            String sql = "UPDATE BOOK SET LOCATION='" + newBook.getLocation() +
+                            "', BOOK_ID='" + newBook.getId() +
                             "', SHARED='" + shared +
                             "' WHERE USER_IP='" + book.getOwnerAddress().getAddress().getHostAddress() +
                             "' AND PORT='" + book.getOwnerAddress().getPort() +

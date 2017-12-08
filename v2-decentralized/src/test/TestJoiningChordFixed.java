@@ -3,7 +3,7 @@ package test;
 import decentralizedP2P.Components.Node;
 import decentralizedP2P.Controller;
 
-public class TestJoiningChord {
+public class TestJoiningChordFixed {
 
 
     public static void main(String[] args) throws Exception{
@@ -12,7 +12,7 @@ public class TestJoiningChord {
         System.out.println("Chord ring size=" + Node.getChordRingSize());
 
         //First Node
-        Controller.createSocketWhenAppStarts();
+        TestBase.createSocket(0, "N0");
         Node firstNode = Controller.getMyNode();
         firstNode.createNewNetwork(); // Create new network
 
@@ -20,7 +20,7 @@ public class TestJoiningChord {
         System.out.println("\n\n*****************************************************");
         System.out.println("*****************************************************");
         System.out.println("Second Node\n\n");
-        Controller.createSocketWhenAppStarts();
+        TestBase.createSocket(3, "N3");
         Node secondNode = Controller.getMyNode();
         secondNode.joinNetwork(firstNode.getAddress()); // Join first node's network
 
@@ -28,7 +28,7 @@ public class TestJoiningChord {
         System.out.println("\n\n*****************************************************");
         System.out.println("*****************************************************");
         System.out.println("Third Node\n\n");
-        Controller.createSocketWhenAppStarts();
+        TestBase.createSocket(6, "N6");
         Node thirdNode = Controller.getMyNode();
         thirdNode.joinNetwork(firstNode.getAddress()); // Join first node's network
 
@@ -36,7 +36,7 @@ public class TestJoiningChord {
         System.out.println("\n\n*****************************************************");
         System.out.println("*****************************************************");
         System.out.println("Fourth Node\n\n");
-        Controller.createSocketWhenAppStarts();
+        TestBase.createSocket(1, "N1");
         Node fourthNode = Controller.getMyNode();
         fourthNode.joinNetwork(secondNode.getAddress()); // Join second node's network
 

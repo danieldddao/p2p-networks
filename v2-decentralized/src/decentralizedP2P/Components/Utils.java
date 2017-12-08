@@ -103,7 +103,7 @@ public class Utils {
      */
     public static InetSocketAddress checkAddressExist(String addressString) {
         try {
-
+            System.out.println("Checking if address exists: " + addressString);
             InetSocketAddress address = getInetSocketAddressFrom(addressString);
             if (Controller.available(address)) {
                 return null;

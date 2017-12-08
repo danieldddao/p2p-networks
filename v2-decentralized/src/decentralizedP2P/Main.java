@@ -22,9 +22,11 @@ import java.net.InetSocketAddress;
 
 public class Main extends Application {
 
+    private String version = "1.0";
+
     public void showMainScene(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
-        primaryStage.setTitle("Book Sharing - Decentralized P2P v1.0");
+        primaryStage.setTitle("Book Sharing - Decentralized P2P v" + version);
         primaryStage.setScene(new Scene(root, 700, 500));
     }
 
@@ -50,8 +52,8 @@ public class Main extends Application {
             if (!createNetworkField.getText().isEmpty()) {
                 networkSize = Integer.parseInt(createNetworkField.getText());
             }
-            if (networkSize < 2) {
-                alertLabel.setText("m must be > 1");
+            if (networkSize < 3) {
+                alertLabel.setText("m must be > 2");
             } else {
                 // Create new Chord network
                 showLoadingScene(primaryStage, "Creating Network...");
@@ -78,18 +80,19 @@ public class Main extends Application {
 
     private void joinNetworkButtonClicked(ActionEvent event, Stage primaryStage, TextField ipTextField, Label alertLabel) {
         try {
-            // Create a server socket
-            Controller.createSocketWhenAppStarts();
 
             // Check if given address exists
             InetSocketAddress address = Utils.checkAddressExist(ipTextField.getText());
 
+            Thread.sleep(100);
             if (address == null) {
                 alertLabel.setText("Cannot find the address you are trying to join! Please try again!");
             } else {
                 showLoadingScene(primaryStage, "Joining Network...");
 
-                // In a Thread:
+                // Create a server socket
+                Controller.createSocketWhenAppStarts();
+
                 // Contact the given address to join the network
                 boolean status = Controller.getMyNode().joinNetwork(address);
                 if (status) {
@@ -152,7 +155,7 @@ public class Main extends Application {
 
         // Scene to create or join existing network
         Scene menuScene = networkMenuScene(primaryStage);
-        primaryStage.setTitle("Create or Join a decentralized P2P network - v1.0");
+        primaryStage.setTitle("Create or Join a decentralized P2P network - v" + version);
         primaryStage.setScene(menuScene);
         primaryStage.show();
     }

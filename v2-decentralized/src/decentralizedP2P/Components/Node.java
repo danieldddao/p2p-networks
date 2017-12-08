@@ -595,14 +595,20 @@ public class Node implements Serializable {
                 System.out.println(this.getNodeName() + " - CHECK.IF.ID.EXISTS: ID is not my successor, so it doesn't exist");
                 return MessageType.NOT_EXIST;
             }
-            Node entryNode = fingerTable.getEntryNode(iThFinger);
-            if (entryNode != null && entryNode.getNodeId() != this.getNodeId()) {   // If ID is already assigned to a node which is not me
-                // Contact that node to see if ID belongs to another node
-                System.out.println(this.getNodeName() + " - CHECK.IF.ID.EXISTS: Contacting node #" + entryNode.getNodeId() + " (" + entryNode.getAddress().getAddress().getHostAddress() + ":" + entryNode.getAddress().getPort() + ")...");
-                Object[] objArray = new Object[2];
-                objArray[0] = MessageType.DOES_ID_EXIST;
-                objArray[1] = id;
-                response = (MessageType) Utils.sendMessage(entryNode.getAddress(), objArray);
+            Node contact = fingerTable.getEntryNode(iThFinger);
+            if (contact != null && contact.getNodeId() != this.getNodeId()) {   // If ID is already assigned to a node which is not me
+                // If contact precedes the ID, contact won't have information of that ID. ID doesn't exist
+                if (Utils.isIdBetweenUpperEq(id, this.getNodeId(), contact.getNodeId())) {
+                    return MessageType.NOT_EXIST;
+                } else {
+                    // Contact that node to see if ID belongs to another node
+                    System.out.println(this.getNodeName() + " - CHECK.IF.ID.EXISTS: Contacting node #" +  contact.getNodeId() +
+                                        " (" + contact.getAddress().getAddress().getHostAddress() + ":" + contact.getAddress().getPort() + ")...");
+                    Object[] objArray = new Object[2];
+                    objArray[0] = MessageType.DOES_ID_EXIST;
+                    objArray[1] = id;
+                    response = (MessageType) Utils.sendMessage(contact.getAddress(), objArray);
+                }
             }
 
             return response;
@@ -631,7 +637,7 @@ public class Node implements Serializable {
             System.out.println(nodeName + " - SHARE.NEW.BOOK - bookstring= " + bookString);
             long id = Utils.hashFunction(bookString);
 
-            while(checkIfBookIdExists(id, title) == MessageType.ALREADY_EXIST) {
+            while(checkIfBookIdExists(id, bookString) == MessageType.ALREADY_EXIST) {
                 System.out.println("ID " + id + "already exists, generating new ID...");
                 bookString += ".";
                 id = Utils.hashFunction(bookString);
@@ -725,15 +731,20 @@ public class Node implements Serializable {
     public MessageType checkIfBookIdExists(long id, String title) {
         try {
             MessageType response = MessageType.NOT_EXIST;
-
+            System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: id=" + id + " , title="  + title);
             // Check my nodeID
             if (id == this.getNodeId()) {
                 System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: ID belongs to me");
                 // Check if id belongs to some book, which has different title, assigned to me
                 for (Book b : bookList) {
-                    if (b.getId() == id && !b.getTitle().equals(title)) {
-                        System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: Book ID currently belongs to a book " + b.getTitle());
-                        return MessageType.ALREADY_EXIST;
+                    if (b.getId() == id) {
+                        if (b.getTitle().replaceAll("[^A-Za-z0-9]", "").toLowerCase().equals(title)) {
+                            System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: Book ID belongs to the same book " + b.getTitle());
+                            return MessageType.NOT_EXIST;
+                        } else {
+                            System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: Book ID currently belongs to a book " + b.getTitle());
+                            return MessageType.ALREADY_EXIST;
+                        }
                     }
                 }
             // Check my finger table
@@ -752,9 +763,14 @@ public class Node implements Serializable {
                     if ( (contact.getNodeId() == this.getNodeId()) || (contact.getNodeId() < id && id <= this.getNodeId()) ) {
                         // Check if id belongs to some book, which has different title, assigned to me
                         for (Book b : bookList) {
-                            if (b.getId() == id && !b.getTitle().equals(title)) {
-                                System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: ID currently belongs to a book " + b.getTitle());
-                                return MessageType.ALREADY_EXIST;
+                            if (b.getId() == id) {
+                                if (b.getTitle().replaceAll("[^A-Za-z0-9]", "").toLowerCase().equals(title)) {
+                                    System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: BookID belongs to the same book " + b.getTitle());
+                                    return MessageType.NOT_EXIST;
+                                } else {
+                                    System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: Book ID currently belongs to a book " + b.getTitle());
+                                    return MessageType.ALREADY_EXIST;
+                                }
                             }
                         }
                     } else if (Utils.isIdBetweenUpperEq(id, contact.getNodeId(), this.getNodeId())) {
@@ -903,12 +919,17 @@ public class Node implements Serializable {
                     Node contact = fingerTable.getEntryNode(iThFinger);
                     // If I'm responsible for this book id
                     if (contact.getNodeId() == this.getNodeId()) {
+                        List<Book> newBookList = new ArrayList();
                         for (Book b : this.getBookList()) {
                             String titleAddress = b.getTitle() + b.getOwnerAddress().getAddress().getHostAddress() + ":" + b.getOwnerAddress().getPort();
+                            // Remove this book from the list
                             if (b.getId() == bookId && titleAddress.equals(bookTitleAddress)) {
-                                this.getBookList().remove(b);
+//                                this.getBookList().remove(b);
+                            } else {
+                                newBookList.add(b);
                             }
                         }
+                        setBookList(newBookList);
                     } else {
                         // Ask i-th entry node to check book id
                         System.out.println(this.getNodeName() + " - FIND.BOOK.SUCCESSOR: Contacting node #" + contact.getNodeId() + " (" + contact.getAddress().getAddress().getHostAddress() + ":" + contact.getAddress().getPort() + ")...");

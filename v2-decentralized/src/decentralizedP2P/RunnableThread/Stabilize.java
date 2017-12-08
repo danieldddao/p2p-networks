@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.net.ConnectException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -53,8 +54,10 @@ public class Stabilize implements Runnable, Serializable {
                         ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
                         objectOutputStream.writeObject(objArray);
                         objectOutputStream.flush();
+
                         // Wait 50 millisecs to receive the response
                         Thread.sleep(50);
+
                         // Receive response suc's book list, which contains books assigned to my suc
                         ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
                         List<Book> response = (List<Book>) objectInputStream.readObject();
@@ -111,18 +114,28 @@ public class Stabilize implements Runnable, Serializable {
                     System.out.println(myNode.getNodeName() + " - STABILIZE - My successor is no longer available: " + mySuc.getNodeName());
 
                     // Remove all my successor's shared books
+                    System.out.println(myNode.getNodeName() + " - STABILIZE - Removing my successor's share books: " + myNode.getMySucSharedBooks().size());
                     for (Pair<Long, String> book : myNode.getMySucSharedBooks()) {
-                        String tittleAddress = book.getValue() + myNode.getSuccessor().getAddress().getAddress().getHostAddress() + ":" + myNode.getSuccessor().getAddress().getPort();
-                        myNode.removeSharedBook(new Pair<Long, String>(book.getKey(), tittleAddress));
+                        String titleAddress = book.getValue() + myNode.getSuccessor().getAddress().getAddress().getHostAddress() + ":" + myNode.getSuccessor().getAddress().getPort();
+                        System.out.println(myNode.getNodeName() + " - STABILIZE - Remove shared book: " + book.getKey() + ", " + titleAddress);
+                        myNode.removeSharedBook(new Pair<Long, String>(book.getKey(), titleAddress));
                     }
 
                     // Find my new successor
-                    List<Book> myOldSucBookList = myNode.getMySucBookList();
                     System.out.println(myNode.getNodeName() + " - STABILIZE - My successor left the network! Find my new successor");
                     Node newSuc = myNode.getSucSuccessor();
                     System.out.println(myNode.getNodeName() + " - STABILIZE - My successor left the network! Found my new successor: " + newSuc.getNodeName());
                     myNode.setSuccessor(newSuc);
                     myNode.getFingerTable().updateEntryNode(1, newSuc);
+
+                    // Remove books shared by my old successor and my old successor's holding them
+                    List<Book> myOldSucBookList = new ArrayList();
+                    for (Book b : myNode.getMySucBookList()) {
+                        // If this book is not shared by my old successor, move it to my new successor
+                        if (!b.getOwnerAddress().getAddress().getHostAddress().equals(mySuc.getAddress().getAddress().getHostAddress()) && b.getOwnerAddress().getPort() != mySuc.getAddress().getPort()) {
+                            myOldSucBookList.add(b);
+                        }
+                    }
 
                     // And transfer books from my old successor to my new successor
                     System.out.println(myNode.getNodeName() + " - STABILIZE - My successor left the network! Transferring old successor's books to new successor");
