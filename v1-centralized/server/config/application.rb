@@ -33,7 +33,7 @@ module P2pV1Napster
       ActiveUser.all.destroy_all
       Thread.new do
         while true
-          puts "Checking ActiveUser table every 1 min"
+          # puts "Checking ActiveUser table every 1 min"
           for user in ActiveUser.all
             puts "Checking user " + user.username
             begin
@@ -45,7 +45,7 @@ module P2pV1Napster
               user.destroy
             end
           end
-          sleep 60
+          sleep 10
         end
       end
     end

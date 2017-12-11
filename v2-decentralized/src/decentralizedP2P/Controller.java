@@ -346,7 +346,7 @@ public class Controller {
     }
 
     public void shareNewBook(ActionEvent event) {
-        System.out.println("Save button pressed");
+//        System.out.println("Save button pressed");
         alertText.setText("");
         try {
             if (titleTextField.getText().isEmpty()) {
@@ -358,24 +358,32 @@ public class Controller {
             } else if (!selectedFile.exists()) {
                 alertText.setText("Selected file doesn't exist");
             } else {
-                // Share a new book with the network
-                Book newBook = Controller.getMyNode().shareABook(titleTextField.getText(), authorTextField.getText(), isbnTextField.getText(), selectedFile.toString());
-                if (newBook != null) {
 
-                    // Add book to the database
-                    db.addNewBook(newBook);
+                // Check if book is already shared
+                boolean status = db.checkIfBookExists(Controller.getMyNode().getAddress(), selectedFile.toString());
 
-                    // Add new book to my shared book list
-                    Pair<Long, String> pair = new Pair(newBook.getId(), newBook.getTitle());
-                    getMyNode().getMySharedBooks().add(pair);
-
-                    alertText.setText("New Book '" + titleTextField.getText() + "' successfully shared");
-                    titleTextField.setText("");
-                    authorTextField.setText("");
-                    isbnTextField.setText("");
-                    chooseFileText.setText("");
+                if (status) {
+                    alertText.setText("This Book is already shared: " + selectedFile.toString());
                 } else {
-                    alertText.setText("Can't share book! Please try again!");
+                    // Share a new book with the network
+                    Book newBook = Controller.getMyNode().shareABook(titleTextField.getText(), authorTextField.getText(), isbnTextField.getText(), selectedFile.toString());
+                    if (newBook != null) {
+
+                        // Add book to the database
+                        db.addNewBook(newBook);
+
+                        // Add new book to my shared book list
+                        Pair<Long, String> pair = new Pair(newBook.getId(), newBook.getTitle());
+                        getMyNode().getMySharedBooks().add(pair);
+
+                        alertText.setText("New Book '" + titleTextField.getText() + "' successfully shared");
+                        titleTextField.setText("");
+                        authorTextField.setText("");
+                        isbnTextField.setText("");
+                        chooseFileText.setText("");
+                    } else {
+                        alertText.setText("Can't share book! Please try again!");
+                    }
                 }
             }
         } catch (Exception e) {

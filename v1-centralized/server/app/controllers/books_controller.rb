@@ -26,12 +26,15 @@ class BooksController < ApplicationController
   def renderReturnBooks(books)
     returnBooks = []
     for book in books
+      puts "finding active user of book: " + book.title
       user = ActiveUser.find_by_username(book.username)
+      puts user
       # If book is shared by an active user
       if !user.blank?
         returnBooks.push(book)
       end
     end
+    return returnBooks
   end
 
   def search

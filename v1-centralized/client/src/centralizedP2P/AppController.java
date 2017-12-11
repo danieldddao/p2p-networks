@@ -370,8 +370,12 @@ public class AppController {
                     isbnTextField.setDisable(true);
                     addButton.setDisable(true);
                     chooseAFileButton.setDisable(true);
-                } else {
 
+                    // Unshare all my books
+                    WebServer.unshareBooksFromServerWhenExiting(usernameString);
+
+                } else {
+                    lsTextAlert.setText("Can't log out! Please try again later!");
                 }
             }
         }

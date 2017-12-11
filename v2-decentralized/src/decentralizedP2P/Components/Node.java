@@ -773,8 +773,8 @@ public class Node implements Serializable {
                                 }
                             }
                         }
-                    } else if (Utils.isIdBetweenUpperEq(id, contact.getNodeId(), this.getNodeId())) {
-                        // Book id is in interval (contact, me], so I should hold that book if it exists. Otherwise, it doesn't exist
+                    // If id is in interval (contact, me] and contact is my predecessor. I should hold this book
+                    } else if (Utils.isIdBetweenUpperEq(id, contact.getNodeId(), this.getNodeId()) && this.getPredecessor().getNodeId() == contact.getNodeId()) {
                         System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: Book Id should have belonged to me, no need to ask contact");
                     } else {
                         System.out.println(this.getNodeName() + " - CHECK.IF.BOOK.ID.EXISTS: Contacting node #" + contact.getNodeId() + " (" + contact.getAddress().getAddress().getHostAddress() + ":" + contact.getAddress().getPort() + ")...");
@@ -1018,6 +1018,10 @@ public class Node implements Serializable {
 
     public FingerTable getFingerTable() {
         return fingerTable;
+    }
+
+    public void setFingerTable(FingerTable fingerTable) {
+        this.fingerTable = fingerTable;
     }
 
     public Listener getListener() {

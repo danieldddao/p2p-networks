@@ -198,4 +198,38 @@ public class SQLiteDB {
             return false;
         }
     }
+
+    public boolean checkIfBookExists(InetSocketAddress address, String location) {
+        try {
+            System.out.println("Checking if Book exists in the DB: " + address.getAddress().getHostAddress() + ":" + address.getPort() + ", " + location);
+            Class.forName("org.sqlite.JDBC");
+            Connection c = DriverManager.getConnection("jdbc:sqlite:" + myDb);
+            c.setAutoCommit(false);
+//            System.out.println("Opened database successfully");
+
+            Statement stmt = c.createStatement();
+
+            String sql = "SELECT * FROM BOOK WHERE USER_IP='" + address.getAddress().getHostAddress() +
+                    "' AND PORT='" + address.getPort() +
+                    "' AND LOCATION='" + location + "';";
+            ResultSet rs = stmt.executeQuery(sql);
+
+            boolean status = rs.next();
+            stmt.close();
+            c.commit();
+            c.close();
+
+//            System.out.println(status);
+            if (status) {
+                System.out.println("Book exists");
+                return true;
+            } else {
+                System.out.println("Book doesn't exist");
+                return false;
+            }
+        } catch ( Exception e ) {
+            e.printStackTrace();
+            return true;
+        }
+    }
 }
