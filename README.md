@@ -1,4 +1,5 @@
 # Implementation of centralized P2P network and decentralized P2P network
+Using Java, Ruby on Rails, and JavaFX.
 
 This project is the implementation of centralized P2P network (based on Napster network) and decentralized P2P network (based on Chord network) for book sharing.
 
